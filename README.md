@@ -17,6 +17,14 @@ The concept of this software is to provide a platform for managing video games a
 - Organize and categorize games
 - Administrative functions for the game library
 
+## Idears 
+
+- GUI Interface
+- CLI Commands
+- Database Save construction
+- Ability to add the time played
+- ...
+
 ## Requirements
 
 - Java Development Kit (JDK) 8 or higher
