@@ -26,7 +26,7 @@ The concept of this software is to provide a platform for managing video games a
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/byte-jn/steam-like-school-project
    ```
 
 2. Open the project in IntelliJ IDEA or your preferred IDE
