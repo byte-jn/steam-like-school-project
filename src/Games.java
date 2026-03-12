@@ -1,16 +1,16 @@
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Games {
 
     private String titel;
-    private ArrayList<DLC> dlcList;
+    private final Date releaseDate;
+    private String description;
+    private double price;
 
-    public Games(String titel) {
+    public Games(String titel, Date releaseDate) {
         this.titel = titel;
-        this.dlcList = new ArrayList<DLC>();
-    }
-
-    public void addDlc(String dlcName) {
+        this.releaseDate = releaseDate;
     }
 
     public String getTitel() {
@@ -21,11 +21,23 @@ public class Games {
         this.titel = titel;
     }
 
-    public ArrayList<DLC> getDLCs() {
-        return this.dlcList;
+    public Date getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setDLCs(ArrayList<DLC> dlcList) {
-        this.dlcList = dlcList;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

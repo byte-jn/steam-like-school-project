@@ -1,7 +1,7 @@
 import java.util.Date;
 
 public class DLC {
-    private String dlcName;
+    private final String dlcName;
     private final String gameTitle;
     private final Date releaseDate;
     private String description;
@@ -11,8 +11,6 @@ public class DLC {
         this.dlcName = dlcName;
         this.gameTitle = gameTitle;
         this.releaseDate = releaseDate;
-        this.description = description;
-        this.price = price;
     }
 
     public String getDlcName() {
@@ -31,16 +29,12 @@ public class DLC {
         return description;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setDlcName(String dlcName) {
-        this.dlcName = dlcName;
-    }
-
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     public void setPrice(double price) {
