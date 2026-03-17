@@ -1,28 +1,49 @@
 import java.util.Date;
 
 public class DLC {
-    private final String dlcName;
-    private final String gameTitle;
-    private final Date releaseDate;
+    private final String id;
+    private String dlcName;
+    private String gameTitle;
+    private Date releaseDate;
+    private final Date createdAt;
     private String description;
     private double price;
 
-    public DLC(String dlcName, String gameTitle, Date releaseDate, String description, double price) {
-        this.dlcName = dlcName;
-        this.gameTitle = gameTitle;
-        this.releaseDate = releaseDate;
+    public DLC(String id) {
+        this.id = id;
+        this.createdAt = new Date();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getDlcName() {
         return dlcName;
     }
 
+    public void setDlcName(String dlcName) {
+        this.dlcName = dlcName;
+    }
+
     public String getGameTitle() {
         return gameTitle;
     }
 
+    public void setGameTitle(String gameTitle) {
+        this.gameTitle = gameTitle;
+    }
+
     public Date getReleaseDate() {
         return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public String getDescription() {
