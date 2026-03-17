@@ -1,5 +1,7 @@
 package org.example.services;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.example.dtos.GamesDto;
 import org.example.entities.Games;
 import org.example.mappers.GamesMapper;
@@ -10,11 +12,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Singleton
 public class GamesService {
 
     private final GamesRepository gamesRepository;
     private final GamesMapper gamesMapper;
 
+    @Inject
     public GamesService(GamesRepository gamesRepository, GamesMapper gamesMapper) {
         this.gamesRepository = gamesRepository;
         this.gamesMapper = gamesMapper;

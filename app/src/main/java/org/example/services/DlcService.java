@@ -1,5 +1,7 @@
 package org.example.services;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.example.dtos.DlcDto;
 import org.example.entities.Dlc;
 import org.example.mappers.DlcMapper;
@@ -10,11 +12,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Singleton
 public class DlcService {
 
     private final DlcRepository dlcRepository;
     private final DlcMapper dlcMapper;
 
+    @Inject
     public DlcService(DlcRepository dlcRepository, DlcMapper dlcMapper) {
         this.dlcRepository = dlcRepository;
         this.dlcMapper = dlcMapper;

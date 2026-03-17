@@ -1,11 +1,17 @@
 package org.example.mappers;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.example.dtos.UserDto;
 import org.example.entities.User;
 
 import java.util.ArrayList;
 
+@Singleton
 public class UserMapper {
+
+    @Inject
+    public UserMapper() { }
 
     /**
      * Maps a User domain entity to a UserDto.

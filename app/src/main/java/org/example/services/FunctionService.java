@@ -1,5 +1,7 @@
 package org.example.services;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.example.dtos.DlcDto;
 import org.example.dtos.GamesDto;
 import org.example.dtos.UserDto;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+@Singleton
 public class FunctionService {
 
     public Scanner scanner;
@@ -17,6 +20,7 @@ public class FunctionService {
     private final GamesService gamesService;
     private final DlcService dlcService;
 
+    @Inject
     public FunctionService(UserService userService,
                            GamesService gamesService,
                            DlcService dlcService) {

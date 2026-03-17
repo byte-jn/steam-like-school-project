@@ -1,5 +1,7 @@
 package org.example.repositories;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.example.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,10 +10,12 @@ import org.hibernate.Transaction;
 import java.util.List;
 import java.util.Optional;
 
+@Singleton
 public class UserRepository {
 
     private final SessionFactory sessionFactory;
 
+    @Inject
     public UserRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

@@ -1,9 +1,15 @@
 package org.example.mappers;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.example.dtos.GamesDto;
 import org.example.entities.Games;
 
+@Singleton
 public class GamesMapper {
+
+    @Inject
+    public GamesMapper() { }
 
     /**
      * Maps a Games domain entity to a GamesDto.
