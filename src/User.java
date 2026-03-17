@@ -2,17 +2,17 @@ import java.util.ArrayList;
 
 public class User {
 
-    private final String id;
     private String username;
     private String email;
     private String password;
     private ArrayList<String> ownedGamesIds;
     private ArrayList<String> ownedDLCsIds;
-    private String vorname;
-    private String nachname;
+    private String firstname;
+    private String lastname;
 
-    public User(String id, String username) {
-        this.id = id;
+    public User(String firstName, String lastName) {
+        firstname = firstName;
+        lastname = lastName;
         this.ownedGamesIds = new ArrayList<>();
         this.ownedDLCsIds = new ArrayList<>();
     }
@@ -41,9 +41,6 @@ public class User {
         this.ownedDLCsIds.add(dlsId);
     }
 
-    public String getId() {
-        return id;
-    }
 
     public String getUsername() {
         return username;
@@ -69,19 +66,19 @@ public class User {
         this.password = password;
     }
 
-    public String getVorname() {
-        return vorname;
+   public String getFirstname(){
+        return firstname;
+   }
+
+   public void setFirstname(String firstname1){
+        firstname = firstname1;
+   }
+
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setVorname(String vorname) {
-        this.vorname = vorname;
-    }
-
-    public String getNachname() {
-        return nachname;
-    }
-
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 }

@@ -33,10 +33,13 @@ public class Login {
      * Erstellt einen neuen Benutzer, indem er den Benutzernamen, Vornamen und Nachnamen abfragt. Der Benutzername ist erforderlich, während Vorname und Nachname optional sind.
      */
     public void createUser() {
-        System.out.println("Bitte ihren Benutzernamen eingeben");
-        String username = this.scanner.next();
+        System.out.println("Bitte ihren Vornamen eingeben");
+        String vorname = this.scanner.next();
 
-        User user = new User(username);
+        System.out.println("Bitte ihren Nachnamen eingeben");
+        String nachname = this.scanner.next();
+
+        User user = new User(vorname, nachname);
 
         System.out.println("Bitte Ihren Vornamen eingeben, wenn Sie möchten, ansonsten können Sie diesen Schritt überspringen");
         user.setVorname(this.scanner.next());
