@@ -2,7 +2,8 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        Loggin log = new Loggin();
-        log.Einfuegen();
+        FunctionService session = new FunctionService();
+
+        User user = session.initializeUser();
     }
 }

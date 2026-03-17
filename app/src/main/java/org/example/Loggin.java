@@ -16,7 +16,6 @@ public class Loggin {
 
         System.out.println("Bitte ihre Nachname eingeben");
         String nName = input.next();
-        new Spieler(vName, nName);
-        SpeichernCsv.SpeicherCsv(vName, nName);
+        new User(vName, nName);
     }
 }
