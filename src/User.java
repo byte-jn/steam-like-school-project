@@ -2,42 +2,71 @@ import java.util.ArrayList;
 
 public class User {
 
-    private final String username;
-    private ArrayList<Games> ownedGames;
-    private ArrayList<DLC> ownedDLCs;
+    private final String id;
+    private String username;
+    private String email;
+    private String password;
+    private ArrayList<String> ownedGamesIds;
+    private ArrayList<String> ownedDLCsIds;
     private String vorname;
     private String nachname;
 
-    public User(String username) {
-        this.username = username;
+    public User(String id, String username) {
+        this.id = id;
+        this.ownedGamesIds = new ArrayList<>();
+        this.ownedDLCsIds = new ArrayList<>();
+    }
+
+    public ArrayList<String> getOwnedGamesIds() {
+        return ownedGamesIds;
+    }
+
+    public void setOwnedGamesIds(ArrayList<String> ownedGamesIds) {
+        this.ownedGamesIds = ownedGamesIds;
+    }
+
+    public void addOwnedGames(String gameId) {
+        this.ownedGamesIds.add(gameId);
+    }
+
+    public ArrayList<String> getOwnedDLCsIds() {
+        return ownedDLCsIds;
+    }
+
+    public void setOwnedDLCsIds(ArrayList<String> ownedDLCsIds) {
+        this.ownedDLCsIds = ownedDLCsIds;
+    }
+
+    public void addOwnedDLCs(String dlsId) {
+        this.ownedDLCsIds.add(dlsId);
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public ArrayList<Games> getOwnedGames() {
-        return ownedGames;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setOwnedGames(ArrayList<Games> ownedGames) {
-        this.ownedGames = ownedGames;
+    public String getEmail() {
+        return email;
     }
 
-    public void addOwnedGames(Games game) {
-        this.ownedGames.add(game);
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public ArrayList<DLC> getOwnedDLCs() {
-        return ownedDLCs;
+    public String getPassword() {
+        return password;
     }
 
-    public void setOwnedDLCs(ArrayList<DLC> ownedDLCs) {
-        this.ownedDLCs = ownedDLCs;
-    }
-
-    public void addOwnedDLCs(DLC dLCs) {
-        this.ownedDLCs.add(dLCs);
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getVorname() {
@@ -45,9 +74,6 @@ public class User {
     }
 
     public void setVorname(String vorname) {
-        if (vorname == null || vorname.trim().isEmpty()) {
-            return;
-        }
         this.vorname = vorname;
     }
 
@@ -56,9 +82,6 @@ public class User {
     }
 
     public void setNachname(String nachname) {
-        if (nachname == null || nachname.trim().isEmpty()) {
-            return;
-        }
         this.nachname = nachname;
     }
 }
