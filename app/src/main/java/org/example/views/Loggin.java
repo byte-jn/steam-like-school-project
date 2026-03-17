@@ -1,4 +1,6 @@
-package org.example;
+package org.example.views;
+
+import org.example.entities.User;
 
 import java.util.Scanner;
 

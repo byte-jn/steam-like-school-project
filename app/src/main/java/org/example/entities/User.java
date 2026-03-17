@@ -1,22 +1,53 @@
-package org.example;
+package org.example.entities;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
+
+    @ElementCollection
+    @CollectionTable(name = "user_owned_games", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "game_id")
     private ArrayList<String> ownedGamesIds;
+
+    @ElementCollection
+    @CollectionTable(name = "user_owned_dlcs", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "dlc_id")
     private ArrayList<String> ownedDLCsIds;
+
+    @Column(name = "firstname")
     private String firstname;
+
+    @Column(name = "lastname")
     private String lastname;
+
+    protected User() {}
 
     public User(String firstName, String lastName) {
         firstname = firstName;
         lastname = lastName;
         this.ownedGamesIds = new ArrayList<>();
         this.ownedDLCsIds = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public ArrayList<String> getOwnedGamesIds() {
@@ -43,7 +74,6 @@ public class User {
         this.ownedDLCsIds.add(dlsId);
     }
 
-
     public String getUsername() {
         return username;
     }
@@ -68,13 +98,13 @@ public class User {
         this.password = password;
     }
 
-   public String getFirstname(){
+    public String getFirstname() {
         return firstname;
-   }
+    }
 
-   public void setFirstname(String firstname1){
+    public void setFirstname(String firstname1) {
         firstname = firstname1;
-   }
+    }
 
     public String getLastname() {
         return lastname;

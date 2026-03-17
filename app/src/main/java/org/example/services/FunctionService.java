@@ -1,4 +1,8 @@
-package org.example;
+package org.example.services;
+
+import org.example.entities.Games;
+import org.example.entities.Dlc;
+import org.example.entities.User;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -108,7 +112,7 @@ public class FunctionService {
         return games;
     }
 
-    public DLC initializeDLC() {
+    public Dlc initializeDLC() {
         System.out.println("Willkommen im DLC-Store!"
                 + "\nBitte wählen Sie: DLC hinzufügen oder suchen (h für Hinzufügen, s für Suchen)");
         String choice = this.scanner.next();
@@ -128,8 +132,8 @@ public class FunctionService {
         System.out.println("Die Suchfunktion für DLCs ist noch nicht implementiert. Bitte legen Sie zuerst einen DLC an.");
     }
 
-    public DLC createDLC() {
-        DLC dlc = new DLC(UUID.randomUUID().toString());
+    public Dlc createDLC() {
+        Dlc dlc = new Dlc(UUID.randomUUID().toString());
 
         System.out.println("Bitte geben Sie den Namen des DLCs ein");
         dlc.setDlcName(this.scanner.next());
