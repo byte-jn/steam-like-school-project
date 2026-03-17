@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Games {
@@ -12,7 +11,7 @@ public class Games {
 
     public Games(String id) {
         this.id = id;
-        this.createdAt = new Date(); // Standardmäßig auf das aktuelle Datum setzen
+        this.createdAt = new Date();
     }
 
     public String getId() {
