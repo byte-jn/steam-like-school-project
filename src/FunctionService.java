@@ -1,9 +1,9 @@
 import java.util.Scanner;
 
-public class Login {
+public class FunctionService {
     public Scanner scanner;
 
-    public Login() {
+    public FunctionService() {
         this.scanner = new Scanner(System.in);
     }
 

@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        Login session = new Login();
+        FunctionService session = new FunctionService();
 
         User user = session.initial();
     }
