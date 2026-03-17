@@ -1,28 +1,31 @@
 # Video Game and DLC Management Software
 
-An administrative software for managing video games and their DLCs (Downloadable Content).
+A management software for organizing video games and their DLCs (Downloadable Content).
 
 ## Description
 
-This project is a Steam-like management software that allows you to organize and manage video games and their associated DLCs. The application was developed as a school project in Java.
+This project is a Steam-like management software that allows you to organize and manage video games and their associated DLCs. The application was developed as a school project in Java and uses .class files to execute the core logic.
 
 ## Concept
 
-The concept of this software is to provide a platform for managing video games and their downloadable content (DLCs), similar to Steam, but as a school project implemented in Java. Users can add, organize, and manage their video games and associate DLCs with each game. The goal is to offer a structured and user-friendly solution for efficiently handling a digital game and DLC collection. The software is designed for educational purposes and can be extended with additional features in the future.
+The concept of this software is to provide a platform for managing video games and their downloadable content (DLCs), similar to Steam, but implemented as a school project in Java. Users can add, organize, and manage their video games and assign DLCs to each game. The core functionality is realized through .class files, which contain the logic for managing games and DLCs. The goal is to offer a structured and user-friendly solution for efficiently handling a digital collection of games and DLCs. The software is designed for educational purposes and can be extended with additional features in the future.
 
 ## Features
 
 - Manage video games
 - Manage DLCs (Downloadable Content)
+- Assign DLCs to individual games
 - Organize and categorize games
 - Administrative functions for the game library
+- Store and execute core logic via .class files
 
-## Idears 
+## Ideas
 
-- GUI Interface
-- CLI Commands
-- Database Save construction
-- Ability to add the time played
+- GUI interface
+- CLI commands
+- Database storage
+- Ability to track playtime
+- Advanced DLC management (e.g. DLC lists, DLC categorization)
 - ...
 
 ## Requirements
@@ -37,7 +40,7 @@ The concept of this software is to provide a platform for managing video games a
    git clone https://github.com/byte-jn/steam-like-school-project
    ```
 
-2. Open the project in IntelliJ IDEA or your preferred IDE
+2. Open the project in IntelliJ IDEA or another IDE
 
 3. Make sure the JDK is configured correctly
 
@@ -57,16 +60,24 @@ java Main
 ## Project Structure
 
 ```
-steam-like-administrative-software-school-project/
-├── src/
-│   └── Main.java          # Main entry point of the application
-├── .gitignore             # Git ignore configuration
-└── README.md              # This file
+steam-like-school-project/
+├── app/
+│   └── src/
+│       └── main/
+│           └── java/
+│               └── org/example/
+│                   ├── Main.java          # Main entry point of the application
+│                   ├── Games.java         # Game management
+│                   ├── DLC.java           # DLC management
+│                   └── ...                # Other .class files for logic
+├── db/                # Database configuration
+├── README.md          # This file
+└── ...                # Other configuration files
 ```
 
 ## Development
 
-This is a school project and is currently under development. More features will be added over time.
+This is a school project and is currently under development. More features, especially for advanced DLC management, will be added over time.
 
 ## License
 
@@ -78,4 +89,4 @@ School project
 
 ## Status
 
-🚧 In development
+In development
