@@ -3,10 +3,37 @@ version: "3.8"
 services:
   app:
     build: .
-    container_name: gradle-hibernate-sqlite
+    container_name: gradle-hibernate-app
     ports:
       - "8080:8080"
-    volumes:
-      # Persist the SQLite db on the host
-      - ./sqlite_data:/data
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
+
+  db:
+    image: postgres:16
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
