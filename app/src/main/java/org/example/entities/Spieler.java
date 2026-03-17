@@ -1,7 +1,5 @@
-package org.example.;
+package org.example.entities;
 
-@Entity
-@Table(name = "users")
 public final class Spieler {
     
 }

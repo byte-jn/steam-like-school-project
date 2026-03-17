@@ -1,8 +1,11 @@
+package org.example;
+
 import java.util.Scanner;
+
 public class Loggin {
 
     public Loggin(){
-        
+
     }
 
     public void Einfuegen(){
