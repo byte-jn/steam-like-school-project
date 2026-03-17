@@ -96,12 +96,66 @@ public class FunctionService {
         int day = this.scanner.nextInt();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, 0, 0, 0);
+        calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
+        calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
         calendar.set(Calendar.MILLISECOND, 0);
         Date date = calendar.getTime();
 
-       games.setReleaseDate(date);
+        games.setReleaseDate(date);
 
         return games;
+    }
+
+    public DLC initializeDLC() {
+        System.out.println("Willkommen im DLC-Store!"
+                + "\nBitte wählen Sie: DLC hinzufügen oder suchen (h für Hinzufügen, s für Suchen)");
+        String choice = this.scanner.next();
+        if (choice.equalsIgnoreCase("h")) {
+            return createDLC();
+        } else if (choice.equalsIgnoreCase("s")) {
+            searchDLC();
+            return initializeDLC();
+        } else {
+            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
+            return initializeDLC();
+        }
+    }
+
+    private void searchDLC() {
+        // TODO: Implementieren Sie die Logik, um einen DLC zu suchen.
+        System.out.println("Die Suchfunktion für DLCs ist noch nicht implementiert. Bitte legen Sie zuerst einen DLC an.");
+    }
+
+    public DLC createDLC() {
+        DLC dlc = new DLC(UUID.randomUUID().toString());
+
+        System.out.println("Bitte geben Sie den Namen des DLCs ein");
+        dlc.setDlcName(this.scanner.next());
+
+        System.out.println("Bitte geben Sie den Titel des zugehörigen Spiels ein");
+        dlc.setGameTitle(this.scanner.next());
+
+        System.out.println("Bitte geben Sie die Beschreibung des DLCs ein");
+        dlc.setDescription(this.scanner.next());
+
+        System.out.println("Bitte geben Sie den Preis des DLCs ein (z. B. 19.99)");
+        dlc.setPrice(this.scanner.nextDouble());
+
+        System.out.println("Bitte geben Sie das Erscheinungsjahr des DLCs ein (z. B. 2026)");
+        int year = this.scanner.nextInt();
+        System.out.println("Bitte geben Sie den Erscheinungsmonat des DLCs ein (1-12)");
+        int month = this.scanner.nextInt();
+        System.out.println("Bitte geben Sie den Erscheinungstag des DLCs ein (1-31)");
+        int day = this.scanner.nextInt();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
+        calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date date = calendar.getTime();
+
+        dlc.setReleaseDate(date);
+
+        return dlc;
     }
 }
