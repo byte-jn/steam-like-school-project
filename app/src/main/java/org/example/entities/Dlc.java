@@ -1,6 +1,9 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Date;
 
 @Entity
@@ -29,29 +32,58 @@ public class Dlc {
     @Column(name = "price")
     private double price;
 
-    protected Dlc() {}
+    protected Dlc() { }
 
     public Dlc(String id) {
         this.id = id;
         this.createdAt = new Date();
     }
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getDlcName() { return dlcName; }
-    public void setDlcName(String dlcName) { this.dlcName = dlcName; }
+    public String getDlcName() {
+        return dlcName;
+    }
 
-    public String getGameTitle() { return gameTitle; }
-    public void setGameTitle(String gameTitle) { this.gameTitle = gameTitle; }
+    public void setDlcName(String dlcName) {
+        this.dlcName = dlcName;
+    }
 
-    public Date getReleaseDate() { return releaseDate; }
-    public void setReleaseDate(Date releaseDate) { this.releaseDate = releaseDate; }
+    public String getGameTitle() {
+        return gameTitle;
+    }
 
-    public Date getCreatedAt() { return createdAt; }
+    public void setGameTitle(String gameTitle) {
+        this.gameTitle = gameTitle;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

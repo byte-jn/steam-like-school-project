@@ -23,7 +23,9 @@ public class UserRepository {
             session.persist(user);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         }
     }
@@ -63,7 +65,9 @@ public class UserRepository {
             session.merge(user);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         }
     }
@@ -73,10 +77,14 @@ public class UserRepository {
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
             User user = session.get(User.class, id);
-            if (user != null) session.remove(user);
+            if (user != null) {
+                session.remove(user);
+            }
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         }
     }

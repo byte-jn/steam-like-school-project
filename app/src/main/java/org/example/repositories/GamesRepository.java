@@ -23,7 +23,9 @@ public class GamesRepository {
             session.persist(game);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         }
     }
@@ -47,7 +49,9 @@ public class GamesRepository {
             session.merge(game);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         }
     }
@@ -57,10 +61,14 @@ public class GamesRepository {
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
             Games game = session.get(Games.class, id);
-            if (game != null) session.remove(game);
+            if (game != null) {
+                session.remove(game);
+            }
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         }
     }

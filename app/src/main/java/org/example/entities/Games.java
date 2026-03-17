@@ -1,6 +1,9 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Date;
 
 @Entity
@@ -26,26 +29,50 @@ public class Games {
     @Column(name = "price")
     private double price;
 
-    protected Games() {}
+    protected Games() { }
 
     public Games(String id) {
         this.id = id;
         this.createdAt = new Date();
     }
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
-    public Date getCreatedAt() { return createdAt; }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-    public Date getReleaseDate() { return releaseDate; }
-    public void setReleaseDate(Date releaseDate) { this.releaseDate = releaseDate; }
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public String getDescription() {
+        return description;
+    }
 
-    public String getTitel() { return titel; }
-    public void setTitel(String titel) { this.titel = titel; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getTitel() {
+        return titel;
+    }
+
+    public void setTitel(String titel) {
+        this.titel = titel;
+    }
 }

@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 public class Loggin {
 
-    public Loggin(){
+    public Loggin() {
 
     }
 
-    public void Einfuegen(){
+    public void einfuegen() {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Bitte ihre Vorname eingeben");
@@ -17,6 +17,6 @@ public class Loggin {
         System.out.println("Bitte ihre Nachname eingeben");
         String nName = input.next();
         new Spieler(vName, nName);
-        SpeichernCsv.SpeicherCsv(vName, nName);
+        SpeichernCsv.speicherCsv(vName, nName);
     }
 }

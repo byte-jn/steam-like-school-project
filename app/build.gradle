@@ -9,6 +9,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'checkstyle'
 }
 
 repositories {
@@ -43,4 +44,11 @@ java {
 application {
     // Define the main class for the application.
     mainClass = 'org.example.Main'
+}
+
+checkstyle {
+    toolVersion = '10.21.0'
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+    ignoreFailures = false
+    showViolations = true
 }

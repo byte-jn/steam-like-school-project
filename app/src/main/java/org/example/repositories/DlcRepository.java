@@ -23,7 +23,9 @@ public class DlcRepository {
             session.persist(dlc);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         }
     }
@@ -47,7 +49,9 @@ public class DlcRepository {
             session.merge(dlc);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         }
     }
@@ -57,10 +61,14 @@ public class DlcRepository {
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
             Dlc dlc = session.get(Dlc.class, id);
-            if (dlc != null) session.remove(dlc);
+            if (dlc != null) {
+                session.remove(dlc);
+            }
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         }
     }
