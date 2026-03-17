@@ -6,32 +6,8 @@
 # Build- und Output-Ordner
 out/
 bin/
-!**/src/main/**/out/
-!**/src/test/**/out/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-# Eclipse
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-# NetBeans
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-# Mac OS
-.DS_Store
 
 # Java
-*.class
 *.jar
 *.war
 *.nar
