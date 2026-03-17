@@ -6,11 +6,9 @@ import java.util.Scanner;
 
 public class Loggin {
 
-    public Loggin(){
+    public Loggin() { }
 
-    }
-
-    public void Einfuegen(){
+    public void einfuegen() {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Bitte ihre Vorname eingeben");

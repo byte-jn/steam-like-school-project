@@ -1,167 +1,199 @@
 package org.example.services;
 
-import org.example.entities.Games;
-import org.example.entities.Dlc;
-import org.example.entities.User;
+import org.example.dtos.DlcDto;
+import org.example.dtos.GamesDto;
+import org.example.dtos.UserDto;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class FunctionService {
-    public Scanner scanner;
 
-    public FunctionService() {
+    public Scanner scanner;
+    private final UserService userService;
+    private final GamesService gamesService;
+    private final DlcService dlcService;
+
+    public FunctionService(UserService userService,
+                           GamesService gamesService,
+                           DlcService dlcService) {
         this.scanner = new Scanner(System.in);
+        this.userService = userService;
+        this.gamesService = gamesService;
+        this.dlcService = dlcService;
     }
 
     /**
-     * Initialisiert die Login-Sitzung und ermöglicht dem Benutzer, sich entweder anzumelden oder zu registrieren.
+     * Initialisiert die Login-Sitzung und ermoeglicht dem Benutzer,
+     * sich entweder anzumelden oder zu registrieren.
      */
-    public User initializeUser() {
+    public UserDto initializeUser() {
         System.out.println("Willkommen im Game Store!"
                 + "\nBitte melden Sie sich an, um fortzufahren."
-                + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung)");
+                + "\n(l = Login, r = Registrierung)");
         String choice = this.scanner.next();
         if (choice.equalsIgnoreCase("l")) {
-            searchUser();
+            UserDto found = searchUser();
+            if (found != null) {
+                return found;
+            }
             return initializeUser();
         } else if (choice.equalsIgnoreCase("r")) {
             return createUser();
         } else {
-            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
+            System.out.println("Ungueltige Eingabe. Bitte versuchen Sie es erneut.");
             return initializeUser();
         }
     }
 
-    private void searchUser() {
-        // TODO: Implementieren Sie die Logik, um einen Benutzer zu suchen und sich anzumelden.
-        System.out.println("Die Login-Funktionalität ist noch nicht implementiert. Bitte registrieren Sie sich zuerst.");
+    private UserDto searchUser() {
+        System.out.println("Bitte geben Sie Ihren Benutzernamen ein");
+        String username = this.scanner.next();
+        Optional<UserDto> result = userService.findByUsername(username);
+        if (result.isPresent()) {
+            System.out.println("Willkommen zurueck, " + result.get().getFirstname() + "!");
+            return result.get();
+        }
+        System.out.println("Benutzer nicht gefunden. Bitte registrieren Sie sich zuerst.");
+        return null;
     }
 
     /**
-     * Erstellt einen neuen Benutzer, indem Vorname und Nachname abgefragt werden.
+     * Erstellt einen neuen Benutzer und speichert ihn ueber den UserService.
      */
-    public User createUser() {
-        System.out.println("Bitte Ihren Vornamen eingeben");
-        String vorname = this.scanner.next();
+    public UserDto createUser() {
+        System.out.println("Bitte geben Sie einen Benutzernamen ein");
+        String username = this.scanner.next();
 
-        System.out.println("Bitte Ihren Nachnamen eingeben");
-        String nachname = this.scanner.next();
+        System.out.println("Bitte geben Sie Ihre E-Mail-Adresse ein");
+        String email = this.scanner.next();
 
-        User user = new User(vorname, nachname);
+        System.out.println("Bitte geben Sie ein Passwort ein");
+        String password = this.scanner.next();
 
-        System.out.println("Bitte Ihren Vornamen eingeben, wenn Sie möchten; ansonsten können Sie diesen Schritt überspringen");
-        user.setFirstname(this.scanner.next());
+        System.out.println("Bitte geben Sie Ihren Vornamen ein");
+        String firstname = this.scanner.next();
 
-        System.out.println("Bitte Ihren Nachnamen eingeben, wenn Sie möchten; ansonsten können Sie diesen Schritt überspringen");
-        user.setLastname(this.scanner.next());
+        System.out.println("Bitte geben Sie Ihren Nachnamen ein");
+        String lastname = this.scanner.next();
 
-        return user;
+        UserDto dto = new UserDto();
+        dto.setUsername(username);
+        dto.setEmail(email);
+        dto.setPassword(password);
+        dto.setFirstname(firstname);
+        dto.setLastname(lastname);
+
+        UserDto saved = userService.save(dto);
+        System.out.println("Benutzer erfolgreich registriert! Willkommen, " + firstname + "!");
+        return saved;
     }
 
-    public Games initializeGames() {
-        System.out.println("Willkommen im Game Store!"
-                + "\nBitte melden Sie sich an, um fortzufahren."
-                + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung)");
-        String choice = this.scanner.next();
-        if (choice.equalsIgnoreCase("l")) {
-            searchGames();
-            return initializeGames();
-        } else if (choice.equalsIgnoreCase("r")) {
-            return createGames();
-        } else {
-            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
-            return initializeGames();
+    /**
+     * Zeigt das Hauptmenue nach dem Login und verarbeitet die Auswahl des Benutzers.
+     */
+    public void mainMenu(UserDto user) {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n=== Hauptmenue ==="
+                    + "\n[1] Alle Spiele anzeigen"
+                    + "\n[2] Spiel hinzufuegen"
+                    + "\n[3] DLC hinzufuegen"
+                    + "\n[4] Beenden");
+            String choice = this.scanner.next();
+            if (choice.equals("1")) {
+                listGames();
+            } else if (choice.equals("2")) {
+                createGame();
+            } else if (choice.equals("3")) {
+                createDlc();
+            } else if (choice.equals("4")) {
+                System.out.println("Auf Wiedersehen, " + user.getFirstname() + "!");
+                running = false;
+            } else {
+                System.out.println("Ungueltige Eingabe. Bitte waehlen Sie 1, 2, 3 oder 4.");
+            }
         }
     }
 
-    private void searchGames() {
-        // TODO: Implementieren Sie die Logik, um ein Spiel zu suchen.
-        System.out.println("Die Suchfunktion ist noch nicht implementiert. Bitte legen Sie zuerst ein Spiel an.");
+    private void listGames() {
+        List<GamesDto> games = gamesService.findAll();
+        if (games.isEmpty()) {
+            System.out.println("Keine Spiele im Store vorhanden.");
+            return;
+        }
+        System.out.println("\n--- Alle Spiele ---");
+        for (GamesDto game : games) {
+            System.out.println("  " + game.getTitel() + " - " + game.getPrice() + " EUR");
+        }
     }
 
-    public Games createGames() {
-        Games games = new Games(UUID.randomUUID().toString());
+    /**
+     * Erstellt ein neues Spiel und speichert es ueber den GamesService.
+     */
+    public GamesDto createGame() {
+        GamesDto dto = new GamesDto();
 
         System.out.println("Bitte geben Sie den Titel des Spiels ein");
-        games.setTitel(this.scanner.next());
+        dto.setTitel(this.scanner.next());
 
         System.out.println("Bitte geben Sie die Beschreibung des Spiels ein");
-        games.setDescription(this.scanner.next());
+        dto.setDescription(this.scanner.next());
 
         System.out.println("Bitte geben Sie den Preis des Spiels ein (z. B. 59.99)");
-        games.setPrice(this.scanner.nextDouble());
+        dto.setPrice(this.scanner.nextDouble());
 
-        System.out.println("Bitte geben Sie das Erscheinungsjahr des Spiels ein (z. B. 2024)");
-        int year = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungsmonat des Spiels ein (1-12)");
-        int month = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungstag des Spiels ein (1-31)");
-        int day = this.scanner.nextInt();
+        dto.setReleaseDate(readDate());
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
-        calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
-        calendar.set(Calendar.MILLISECOND, 0);
-        Date date = calendar.getTime();
-
-        games.setReleaseDate(date);
-
-        return games;
+        GamesDto saved = gamesService.save(dto);
+        System.out.println("Spiel '" + saved.getTitel() + "' erfolgreich gespeichert!");
+        return saved;
     }
 
-    public Dlc initializeDLC() {
-        System.out.println("Willkommen im DLC-Store!"
-                + "\nBitte wählen Sie: DLC hinzufügen oder suchen (h für Hinzufügen, s für Suchen)");
-        String choice = this.scanner.next();
-        if (choice.equalsIgnoreCase("h")) {
-            return createDLC();
-        } else if (choice.equalsIgnoreCase("s")) {
-            searchDLC();
-            return initializeDLC();
-        } else {
-            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
-            return initializeDLC();
-        }
-    }
-
-    private void searchDLC() {
-        // TODO: Implementieren Sie die Logik, um einen DLC zu suchen.
-        System.out.println("Die Suchfunktion für DLCs ist noch nicht implementiert. Bitte legen Sie zuerst einen DLC an.");
-    }
-
-    public Dlc createDLC() {
-        Dlc dlc = new Dlc(UUID.randomUUID().toString());
+    /**
+     * Erstellt einen neuen DLC und speichert ihn ueber den DlcService.
+     */
+    public DlcDto createDlc() {
+        DlcDto dto = new DlcDto();
 
         System.out.println("Bitte geben Sie den Namen des DLCs ein");
-        dlc.setDlcName(this.scanner.next());
+        dto.setDlcName(this.scanner.next());
 
-        System.out.println("Bitte geben Sie den Titel des zugehörigen Spiels ein");
-        dlc.setGameTitle(this.scanner.next());
+        System.out.println("Bitte geben Sie den Titel des zugehoerigen Spiels ein");
+        dto.setGameTitle(this.scanner.next());
 
         System.out.println("Bitte geben Sie die Beschreibung des DLCs ein");
-        dlc.setDescription(this.scanner.next());
+        dto.setDescription(this.scanner.next());
 
         System.out.println("Bitte geben Sie den Preis des DLCs ein (z. B. 19.99)");
-        dlc.setPrice(this.scanner.nextDouble());
+        dto.setPrice(this.scanner.nextDouble());
 
-        System.out.println("Bitte geben Sie das Erscheinungsjahr des DLCs ein (z. B. 2026)");
+        dto.setReleaseDate(readDate());
+
+        DlcDto saved = dlcService.save(dto);
+        System.out.println("DLC '" + saved.getDlcName() + "' erfolgreich gespeichert!");
+        return saved;
+    }
+
+    private Date readDate() {
+        System.out.println("Erscheinungsjahr eingeben (z. B. 2024)");
         int year = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungsmonat des DLCs ein (1-12)");
+        System.out.println("Erscheinungsmonat eingeben (1-12)");
         int month = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungstag des DLCs ein (1-31)");
+        System.out.println("Erscheinungstag eingeben (1-31)");
         int day = this.scanner.nextInt();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
-        calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        Date date = calendar.getTime();
-
-        dlc.setReleaseDate(date);
-
-        return dlc;
+        return calendar.getTime();
     }
 }

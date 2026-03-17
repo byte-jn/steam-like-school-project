@@ -1,6 +1,14 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 
 @Entity
@@ -37,7 +45,7 @@ public class User {
     @Column(name = "lastname")
     private String lastname;
 
-    protected User() {}
+    protected User() { }
 
     public User(String firstName, String lastName) {
         firstname = firstName;
