@@ -3,26 +3,32 @@ import java.util.Date;
 
 public class Games {
 
+    private final String id;
     private String titel;
-    private final Date releaseDate;
+    private final Date createdAt;
+    private Date releaseDate;
     private String description;
     private double price;
 
-    public Games(String titel, Date releaseDate) {
-        this.titel = titel;
-        this.releaseDate = releaseDate;
+    public Games(String id) {
+        this.id = id;
+        this.createdAt = new Date(); // Standardmäßig auf das aktuelle Datum setzen
     }
 
-    public String getTitel() {
-        return titel;
+    public String getId() {
+        return id;
     }
 
-    public void setTitel(String titel) {
-        this.titel = titel;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public Date getReleaseDate() {
         return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public String getDescription() {
@@ -39,5 +45,13 @@ public class Games {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getTitel() {
+        return titel;
+    }
+
+    public void setTitel(String titel) {
+        this.titel = titel;
     }
 }
