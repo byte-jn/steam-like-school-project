@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: gradle-hibernate-sqlite
+    ports:
+      - "8080:8080"
+    volumes:
+      # Persist the SQLite db on the host
+      - ./sqlite_data:/data
+    restart: unless-stopped
