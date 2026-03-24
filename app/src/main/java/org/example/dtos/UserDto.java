@@ -86,6 +86,10 @@ public class UserDto {
         this.ownedGamesIds = ownedGamesIds;
     }
 
+    public void addOwnedGameId(String gameId) {
+        this.ownedGamesIds.add(gameId);
+    }
+
     public ArrayList<String> getOwnedDlcIds() {
         return ownedDlcIds;
     }
