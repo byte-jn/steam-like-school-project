@@ -1,15 +1,43 @@
+package org.example.entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Date;
 
-public class DLC {
+@Entity
+@Table(name = "dlcs")
+public class Dlc {
+
+    @Id
+    @Column(name = "id", nullable = false)
     private final String id;
+
+    @Column(name = "dlc_name")
     private String dlcName;
+
+    @Column(name = "game_title")
     private String gameTitle;
+
+    @Column(name = "release_date")
     private Date releaseDate;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
     private final Date createdAt;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "price")
     private double price;
 
-    public DLC(String id) {
+    protected Dlc() {
+        this.id = null;
+        this.createdAt = null;
+    }
+
+    public Dlc(String id) {
         this.id = id;
         this.createdAt = new Date();
     }
