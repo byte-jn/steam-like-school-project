@@ -3,6 +3,7 @@ package org.example.mappers;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.example.dtos.DlcDto;
+import org.example.entities.Dlc;
 
 @Singleton
 public class DlcMapper {
