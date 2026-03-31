@@ -1,43 +1,17 @@
 package org.example;
 
-import org.example.User;
-import org.example.Games;
-import org.example.DLC;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 public class FunctionService {
-    public Scanner scanner;
+    private final Scanner scanner;
+    private User user;
+    private ArrayList<Games> games;
+    private ArrayList<DLC> dlcs;
 
     public FunctionService() {
         this.scanner = new Scanner(System.in);
-    }
-
-    /**
-     * Initialisiert die Login-Sitzung und ermöglicht dem Benutzer, sich entweder anzumelden oder zu registrieren.
-     */
-    public User initializeUser() {
-        System.out.println("Willkommen im Game Store!"
-                + "\nBitte melden Sie sich an, um fortzufahren."
-                + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung)");
-        String choice = this.scanner.next();
-        if (choice.equalsIgnoreCase("l")) {
-            searchUser();
-            return initializeUser();
-        } else if (choice.equalsIgnoreCase("r")) {
-            return createUser();
-        } else {
-            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
-            return initializeUser();
-        }
-    }
-
-    private void searchUser() {
-        // TODO: Implementieren Sie die Logik, um einen Benutzer zu suchen und sich anzumelden.
-        System.out.println("Die Login-Funktionalität ist noch nicht implementiert. Bitte registrieren Sie sich zuerst.");
+        games = new ArrayList<Games>();
+        dlcs = new ArrayList<DLC>();
     }
 
     /**
@@ -47,30 +21,46 @@ public class FunctionService {
         System.out.println("Bitte Ihren Benutzernamen eingeben");
         String vorname = this.scanner.next();
 
-        User user = new User(vorname);
-
-        return user;
+        return new User(vorname);
     }
 
-    public Games initializeGames() {
+    /**
+     * Initialisiert die Login-Sitzung und ermöglicht dem Benutzer, sich entweder anzumelden oder zu registrieren.
+     */
+    public void initializeUser() {
         System.out.println("Willkommen im Game Store!"
                 + "\nBitte melden Sie sich an, um fortzufahren."
                 + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung)");
         String choice = this.scanner.next();
         if (choice.equalsIgnoreCase("l")) {
-            searchGames();
-            return initializeGames();
+            user = searchUser();
         } else if (choice.equalsIgnoreCase("r")) {
-            return createGames();
+            user = createUser();
         } else {
             System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
-            return initializeGames();
+            initializeUser();
         }
     }
 
-    private void searchGames() {
-        // TODO: Implementieren Sie die Logik, um ein Spiel zu suchen.
-        System.out.println("Die Suchfunktion ist noch nicht implementiert. Bitte legen Sie zuerst ein Spiel an.");
+    public User searchUser() {
+        // TODO: Implementieren Sie die Logik, um einen Benutzer zu suchen und sich anzumelden.
+        System.out.println("Die Login-Funktionalität ist noch nicht implementiert. Bitte registrieren Sie sich zuerst.");
+        return null;
+    }
+
+    public void initializeGames() {
+        System.out.println("Willkommen im Game Store!"
+                + "\nBitte wählen Sie: Game hinzufügen oder suchen (h für Hinzufügen, s für Suchen)");
+        String choice = this.scanner.next();
+        if (choice.equalsIgnoreCase("s")) {
+            // TODO: Implementieren Sie die Logik, um ein Spiel zu suchen und anzuzeigen.
+            initializeGames();
+        } else if (choice.equalsIgnoreCase("h")) {
+            games.add(createGames());
+        } else {
+            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
+            initializeGames();
+        }
     }
 
     public Games createGames() {
@@ -103,24 +93,19 @@ public class FunctionService {
         return games;
     }
 
-    public DLC initializeDLC() {
+    public void initializeDLC() {
         System.out.println("Willkommen im DLC-Store!"
                 + "\nBitte wählen Sie: DLC hinzufügen oder suchen (h für Hinzufügen, s für Suchen)");
         String choice = this.scanner.next();
-        if (choice.equalsIgnoreCase("h")) {
-            return createDLC();
-        } else if (choice.equalsIgnoreCase("s")) {
-            searchDLC();
-            return initializeDLC();
+        if (choice.equalsIgnoreCase("s")) {
+            // TODO: Implementieren Sie die Logik, um einen DLC zu suchen und anzuzeigen.
+            initializeDLC();
+        } else if (choice.equalsIgnoreCase("h")) {
+            dlcs.add(createDLC());
         } else {
             System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
-            return initializeDLC();
+            initializeDLC();
         }
-    }
-
-    private void searchDLC() {
-        // TODO: Implementieren Sie die Logik, um einen DLC zu suchen.
-        System.out.println("Die Suchfunktion für DLCs ist noch nicht implementiert. Bitte legen Sie zuerst einen DLC an.");
     }
 
     public DLC createDLC() {
