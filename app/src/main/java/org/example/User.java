@@ -9,12 +9,9 @@ public class User {
     private String password;
     private ArrayList<String> ownedGamesIds;
     private ArrayList<String> ownedDLCsIds;
-    private String firstname;
-    private String lastname;
 
-    public User(String firstName, String lastName) {
-        firstname = firstName;
-        lastname = lastName;
+    public User(String username) {
+        this.username = username;
         this.ownedGamesIds = new ArrayList<>();
         this.ownedDLCsIds = new ArrayList<>();
     }
@@ -43,7 +40,6 @@ public class User {
         this.ownedDLCsIds.add(dlsId);
     }
 
-
     public String getUsername() {
         return username;
     }
@@ -66,21 +62,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-   public String getFirstname(){
-        return firstname;
-   }
-
-   public void setFirstname(String firstname1){
-        firstname = firstname1;
-   }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
     }
 }

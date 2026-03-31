@@ -44,19 +44,10 @@ public class FunctionService {
      * Erstellt einen neuen Benutzer, indem Vorname und Nachname abgefragt werden.
      */
     public User createUser() {
-        System.out.println("Bitte Ihren Vornamen eingeben");
+        System.out.println("Bitte Ihren Benutzernamen eingeben");
         String vorname = this.scanner.next();
 
-        System.out.println("Bitte Ihren Nachnamen eingeben");
-        String nachname = this.scanner.next();
-
-        User user = new User(vorname, nachname);
-
-        System.out.println("Bitte Ihren Vornamen eingeben, wenn Sie möchten; ansonsten können Sie diesen Schritt überspringen");
-        user.setFirstname(this.scanner.next());
-
-        System.out.println("Bitte Ihren Nachnamen eingeben, wenn Sie möchten; ansonsten können Sie diesen Schritt überspringen");
-        user.setLastname(this.scanner.next());
+        User user = new User(vorname);
 
         return user;
     }
