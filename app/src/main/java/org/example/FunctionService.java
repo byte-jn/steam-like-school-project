@@ -1,10 +1,13 @@
 package org.example;
 
+import org.example.DLC;
+import org.example.Games;
+import org.example.User;
 import java.util.*;
 
 public class FunctionService {
     private final Scanner scanner;
-    private User user;
+    private org.example.User user;
     private ArrayList<Games> games;
     private ArrayList<DLC> dlcs;
     private final ArrayList<String> choices;
@@ -16,23 +19,24 @@ public class FunctionService {
         choices = new ArrayList<String>();
 
         //add choices for user interaction
-        choices.add("e für exit/verlassen");
-        choices.add("l für logout/abmelden");
-        choices.add("g für Game-administration/Spiel-Verwaltung");
-        choices.add("d für DLC-administration/DLC-Verwaltung");
-        choices.add("u für User-administration/Benutzer-Verwaltung");
+        choices.add("exit/verlassen (e ), ");
+        choices.add("logout/abmelden (l), ");
+        choices.add("spiele (s), ");
+        choices.add("dlcs (d), ");
+        choices.add("benutzerverwaltung (u) ");
     }
 
     public void loop() {
+        System.out.println("Willkommen im Game Store!"
+                + "\nHier können Sie Spiele und DLCs kaufen, Ihre Spielzeit verwalten und vieles mehr."
+                + "\nBitte melden Sie sich an, um fortzufahren."
+        );
         while (true) {
             if (user == null) {
                 initializeUser();
             }
             // Angabe der Auswahlmöglichkeiten für den Benutzer
-            System.out.print(
-                    "Willkommen im Game Store!"
-                    + "\nBitte wählen Sie: "
-            );
+            System.out.print("Bitte wählen Sie: ");
             choices.forEach(System.out::print);
             System.out.print("\nEingabe: ");
 
