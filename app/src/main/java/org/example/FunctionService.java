@@ -7,17 +7,96 @@ public class FunctionService {
     private User user;
     private ArrayList<Games> games;
     private ArrayList<DLC> dlcs;
+    private final ArrayList<String> choices;
 
     public FunctionService() {
         this.scanner = new Scanner(System.in);
         games = new ArrayList<Games>();
         dlcs = new ArrayList<DLC>();
+        choices = new ArrayList<String>();
+
+        //add choices for user interaction
+        choices.add("e für exit/verlassen");
+        choices.add("l für logout/abmelden");
+        choices.add("g für Game-administration/Spiel-Verwaltung");
+        choices.add("d für DLC-administration/DLC-Verwaltung");
+        choices.add("u für User-administration/Benutzer-Verwaltung");
+    }
+
+    public void loop() {
+        while (true) {
+            if (user == null) {
+                initializeUser();
+            }
+            // Angabe der Auswahlmöglichkeiten für den Benutzer
+            System.out.print(
+                    "Willkommen im Game Store!"
+                    + "\nBitte wählen Sie: "
+            );
+            choices.forEach(System.out::print);
+            System.out.print("\nEingabe: ");
+
+            String choice = this.scanner.next();
+            switch (choice.toLowerCase()) {
+                case "e":
+                    System.out.println("Vielen Dank für Ihren Besuch im Game Store. Auf Wiedersehen!");
+                    return; // Beendet die Schleife und damit das Programm
+                case "l":
+                    System.out.println("Sie wurden erfolgreich abgemeldet.");
+                    user = null; // Setzt den Benutzer auf null, um die Anmeldung zurückzusetzen
+                    break;
+                case "s":
+                    initializeGames();
+                    break;
+                case "d":
+                    initializeDLC();
+                    break;
+                case "u":
+                    userAdministration();
+                    break;
+                default:
+                    System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
+            }
+        }
+    }
+
+    private void userAdministration() {
+        while (true) {
+            System.out.println("Die Optionen sind:"
+                    + "Spiel hinzufügen (h)"
+                    + ", Spiel daten abrufen (a)"
+                    + ", Spielzeit hinzufügen (t)"
+                    + ", Benutzerinformationen anzeigen (i)"
+                    + ", Benutzerinformationen aktualisieren (u)"
+                    + ", Benutzer löschen (d)"
+                    + ", Zurück zum Hauptmenü (e)"
+            );
+            String choice = this.scanner.next();
+            switch (choice.toLowerCase()) {
+                case "h": // Spiel hinzufügen
+                    break;
+                case "a": // Spiel daten abrufen
+                    break;
+                case "t": // Spielzeit hinzufügen
+                    break;
+                case "i": // Benutzerinformationen anzeigen
+                    break;
+                case "u": // Benutzerinformationen aktualisieren
+                    break;
+                case "d": // Benutzer löschen
+                    break;
+                case "e": // Zurück zum Hauptmenü
+                    return;
+                default:
+                    System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
+            }
+        }
     }
 
     /**
      * Erstellt einen neuen Benutzer, indem Vorname und Nachname abgefragt werden.
      */
-    public User createUser() {
+    private User createUser() {
         System.out.println("Bitte Ihren Benutzernamen eingeben");
         String vorname = this.scanner.next();
 
@@ -27,7 +106,7 @@ public class FunctionService {
     /**
      * Initialisiert die Login-Sitzung und ermöglicht dem Benutzer, sich entweder anzumelden oder zu registrieren.
      */
-    public void initializeUser() {
+    private void initializeUser() {
         System.out.println("Willkommen im Game Store!"
                 + "\nBitte melden Sie sich an, um fortzufahren."
                 + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung)");
