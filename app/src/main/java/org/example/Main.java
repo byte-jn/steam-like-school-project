@@ -1,7 +1,3 @@
-package org.example;
-
-import org.example.FunctionService;
-
 public class Main {
     public static void main(String[] args) {
         FunctionService session = new FunctionService();

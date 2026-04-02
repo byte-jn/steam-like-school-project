@@ -1,13 +1,8 @@
-package org.example;
-
-import org.example.DLC;
-import org.example.Games;
-import org.example.User;
 import java.util.*;
 
 public class FunctionService {
     private final Scanner scanner;
-    private org.example.User user;
+    private User user;
     private ArrayList<Games> games;
     private ArrayList<DLC> dlcs;
     private final ArrayList<String> choices;
