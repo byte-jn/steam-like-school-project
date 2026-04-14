@@ -1,33 +1,33 @@
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Scanner;
+import java.util.UUID;
 
+/**
+ * Steuert den gesamten Konsolenablauf der Anwendung inklusive Menüs, Login und Benutzeraktionen.
+ *
+ * @author Jannis Lauer (jannis280@outlook.de)
+ */
 public class FunctionService {
     private final Scanner scanner;
+    private final CsvDataService csvDataService;
     private User activeUser;
-    private ArrayList<User> users;
-    private ArrayList<Games> games;
-    private ArrayList<DLC> dlcs;
+    private final ArrayList<User> users;
+    private final ArrayList<Games> games;
+    private final ArrayList<DLC> dlcs;
     private final ArrayList<String> choices;
 
-    private static final String CSV_SEPARATOR = ";";
-    private static final String LIST_SEPARATOR = "\\|";
-    private static final Path DATA_DIR = Paths.get("data", "csv");
-    private static final String USERS_HEADER = "username;email;password;ownedGamesIds;ownedDLCsIds";
-    private static final String GAMES_HEADER = "id;titel;description;price;releaseDate";
-    private static final String DLCS_HEADER = "id;dlcName;gameTitle;description;price;releaseDate";
-
+    /**
+     * Initialisiert Eingabe, Datenservice und In-Memory-Listen.
+     */
     public FunctionService() {
         this.scanner = new Scanner(System.in);
-        users = new ArrayList<User>();
-        games = new ArrayList<Games>();
-        dlcs = new ArrayList<DLC>();
-        choices = new ArrayList<String>();
+        this.csvDataService = new CsvDataService();
+        users = new ArrayList<>();
+        games = new ArrayList<>();
+        dlcs = new ArrayList<>();
+        choices = new ArrayList<>();
 
         //add choices for user interaction
         choices.add("exit/verlassen (e ), ");
@@ -92,295 +92,27 @@ public class FunctionService {
         }
     }
 
+    /**
+     * Lädt Benutzer-, Spiele- und DLC-Daten aus dem CSV-Service.
+     *
+     * @return {@code true}, wenn das Laden erfolgreich war
+     */
     private boolean loadData() {
-        Path usersFile = DATA_DIR.resolve("users.csv");
-        Path gamesFile = DATA_DIR.resolve("games.csv");
-        Path dlcsFile = DATA_DIR.resolve("dlcs.csv");
-
-        try {
-            Files.createDirectories(DATA_DIR);
-            ensureFileWithHeader(usersFile, USERS_HEADER);
-            ensureFileWithHeader(gamesFile, GAMES_HEADER);
-            ensureFileWithHeader(dlcsFile, DLCS_HEADER);
-
-            users.clear();
-            games.clear();
-            dlcs.clear();
-
-            loadUsersFromCsv(usersFile);
-            loadGamesFromCsv(gamesFile);
-            loadDlcsFromCsv(dlcsFile);
-
-            System.out.println("Loaded users: " + users.size());
-            System.out.println("Loaded games: " + games.size());
-            System.out.println("Loaded DLCs: " + dlcs.size());
-            return true;
-        } catch (IOException ex) {
-            System.out.println("Fehler beim Laden der CSV-Daten: " + ex.getMessage());
-            return false;
-        }
+        return csvDataService.loadAll(users, games, dlcs);
     }
 
+    /**
+     * Speichert Benutzer-, Spiele- und DLC-Daten in CSV-Dateien.
+     *
+     * @return {@code true}, wenn das Speichern erfolgreich war
+     */
     private boolean saveData() {
-        Path usersFile = DATA_DIR.resolve("users.csv");
-        Path gamesFile = DATA_DIR.resolve("games.csv");
-        Path dlcsFile = DATA_DIR.resolve("dlcs.csv");
-
-        try {
-            Files.createDirectories(DATA_DIR);
-            writeUsersToCsv(usersFile);
-            writeGamesToCsv(gamesFile);
-            writeDlcsToCsv(dlcsFile);
-            return true;
-        } catch (IOException ex) {
-            System.out.println("Fehler beim Speichern der CSV-Daten: " + ex.getMessage());
-            return false;
-        }
+        return csvDataService.saveAll(users, games, dlcs);
     }
 
-    private void writeUsersToCsv(Path usersFile) throws IOException {
-        List<String> lines = new ArrayList<>();
-        lines.add(USERS_HEADER);
-
-        for (User currentUser : users) {
-            String gamesList = String.join("|", currentUser.getOwnedGamesIds());
-            String dlcsList = String.join("|", currentUser.getOwnedDLCsIds());
-            lines.add(
-                    sanitizeCsvValue(currentUser.getUsername()) + CSV_SEPARATOR
-                            + sanitizeCsvValue(currentUser.getEmail()) + CSV_SEPARATOR
-                            + sanitizeCsvValue(currentUser.getPassword()) + CSV_SEPARATOR
-                            + sanitizeCsvValue(gamesList) + CSV_SEPARATOR
-                            + sanitizeCsvValue(dlcsList)
-            );
-        }
-
-        Files.write(usersFile, lines, StandardCharsets.UTF_8);
-    }
-
-    private void writeGamesToCsv(Path gamesFile) throws IOException {
-        List<String> lines = new ArrayList<>();
-        lines.add(GAMES_HEADER);
-
-        for (Games game : games) {
-            String releaseDate = game.getReleaseDate() == null ? "" : String.valueOf(game.getReleaseDate().getTime());
-            lines.add(
-                    sanitizeCsvValue(game.getId()) + CSV_SEPARATOR
-                            + sanitizeCsvValue(game.getTitel()) + CSV_SEPARATOR
-                            + sanitizeCsvValue(game.getDescription()) + CSV_SEPARATOR
-                            + game.getPrice() + CSV_SEPARATOR
-                            + releaseDate
-            );
-        }
-
-        Files.write(gamesFile, lines, StandardCharsets.UTF_8);
-    }
-
-    private void writeDlcsToCsv(Path dlcsFile) throws IOException {
-        List<String> lines = new ArrayList<>();
-        lines.add(DLCS_HEADER);
-
-        for (DLC dlc : dlcs) {
-            String releaseDate = dlc.getReleaseDate() == null ? "" : String.valueOf(dlc.getReleaseDate().getTime());
-            lines.add(
-                    sanitizeCsvValue(dlc.getId()) + CSV_SEPARATOR
-                            + sanitizeCsvValue(dlc.getDlcName()) + CSV_SEPARATOR
-                            + sanitizeCsvValue(dlc.getGameTitle()) + CSV_SEPARATOR
-                            + sanitizeCsvValue(dlc.getDescription()) + CSV_SEPARATOR
-                            + dlc.getPrice() + CSV_SEPARATOR
-                            + releaseDate
-            );
-        }
-
-        Files.write(dlcsFile, lines, StandardCharsets.UTF_8);
-    }
-
-    private String sanitizeCsvValue(String value) {
-        if (value == null) {
-            return "";
-        }
-        return value
-                .replace(CSV_SEPARATOR, ",")
-                .replace("\r", " ")
-                .replace("\n", " ");
-    }
-
-    private void ensureFileWithHeader(Path file, String header) throws IOException {
-        if (Files.notExists(file)) {
-            Files.write(file, Collections.singletonList(header), StandardCharsets.UTF_8);
-            return;
-        }
-
-        if (Files.size(file) == 0L) {
-            Files.write(file, Collections.singletonList(header), StandardCharsets.UTF_8);
-        }
-    }
-
-    private void loadUsersFromCsv(Path usersFile) throws IOException {
-        List<String> lines = Files.readAllLines(usersFile, StandardCharsets.UTF_8);
-        for (int i = 1; i < lines.size(); i++) {
-            String line = lines.get(i).trim();
-            if (line.isEmpty()) {
-                continue;
-            }
-
-            String[] values = line.split(CSV_SEPARATOR, -1);
-            if (values.length < 5) {
-                System.out.println("users.csv Zeile " + (i + 1) + " uebersprungen: zu wenige Spalten.");
-                continue;
-            }
-
-            String username = values[0].trim();
-            if (username.isEmpty()) {
-                System.out.println("users.csv Zeile " + (i + 1) + " uebersprungen: username fehlt.");
-                continue;
-            }
-
-            User loadedUser = new User(username);
-            loadedUser.setEmail(values[1].trim());
-            loadedUser.setPassword(values[2].trim());
-            loadedUser.setOwnedGamesIds(parseIdList(values[3]));
-            loadedUser.setOwnedDLCsIds(parseIdList(values[4]));
-            users.add(loadedUser);
-        }
-    }
-
-    private void loadGamesFromCsv(Path gamesFile) throws IOException {
-        List<String> lines = Files.readAllLines(gamesFile, StandardCharsets.UTF_8);
-        for (int i = 1; i < lines.size(); i++) {
-            String line = lines.get(i).trim();
-            if (line.isEmpty()) {
-                continue;
-            }
-
-            String[] values = line.split(CSV_SEPARATOR, -1);
-            if (values.length < 5) {
-                System.out.println("games.csv Zeile " + (i + 1) + " uebersprungen: zu wenige Spalten.");
-                continue;
-            }
-
-            String id = values[0].trim();
-            if (id.isEmpty()) {
-                System.out.println("games.csv Zeile " + (i + 1) + " uebersprungen: id fehlt.");
-                continue;
-            }
-
-            Games loadedGame = new Games(id);
-            loadedGame.setTitel(values[1].trim());
-            loadedGame.setDescription(values[2].trim());
-
-            Double price = parseDouble(values[3].trim());
-            if (price == null) {
-                System.out.println("games.csv Zeile " + (i + 1) + " uebersprungen: ungueltiger Preis.");
-                continue;
-            }
-            loadedGame.setPrice(price);
-
-            Date releaseDate = parseDate(values[4].trim());
-            if (releaseDate != null) {
-                loadedGame.setReleaseDate(releaseDate);
-            }
-
-            games.add(loadedGame);
-        }
-    }
-
-    private void loadDlcsFromCsv(Path dlcsFile) throws IOException {
-        List<String> lines = Files.readAllLines(dlcsFile, StandardCharsets.UTF_8);
-        for (int i = 1; i < lines.size(); i++) {
-            String line = lines.get(i).trim();
-            if (line.isEmpty()) {
-                continue;
-            }
-
-            String[] values = line.split(CSV_SEPARATOR, -1);
-            if (values.length < 6) {
-                System.out.println("dlcs.csv Zeile " + (i + 1) + " uebersprungen: zu wenige Spalten.");
-                continue;
-            }
-
-            String id = values[0].trim();
-            if (id.isEmpty()) {
-                System.out.println("dlcs.csv Zeile " + (i + 1) + " uebersprungen: id fehlt.");
-                continue;
-            }
-
-            DLC loadedDlc = new DLC(id);
-            loadedDlc.setDlcName(values[1].trim());
-            loadedDlc.setGameTitle(values[2].trim());
-            loadedDlc.setDescription(values[3].trim());
-
-            Double price = parseDouble(values[4].trim());
-            if (price == null) {
-                System.out.println("dlcs.csv Zeile " + (i + 1) + " uebersprungen: ungueltiger Preis.");
-                continue;
-            }
-            loadedDlc.setPrice(price);
-
-            Date releaseDate = parseDate(values[5].trim());
-            if (releaseDate != null) {
-                loadedDlc.setReleaseDate(releaseDate);
-            }
-
-            dlcs.add(loadedDlc);
-        }
-    }
-
-    private ArrayList<String> parseIdList(String rawValue) {
-        ArrayList<String> ids = new ArrayList<>();
-        String trimmed = rawValue == null ? "" : rawValue.trim();
-        if (trimmed.isEmpty()) {
-            return ids;
-        }
-
-        String[] splitValues = trimmed.split(LIST_SEPARATOR);
-        for (String value : splitValues) {
-            String id = value.trim();
-            if (!id.isEmpty()) {
-                ids.add(id);
-            }
-        }
-        return ids;
-    }
-
-    private Double parseDouble(String value) {
-        if (value == null || value.trim().isEmpty()) {
-            return null;
-        }
-        try {
-            return Double.parseDouble(value.replace(',', '.'));
-        } catch (NumberFormatException ex) {
-            return null;
-        }
-    }
-
-    private Date parseDate(String value) {
-        if (value == null || value.trim().isEmpty()) {
-            return null;
-        }
-
-        String normalized = value.trim();
-
-        try {
-            long timestamp = Long.parseLong(normalized);
-            return new Date(timestamp);
-        } catch (NumberFormatException ignored) {
-            // not a timestamp
-        }
-
-        String[] patterns = {"yyyy-MM-dd", "dd.MM.yyyy"};
-        for (String pattern : patterns) {
-            SimpleDateFormat formatter = new SimpleDateFormat(pattern);
-            formatter.setLenient(false);
-            try {
-                return formatter.parse(normalized);
-            } catch (ParseException ignored) {
-                // try next format
-            }
-        }
-
-        return null;
-    }
-
+    /**
+     * Zeigt das Benutzerverwaltungsmenü an.
+     */
     private void userAdministration() {
         while (true) {
             System.out.println("Die Optionen sind:"
@@ -415,7 +147,9 @@ public class FunctionService {
     }
 
     /**
-     * Erstellt einen neuen Benutzer, indem Vorname und Nachname abgefragt werden.
+     * Erstellt einen neuen Benutzer anhand der Eingabe des Benutzernamens.
+     *
+     * @return neu erstellter Benutzer
      */
     private User createUser() {
         System.out.println("Bitte Ihren Benutzernamen eingeben");
@@ -428,28 +162,35 @@ public class FunctionService {
      * Initialisiert die Login-Sitzung und ermöglicht dem Benutzer, sich entweder anzumelden oder zu registrieren.
      */
     private void initializeUser() {
-        System.out.println("Willkommen im Game Store!"
-                + "\nBitte melden Sie sich an, um fortzufahren."
-                + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung)");
-        String choice = this.scanner.next();
-        if (choice.equalsIgnoreCase("l")) {
-            activeUser = loginUser();
-        } else if (choice.equalsIgnoreCase("r")) {
-            activeUser = createUser();
-            users.add(activeUser);
-            if (!saveData()) {
-                System.out.println("Hinweis: Neuer Benutzer konnte nicht gespeichert werden.");
+        while (activeUser == null) {
+            System.out.println("Willkommen im Game Store!"
+                    + "\nBitte melden Sie sich an, um fortzufahren."
+                    + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung)");
+
+            String choice = this.scanner.next();
+            if (choice.equalsIgnoreCase("l")) {
+                activeUser = loginUser();
+            } else if (choice.equalsIgnoreCase("r")) {
+                activeUser = createUser();
+                users.add(activeUser);
+                if (!saveData()) {
+                    System.out.println("Hinweis: Neuer Benutzer konnte nicht gespeichert werden.");
+                }
+            } else {
+                System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
             }
-        } else {
-            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
-            initializeUser();
-        }
-        if (activeUser == null) {
-            System.out.println("Ungültiger User. Bitte versuchen Sie es erneut.");
-            initializeUser();
+
+            if (activeUser == null) {
+                System.out.println("Ungültiger User. Bitte versuchen Sie es erneut.");
+            }
         }
     }
 
+    /**
+     * Führt den Login über den Benutzernamen durch.
+     *
+     * @return eingeloggter Benutzer oder {@code null}
+     */
     public User loginUser() {
         if (users.isEmpty()) {
             System.out.println("Es sind noch keine Benutzer registriert. Bitte registrieren Sie sich zuerst.");
@@ -459,7 +200,7 @@ public class FunctionService {
         System.out.println("Bitte Benutzernamen für den Login eingeben:");
         String username = this.scanner.next();
 
-        User foundUser = findUserByUsername(username);
+        User foundUser = LookupService.findUserByUsername(users, username);
         if (foundUser == null) {
             System.out.println("Benutzer nicht gefunden.");
             return null;
@@ -469,6 +210,9 @@ public class FunctionService {
         return foundUser;
     }
 
+    /**
+     * Zeigt das Spielmenü an und ermöglicht Erstellen, Hinzufügen und Auflisten.
+     */
     public void initializeGames() {
         while (true) {
             System.out.println("Willkommen im Game Store!"
@@ -498,6 +242,9 @@ public class FunctionService {
         }
     }
 
+    /**
+     * Fügt ein vorhandenes Spiel per ID zur Bibliothek des aktiven Benutzers hinzu.
+     */
     private void addGames() {
         if (activeUser == null) {
             System.out.println("Sie sind nicht eingeloggt.");
@@ -517,7 +264,7 @@ public class FunctionService {
         System.out.println("Bitte geben Sie die ID des Spiels ein, das Sie hinzufügen möchten:");
         String gameId = this.scanner.next();
 
-        Games selectedGame = findGameById(gameId);
+        Games selectedGame = LookupService.findGameById(games, gameId);
         if (selectedGame == null) {
             System.out.println("Spiel mit dieser ID wurde nicht gefunden.");
             return;
@@ -537,6 +284,11 @@ public class FunctionService {
         System.out.println("Spiel erfolgreich hinzugefügt: " + selectedGame.getTitel());
     }
 
+    /**
+     * Erstellt ein neues Spiel über Konsoleneingaben.
+     *
+     * @return neu erstelltes Spiel
+     */
     public Games createGames() {
         Games games = new Games(UUID.randomUUID().toString());
 
@@ -567,6 +319,9 @@ public class FunctionService {
         return games;
     }
 
+    /**
+     * Zeigt das DLC-Menü an und ermöglicht Erstellen, Hinzufügen und Auflisten.
+     */
     public void initializeDLC() {
         while (true) {
             System.out.println("Willkommen im DLC-Store!"
@@ -596,6 +351,9 @@ public class FunctionService {
         }
     }
 
+    /**
+     * Fügt ein vorhandenes DLC per ID zur Bibliothek des aktiven Benutzers hinzu.
+     */
     private void addDLC() {
         if (activeUser == null) {
             System.out.println("Sie sind nicht eingeloggt.");
@@ -615,7 +373,7 @@ public class FunctionService {
         System.out.println("Bitte geben Sie die ID des DLCs ein, den Sie hinzufügen möchten:");
         String dlcId = this.scanner.next();
 
-        DLC selectedDlc = findDlcById(dlcId);
+        DLC selectedDlc = LookupService.findDlcById(dlcs, dlcId);
         if (selectedDlc == null) {
             System.out.println("DLC mit dieser ID wurde nicht gefunden.");
             return;
@@ -626,7 +384,7 @@ public class FunctionService {
             return;
         }
 
-        Games baseGame = findGameByTitle(selectedDlc.getGameTitle());
+        Games baseGame = LookupService.findGameByTitle(games, selectedDlc.getGameTitle());
         if (baseGame != null && !activeUser.getOwnedGamesIds().contains(baseGame.getId())) {
             System.out.println("Sie müssen zuerst das Hauptspiel besitzen: " + baseGame.getTitel());
             return;
@@ -641,58 +399,11 @@ public class FunctionService {
         System.out.println("DLC erfolgreich hinzugefügt: " + selectedDlc.getDlcName());
     }
 
-    private User findUserByUsername(String username) {
-        if (username == null) {
-            return null;
-        }
-
-        for (User currentUser : users) {
-            if (currentUser.getUsername() != null && currentUser.getUsername().equalsIgnoreCase(username.trim())) {
-                return currentUser;
-            }
-        }
-        return null;
-    }
-
-    private Games findGameById(String gameId) {
-        if (gameId == null) {
-            return null;
-        }
-
-        for (Games game : games) {
-            if (game.getId().equals(gameId.trim())) {
-                return game;
-            }
-        }
-        return null;
-    }
-
-    private Games findGameByTitle(String title) {
-        if (title == null) {
-            return null;
-        }
-
-        for (Games game : games) {
-            if (game.getTitel() != null && game.getTitel().equalsIgnoreCase(title.trim())) {
-                return game;
-            }
-        }
-        return null;
-    }
-
-    private DLC findDlcById(String dlcId) {
-        if (dlcId == null) {
-            return null;
-        }
-
-        for (DLC dlc : dlcs) {
-            if (dlc.getId().equals(dlcId.trim())) {
-                return dlc;
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Erstellt ein neues DLC über Konsoleneingaben.
+     *
+     * @return neu erstelltes DLC
+     */
     public DLC createDLC() {
         DLC dlc = new DLC(UUID.randomUUID().toString());
 
