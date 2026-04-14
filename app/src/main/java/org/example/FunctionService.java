@@ -9,7 +9,7 @@ import java.util.*;
 
 public class FunctionService {
     private final Scanner scanner;
-    private User user;
+    private User activeUser;
     private ArrayList<User> users;
     private ArrayList<Games> games;
     private ArrayList<DLC> dlcs;
@@ -54,7 +54,7 @@ public class FunctionService {
                 + "\nBitte melden Sie sich an, um fortzufahren."
         );
         while (true) {
-            if (user == null) {
+            if (activeUser == null) {
                 initializeUser();
             }
             // Angabe der Auswahlmöglichkeiten für den Benutzer
@@ -75,7 +75,7 @@ public class FunctionService {
                         System.out.println("Hinweis: Daten konnten beim Abmelden nicht gespeichert werden.");
                     }
                     System.out.println("Sie wurden erfolgreich abgemeldet.");
-                    user = null; // Setzt den Benutzer auf null, um die Anmeldung zurückzusetzen
+                    activeUser = null; // Setzt den Benutzer auf null, um die Anmeldung zurückzusetzen
                     break;
                 case "s":
                     initializeGames();
@@ -433,10 +433,10 @@ public class FunctionService {
                 + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung)");
         String choice = this.scanner.next();
         if (choice.equalsIgnoreCase("l")) {
-            user = searchUser();
+            activeUser = loginUser();
         } else if (choice.equalsIgnoreCase("r")) {
-            user = createUser();
-            users.add(user);
+            activeUser = createUser();
+            users.add(activeUser);
             if (!saveData()) {
                 System.out.println("Hinweis: Neuer Benutzer konnte nicht gespeichert werden.");
             }
@@ -444,43 +444,97 @@ public class FunctionService {
             System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
             initializeUser();
         }
-        if (user == null) {
+        if (activeUser == null) {
             System.out.println("Ungültiger User. Bitte versuchen Sie es erneut.");
             initializeUser();
         }
     }
 
-    public User searchUser() {
-        // TODO: Implementieren Sie die Logik, um einen Benutzer zu suchen und sich anzumelden.
-        System.out.println("Die Login-Funktionalität ist noch nicht implementiert. Bitte registrieren Sie sich zuerst.");
-        return null;
+    public User loginUser() {
+        if (users.isEmpty()) {
+            System.out.println("Es sind noch keine Benutzer registriert. Bitte registrieren Sie sich zuerst.");
+            return null;
+        }
+
+        System.out.println("Bitte Benutzernamen für den Login eingeben:");
+        String username = this.scanner.next();
+
+        User foundUser = findUserByUsername(username);
+        if (foundUser == null) {
+            System.out.println("Benutzer nicht gefunden.");
+            return null;
+        }
+
+        System.out.println("Login erfolgreich. Willkommen, " + foundUser.getUsername() + "!");
+        return foundUser;
     }
 
     public void initializeGames() {
-        System.out.println("Willkommen im Game Store!"
-                + "\nBitte wählen Sie: Game hinzufügen oder suchen (h für Hinzufügen, s für Suchen, l für auflisten)");
-        String choice = this.scanner.next();
-        if (choice.equalsIgnoreCase("s")) {
-            // TODO: Implementieren Sie die Logik, um ein Spiel zu suchen und anzuzeigen.
-            initializeGames();
-        } else if (choice.equalsIgnoreCase("h")) {
-            games.add(createGames());
-            if (!saveData()) {
-                System.out.println("Hinweis: Spiel konnte nicht gespeichert werden.");
-            }
-        } else if (choice.equalsIgnoreCase("l")) {
-            if (games.isEmpty()) {
-                System.out.println("Keine Spiele verfügbar.");
-            } else {
-                System.out.println("Verfügbare Spiele:");
-                for (Games game : games) {
-                    System.out.println("- " + game.getTitel() + " (ID: " + game.getId() + ")");
+        while (true) {
+            System.out.println("Willkommen im Game Store!"
+                    + "\nBitte wählen Sie: Game hinzufügen oder suchen (c für Erstellen, a für hinzufügen, l für auflisten, e für exit)");
+            String choice = this.scanner.next();
+            if (choice.equalsIgnoreCase("a")) {
+                addGames();
+            } else if (choice.equalsIgnoreCase("c")) {
+                games.add(createGames());
+                if (!saveData()) {
+                    System.out.println("Hinweis: Spiel konnte nicht gespeichert werden.");
                 }
+            } else if (choice.equalsIgnoreCase("l")) {
+                if (games.isEmpty()) {
+                    System.out.println("Keine Spiele verfügbar.");
+                } else {
+                    System.out.println("Verfügbare Spiele:");
+                    for (Games game : games) {
+                        System.out.println("- " + game.getTitel() + " (ID: " + game.getId() + ")");
+                    }
+                }
+            } else if (choice.equalsIgnoreCase("e")) {
+                return; // Zurück zum Hauptmenü
+            } else {
+                System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
             }
-        } else {
-            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
-            initializeGames();
         }
+    }
+
+    private void addGames() {
+        if (activeUser == null) {
+            System.out.println("Sie sind nicht eingeloggt.");
+            return;
+        }
+
+        if (games.isEmpty()) {
+            System.out.println("Keine Spiele verfügbar, die hinzugefügt werden können.");
+            return;
+        }
+
+        System.out.println("Verfügbare Spiele:");
+        for (Games game : games) {
+            System.out.println("- " + game.getTitel() + " (ID: " + game.getId() + ")");
+        }
+
+        System.out.println("Bitte geben Sie die ID des Spiels ein, das Sie hinzufügen möchten:");
+        String gameId = this.scanner.next();
+
+        Games selectedGame = findGameById(gameId);
+        if (selectedGame == null) {
+            System.out.println("Spiel mit dieser ID wurde nicht gefunden.");
+            return;
+        }
+
+        if (activeUser.getOwnedGamesIds().contains(selectedGame.getId())) {
+            System.out.println("Dieses Spiel ist bereits in Ihrer Bibliothek.");
+            return;
+        }
+
+        activeUser.addOwnedGames(selectedGame.getId());
+        if (!saveData()) {
+            System.out.println("Hinweis: Spiel wurde hinzugefügt, konnte aber nicht gespeichert werden.");
+            return;
+        }
+
+        System.out.println("Spiel erfolgreich hinzugefügt: " + selectedGame.getTitel());
     }
 
     public Games createGames() {
@@ -514,30 +568,129 @@ public class FunctionService {
     }
 
     public void initializeDLC() {
-        System.out.println("Willkommen im DLC-Store!"
-                + "\nBitte wählen Sie: DLC hinzufügen oder suchen (h für Hinzufügen, s für Suchen, l für auflisten)");
-        String choice = this.scanner.next();
-        if (choice.equalsIgnoreCase("s")) {
-            // TODO: Implementieren Sie die Logik, um einen DLC zu suchen und anzuzeigen.
-            initializeDLC();
-        } else if (choice.equalsIgnoreCase("h")) {
-            dlcs.add(createDLC());
-            if (!saveData()) {
-                System.out.println("Hinweis: DLC konnte nicht gespeichert werden.");
-            }
-        } else if (choice.equalsIgnoreCase("l")) {
-            if (dlcs.isEmpty()) {
-                System.out.println("Keine DLCs verfügbar.");
-            } else {
-                System.out.println("Verfügbare DLCs:");
-                for (DLC dlc : dlcs) {
-                    System.out.println("- " + dlc.getDlcName() + " (ID: " + dlc.getId() + ")");
+        while (true) {
+            System.out.println("Willkommen im DLC-Store!"
+                    + "\nBitte wählen Sie: DLC hinzufügen oder suchen (c für erstellen, a für hinzufügen, l für auflisten, e für verlassen)");
+            String choice = this.scanner.next();
+            if (choice.equalsIgnoreCase("a")) {
+                addDLC();
+            } else if (choice.equalsIgnoreCase("c")) {
+                dlcs.add(createDLC());
+                if (!saveData()) {
+                    System.out.println("Hinweis: DLC konnte nicht gespeichert werden.");
                 }
+            } else if (choice.equalsIgnoreCase("l")) {
+                if (dlcs.isEmpty()) {
+                    System.out.println("Keine DLCs verfügbar.");
+                } else {
+                    System.out.println("Verfügbare DLCs:");
+                    for (DLC dlc : dlcs) {
+                        System.out.println("- " + dlc.getDlcName() + " (ID: " + dlc.getId() + ")");
+                    }
+                }
+            } else if (choice.equalsIgnoreCase("e")) {
+                return; // Zurück zum Hauptmenü
+            } else {
+                System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
             }
-        } else {
-            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
-            initializeDLC();
         }
+    }
+
+    private void addDLC() {
+        if (activeUser == null) {
+            System.out.println("Sie sind nicht eingeloggt.");
+            return;
+        }
+
+        if (dlcs.isEmpty()) {
+            System.out.println("Keine DLCs verfügbar, die hinzugefügt werden können.");
+            return;
+        }
+
+        System.out.println("Verfügbare DLCs:");
+        for (DLC dlc : dlcs) {
+            System.out.println("- " + dlc.getDlcName() + " (ID: " + dlc.getId() + ", Spiel: " + dlc.getGameTitle() + ")");
+        }
+
+        System.out.println("Bitte geben Sie die ID des DLCs ein, den Sie hinzufügen möchten:");
+        String dlcId = this.scanner.next();
+
+        DLC selectedDlc = findDlcById(dlcId);
+        if (selectedDlc == null) {
+            System.out.println("DLC mit dieser ID wurde nicht gefunden.");
+            return;
+        }
+
+        if (activeUser.getOwnedDLCsIds().contains(selectedDlc.getId())) {
+            System.out.println("Dieses DLC ist bereits in Ihrer Bibliothek.");
+            return;
+        }
+
+        Games baseGame = findGameByTitle(selectedDlc.getGameTitle());
+        if (baseGame != null && !activeUser.getOwnedGamesIds().contains(baseGame.getId())) {
+            System.out.println("Sie müssen zuerst das Hauptspiel besitzen: " + baseGame.getTitel());
+            return;
+        }
+
+        activeUser.addOwnedDLCs(selectedDlc.getId());
+        if (!saveData()) {
+            System.out.println("Hinweis: DLC wurde hinzugefügt, konnte aber nicht gespeichert werden.");
+            return;
+        }
+
+        System.out.println("DLC erfolgreich hinzugefügt: " + selectedDlc.getDlcName());
+    }
+
+    private User findUserByUsername(String username) {
+        if (username == null) {
+            return null;
+        }
+
+        for (User currentUser : users) {
+            if (currentUser.getUsername() != null && currentUser.getUsername().equalsIgnoreCase(username.trim())) {
+                return currentUser;
+            }
+        }
+        return null;
+    }
+
+    private Games findGameById(String gameId) {
+        if (gameId == null) {
+            return null;
+        }
+
+        for (Games game : games) {
+            if (game.getId().equals(gameId.trim())) {
+                return game;
+            }
+        }
+        return null;
+    }
+
+    private Games findGameByTitle(String title) {
+        if (title == null) {
+            return null;
+        }
+
+        for (Games game : games) {
+            if (game.getTitel() != null && game.getTitel().equalsIgnoreCase(title.trim())) {
+                return game;
+            }
+        }
+        return null;
+    }
+
+    private DLC findDlcById(String dlcId) {
+        if (dlcId == null) {
+            return null;
+        }
+
+        for (DLC dlc : dlcs) {
+            if (dlc.getId().equals(dlcId.trim())) {
+                return dlc;
+            }
+        }
+        return null;
     }
 
     public DLC createDLC() {
