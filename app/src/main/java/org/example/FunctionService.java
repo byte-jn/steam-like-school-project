@@ -114,7 +114,8 @@ public class FunctionService {
             user = searchUser();
         } else if (choice.equalsIgnoreCase("r")) {
             user = createUser();
-        } else {
+        }
+        if (user == null) {
             System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
             initializeUser();
         }
@@ -128,13 +129,22 @@ public class FunctionService {
 
     public void initializeGames() {
         System.out.println("Willkommen im Game Store!"
-                + "\nBitte wählen Sie: Game hinzufügen oder suchen (h für Hinzufügen, s für Suchen)");
+                + "\nBitte wählen Sie: Game hinzufügen oder suchen (h für Hinzufügen, s für Suchen, l für auflisten)");
         String choice = this.scanner.next();
         if (choice.equalsIgnoreCase("s")) {
             // TODO: Implementieren Sie die Logik, um ein Spiel zu suchen und anzuzeigen.
             initializeGames();
         } else if (choice.equalsIgnoreCase("h")) {
             games.add(createGames());
+        } else if (choice.equalsIgnoreCase("l")) {
+            if (games.isEmpty()) {
+                System.out.println("Keine Spiele verfügbar.");
+            } else {
+                System.out.println("Verfügbare Spiele:");
+                for (Games game : games) {
+                    System.out.println("- " + game.getTitel() + " (ID: " + game.getId() + ")");
+                }
+            }
         } else {
             System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
             initializeGames();
@@ -150,7 +160,7 @@ public class FunctionService {
         System.out.println("Bitte geben Sie die Beschreibung des Spiels ein");
         games.setDescription(this.scanner.next());
 
-        System.out.println("Bitte geben Sie den Preis des Spiels ein (z. B. 59.99)");
+        System.out.println("Bitte geben Sie den Preis des Spiels ein (z. B. 59,99)");
         games.setPrice(this.scanner.nextDouble());
 
         System.out.println("Bitte geben Sie das Erscheinungsjahr des Spiels ein (z. B. 2024)");
@@ -173,13 +183,22 @@ public class FunctionService {
 
     public void initializeDLC() {
         System.out.println("Willkommen im DLC-Store!"
-                + "\nBitte wählen Sie: DLC hinzufügen oder suchen (h für Hinzufügen, s für Suchen)");
+                + "\nBitte wählen Sie: DLC hinzufügen oder suchen (h für Hinzufügen, s für Suchen, l für auflisten)");
         String choice = this.scanner.next();
         if (choice.equalsIgnoreCase("s")) {
             // TODO: Implementieren Sie die Logik, um einen DLC zu suchen und anzuzeigen.
             initializeDLC();
         } else if (choice.equalsIgnoreCase("h")) {
             dlcs.add(createDLC());
+        } else if (choice.equalsIgnoreCase("l")) {
+            if (dlcs.isEmpty()) {
+                System.out.println("Keine DLCs verfügbar.");
+            } else {
+                System.out.println("Verfügbare DLCs:");
+                for (DLC dlc : dlcs) {
+                    System.out.println("- " + dlc.getDlcName() + " (ID: " + dlc.getId() + ")");
+                }
+            }
         } else {
             System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
             initializeDLC();
