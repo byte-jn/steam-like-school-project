@@ -21,7 +21,18 @@ public class FunctionService {
         choices.add("benutzerverwaltung (u) ");
     }
 
-    public void loop() {
+    /**
+     * Lädt die Daten und startet die Hauptschleife des Programms, in der der Benutzer verschiedene Aktionen ausführen kann.
+     * @return 1, wenn das Laden der Daten fehlschlägt, 0, wenn das Programm erfolgreich gestartet wird.
+     */
+    public int loop() {
+        System.out.println("loading data...");
+        boolean loadedStatus = loadData();
+        if (!loadedStatus) {
+            System.out.println("loading failed");
+            return 1;
+        }
+        System.out.println("loading successful");
         System.out.println("Willkommen im Game Store!"
                 + "\nHier können Sie Spiele und DLCs kaufen, Ihre Spielzeit verwalten und vieles mehr."
                 + "\nBitte melden Sie sich an, um fortzufahren."
@@ -39,7 +50,7 @@ public class FunctionService {
             switch (choice.toLowerCase()) {
                 case "e":
                     System.out.println("Vielen Dank für Ihren Besuch im Game Store. Auf Wiedersehen!");
-                    return; // Beendet die Schleife und damit das Programm
+                    return 0; // Beendet die Schleife und damit das Programm
                 case "l":
                     System.out.println("Sie wurden erfolgreich abgemeldet.");
                     user = null; // Setzt den Benutzer auf null, um die Anmeldung zurückzusetzen
@@ -57,6 +68,10 @@ public class FunctionService {
                     System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
             }
         }
+    }
+
+    private boolean loadData() {
+        return true; // TODO: Implementieren Sie die Logik zum Laden der Daten aus einer Datei oder Datenbank.
     }
 
     private void userAdministration() {
@@ -114,9 +129,12 @@ public class FunctionService {
             user = searchUser();
         } else if (choice.equalsIgnoreCase("r")) {
             user = createUser();
+        } else {
+            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
+            initializeUser();
         }
         if (user == null) {
-            System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
+            System.out.println("Ungültiger User. Bitte versuchen Sie es erneut.");
             initializeUser();
         }
     }
