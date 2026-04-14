@@ -1,81 +1,96 @@
-# Video Game and DLC Management Software
+# Steam-Like School Project
 
-An administrative software for managing video games and their DLCs (Downloadable Content).
+Console-based Java school project to manage users, games, and DLCs.
 
-## Description
+## Overview
 
-This project is a Steam-like management software that allows you to organize and manage video games and their associated DLCs. The application was developed as a school project in Java.
+This project provides a small Steam-like management system for educational purposes.
+You can:
 
-## Concept
+- register/login users,
+- create and list games,
+- create and list DLCs,
+- add owned games and DLCs to a user library,
+- persist all data in CSV files.
 
-The concept of this software is to provide a platform for managing video games and their downloadable content (DLCs), similar to Steam, but as a school project implemented in Java. Users can add, organize, and manage their video games and associate DLCs with each game. The goal is to offer a structured and user-friendly solution for efficiently handling a digital game and DLC collection. The software is designed for educational purposes and can be extended with additional features in the future.
+## Current Architecture
 
-## Features
+The project was refactored into focused classes:
 
-- Manage video games
-- Manage DLCs (Downloadable Content)
-- Organize and categorize games
-- Administrative functions for the game library
+- `Main` - entry point (`main` method)
+- `FunctionService` - menu flow and user interaction
+- `CsvDataService` - load/save data from/to CSV
+- `LookupService` - shared lookup helpers (user/game/dlc)
+- `User`, `Games`, `DLC` - domain entities
 
-## Idears 
+## Data Storage (CSV)
 
-- GUI Interface
-- CLI Commands
-- Database Save construction
-- Ability to add the time played
-- ...
+Data is stored in:
+
+- `data/csv/users.csv`
+- `data/csv/games.csv`
+- `data/csv/dlcs.csv`
+
+If the folder/files do not exist, they are created automatically on startup.
+CSV headers are also created automatically.
 
 ## Requirements
 
-- Java Development Kit (JDK) 8 or higher
-- IntelliJ IDEA (recommended) or another Java IDE
+- JDK 8+
+- IntelliJ IDEA (recommended) or any Java IDE
 
-## Installation
+## Run
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/byte-jn/steam-like-school-project
-   ```
+### IntelliJ IDEA
 
-2. Open the project in IntelliJ IDEA or your preferred IDE
+1. Open the project.
+2. Open `app/src/main/java/org/example/Main.java`.
+3. Run `Main`.
 
-3. Make sure the JDK is configured correctly
+### Windows PowerShell
 
-## Running the Application
-
-### With IntelliJ IDEA
-- Open the file `Main.java` in the `src` folder
-- Click the green "Run" button or press `Shift + F10`
-
-### Using the Command Line
-```bash
-cd src
-javac Main.java
+```powershell
+Set-Location "C:\Users\JannisLauer\IdeaProjects\steam-like-school-project\app\src\main\java\org\example"
+javac *.java
 java Main
 ```
 
 ## Project Structure
 
+```text
+steam-like-school-project/
+├─ README.md
+├─ app/
+│  └─ src/
+│     └─ main/
+│        └─ java/
+│           └─ org/
+│              └─ example/
+│                 ├─ Main.java
+│                 ├─ FunctionService.java
+│                 ├─ CsvDataService.java
+│                 ├─ LookupService.java
+│                 ├─ User.java
+│                 ├─ Games.java
+│                 └─ DLC.java
+└─ data/
+   └─ csv/
+      ├─ users.csv
+      ├─ games.csv
+      └─ dlcs.csv
 ```
-steam-like-administrative-software-school-project/
-├── src/
-│   └── Main.java          # Main entry point of the application
-├── .gitignore             # Git ignore configuration
-└── README.md              # This file
-```
 
-## Development
+## Roadmap Ideas
 
-This is a school project and is currently under development. More features will be added over time.
-
-## License
-
-This project was created for educational purposes.
+- GUI version
+- More CLI commands
+- Database backend instead of CSV
+- Playtime tracking
 
 ## Author
 
-School project
+Jannis Lauer - jannis280@outlook.de
 
 ## Status
 
-🚧 In development
+In development.
