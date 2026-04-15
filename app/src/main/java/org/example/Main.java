@@ -1,3 +1,5 @@
+import Service.FunctionService;
+
 /**
  * Einstiegspunkt der Anwendung.
  *

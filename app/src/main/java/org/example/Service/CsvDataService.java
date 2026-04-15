@@ -1,3 +1,9 @@
+package Service;
+
+import Entites.DLC;
+import Entites.Games;
+import Entites.User;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
