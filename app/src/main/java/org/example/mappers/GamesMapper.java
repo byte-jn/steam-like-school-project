@@ -17,7 +17,7 @@ public class GamesMapper {
     public GamesDto toDto(Games game) {
         GamesDto dto = new GamesDto();
         dto.setId(game.getId());
-        dto.setTitel(game.getTitel());
+        dto.setTitel(game.getTitle());
         dto.setDescription(game.getDescription());
         dto.setPrice(game.getPrice());
         dto.setReleaseDate(game.getReleaseDate());
@@ -31,7 +31,7 @@ public class GamesMapper {
      */
     public Games toDomain(GamesDto dto) {
         Games game = new Games(dto.getId());
-        game.setTitel(dto.getTitel());
+        game.setTitle(dto.getTitel());
         game.setDescription(dto.getDescription());
         game.setPrice(dto.getPrice());
         game.setReleaseDate(dto.getReleaseDate());

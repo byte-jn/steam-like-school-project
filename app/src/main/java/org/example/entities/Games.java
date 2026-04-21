@@ -14,8 +14,8 @@ public class Games {
     @Column(name = "id", nullable = false)
     private final String id;
 
-    @Column(name = "titel")
-    private String titel;
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private final Date createdAt;
@@ -71,11 +71,11 @@ public class Games {
         this.price = price;
     }
 
-    public String getTitel() {
-        return titel;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitel(String titel) {
-        this.titel = titel;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
