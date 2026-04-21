@@ -1,6 +1,6 @@
 FROM gradle:8.7-jdk21-alpine AS build
 WORKDIR /src
-COPY . .
+COPY .. .
 RUN gradle clean build -x test
 
 FROM eclipse-temurin:21-jre-alpine

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -32,12 +33,12 @@ public class User {
     @ElementCollection
     @CollectionTable(name = "user_owned_games", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "game_id")
-    private ArrayList<String> ownedGamesIds;
+    private List<String> ownedGamesIds;
 
     @ElementCollection
     @CollectionTable(name = "user_owned_dlcs", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "dlc_id")
-    private ArrayList<String> ownedDLCsIds;
+    private List<String> ownedDLCsIds;
 
     @Column(name = "firstname")
     private String firstname;
@@ -58,11 +59,11 @@ public class User {
         return id;
     }
 
-    public ArrayList<String> getOwnedGamesIds() {
+    public List<String> getOwnedGamesIds() {
         return ownedGamesIds;
     }
 
-    public void setOwnedGamesIds(ArrayList<String> ownedGamesIds) {
+    public void setOwnedGamesIds(List<String> ownedGamesIds) {
         this.ownedGamesIds = ownedGamesIds;
     }
 
@@ -70,11 +71,11 @@ public class User {
         this.ownedGamesIds.add(gameId);
     }
 
-    public ArrayList<String> getOwnedDLCsIds() {
+    public List<String> getOwnedDLCsIds() {
         return ownedDLCsIds;
     }
 
-    public void setOwnedDLCsIds(ArrayList<String> ownedDLCsIds) {
+    public void setOwnedDLCsIds(List<String> ownedDLCsIds) {
         this.ownedDLCsIds = ownedDLCsIds;
     }
 

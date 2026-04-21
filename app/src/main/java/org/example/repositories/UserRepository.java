@@ -21,16 +21,19 @@ public class UserRepository {
     }
 
     public void save(User user) {
+        Session session = sessionFactory.openSession();
         Transaction tx = null;
-        try (Session session = sessionFactory.openSession()) {
+        try {
             tx = session.beginTransaction();
             session.persist(user);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) {
+            if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
             throw e;
+        } finally {
+            session.close();
         }
     }
 
@@ -63,22 +66,26 @@ public class UserRepository {
     }
 
     public void update(User user) {
+        Session session = sessionFactory.openSession();
         Transaction tx = null;
-        try (Session session = sessionFactory.openSession()) {
+        try {
             tx = session.beginTransaction();
             session.merge(user);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) {
+            if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
             throw e;
+        } finally {
+            session.close();
         }
     }
 
     public void delete(Long id) {
+        Session session = sessionFactory.openSession();
         Transaction tx = null;
-        try (Session session = sessionFactory.openSession()) {
+        try {
             tx = session.beginTransaction();
             User user = session.get(User.class, id);
             if (user != null) {
@@ -86,10 +93,12 @@ public class UserRepository {
             }
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) {
+            if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
             throw e;
+        } finally {
+            session.close();
         }
     }
 }
