@@ -64,3 +64,12 @@ replay_pid*
 
 # Ignore Gradle build output directory
 build
+
+# Windows artifacts
+nul
+Thumbs.db
+
+# Environment / local config
+.env
+.env.*
+local.properties
