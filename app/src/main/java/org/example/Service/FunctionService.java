@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * Steuert den gesamten Konsolenablauf der Anwendung inklusive Menüs, Login und Benutzeraktionen.
@@ -16,6 +17,9 @@ import java.util.UUID;
  * @author Jannis Lauer (jannis280@outlook.de)
  */
 public class FunctionService {
+    private static final Pattern NAME_PATTERN =
+            Pattern.compile("^[A-Za-z0-9 \\-!:'.,&]{1,255}$");
+
     private final Scanner scanner;
     private final CsvDataService csvDataService;
     private User activeUser;
@@ -291,6 +295,46 @@ public class FunctionService {
     }
 
     /**
+     * Liest eine Eingabe, die dem gegebenen Muster entspricht; wiederholt die Aufforderung bei Fehleingabe.
+     *
+     * @param prompt   Eingabeaufforderung
+     * @param pattern  Validierungsmuster
+     * @param errorMsg Fehlermeldung bei ungültiger Eingabe
+     * @return gültige Eingabe
+     */
+    private String readValidInput(String prompt, Pattern pattern, String errorMsg) {
+        while (true) {
+            System.out.println(prompt);
+            String input = this.scanner.next();
+            if (pattern.matcher(input).matches()) {
+                return input;
+            }
+            System.out.println(errorMsg);
+        }
+    }
+
+    /**
+     * Liest einen nicht-negativen Preis; wiederholt die Aufforderung bei Fehleingabe.
+     *
+     * @param prompt Eingabeaufforderung
+     * @return nicht-negativer Preis
+     */
+    private double readNonNegativePrice(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            if (this.scanner.hasNextDouble()) {
+                double value = this.scanner.nextDouble();
+                if (value >= 0) {
+                    return value;
+                }
+            } else {
+                this.scanner.next();
+            }
+            System.out.println("Ungültige Eingabe. Bitte geben Sie eine nicht-negative Zahl ein.");
+        }
+    }
+
+    /**
      * Erstellt ein neues Spiel über Konsoleneingaben.
      *
      * @return neu erstelltes Spiel
@@ -298,14 +342,15 @@ public class FunctionService {
     public Games createGames() {
         Games games = new Games(UUID.randomUUID().toString());
 
-        System.out.println("Bitte geben Sie den Titel des Spiels ein");
-        games.setTitel(this.scanner.next());
+        games.setTitel(readValidInput(
+                "Bitte geben Sie den Titel des Spiels ein",
+                NAME_PATTERN,
+                "Ungültiger Titel. Erlaubt: Buchstaben, Zahlen, Leerzeichen, grundlegende Satzzeichen (max. 255)."));
 
         System.out.println("Bitte geben Sie die Beschreibung des Spiels ein");
         games.setDescription(this.scanner.next());
 
-        System.out.println("Bitte geben Sie den Preis des Spiels ein (z. B. 59,99)");
-        games.setPrice(this.scanner.nextDouble());
+        games.setPrice(readNonNegativePrice("Bitte geben Sie den Preis des Spiels ein (z. B. 59.99)"));
 
         System.out.println("Bitte geben Sie das Erscheinungsjahr des Spiels ein (z. B. 2024)");
         int year = this.scanner.nextInt();
@@ -413,17 +458,20 @@ public class FunctionService {
     public DLC createDLC() {
         DLC dlc = new DLC(UUID.randomUUID().toString());
 
-        System.out.println("Bitte geben Sie den Namen des DLCs ein");
-        dlc.setDlcName(this.scanner.next());
+        dlc.setDlcName(readValidInput(
+                "Bitte geben Sie den Namen des DLCs ein",
+                NAME_PATTERN,
+                "Ungültiger Name. Erlaubt: Buchstaben, Zahlen, Leerzeichen, grundlegende Satzzeichen (max. 255)."));
 
-        System.out.println("Bitte geben Sie den Titel des zugehörigen Spiels ein");
-        dlc.setGameTitle(this.scanner.next());
+        dlc.setGameTitle(readValidInput(
+                "Bitte geben Sie den Titel des zugehörigen Spiels ein",
+                NAME_PATTERN,
+                "Ungültiger Spieltitel. Erlaubt: Buchstaben, Zahlen, Leerzeichen, grundlegende Satzzeichen (max. 255)."));
 
         System.out.println("Bitte geben Sie die Beschreibung des DLCs ein");
         dlc.setDescription(this.scanner.next());
 
-        System.out.println("Bitte geben Sie den Preis des DLCs ein (z. B. 19.99)");
-        dlc.setPrice(this.scanner.nextDouble());
+        dlc.setPrice(readNonNegativePrice("Bitte geben Sie den Preis des DLCs ein (z. B. 19.99)"));
 
         System.out.println("Bitte geben Sie das Erscheinungsjahr des DLCs ein (z. B. 2026)");
         int year = this.scanner.nextInt();
