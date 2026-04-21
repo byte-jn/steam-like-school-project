@@ -36,7 +36,7 @@ public class FunctionService {
         choices = new ArrayList<>();
 
         //add choices for user interaction
-        choices.add("exit/verlassen (e ), ");
+        choices.add("exit/verlassen (e), ");
         choices.add("logout/abmelden (l), ");
         choices.add("spiele (s), ");
         choices.add("dlcs (d), ");
@@ -73,6 +73,7 @@ public class FunctionService {
                 case "e":
                     if (!saveData()) {
                         System.out.println("Hinweis: Daten konnten vor dem Beenden nicht gespeichert werden.");
+                        return 1;
                     }
                     System.out.println("Vielen Dank für Ihren Besuch im Game Store. Auf Wiedersehen!");
                     return 0; // Beendet die Schleife und damit das Programm
@@ -130,7 +131,7 @@ public class FunctionService {
                     + ", Benutzer löschen (d)"
                     + ", Zurück zum Hauptmenü (e)"
             );
-            String choice = this.scanner.next();
+            String choice = this.scanner.nextLine();
             switch (choice.toLowerCase()) {
                 case "h": // Spiel hinzufügen
                     break;
@@ -159,7 +160,7 @@ public class FunctionService {
      */
     private User createUser() {
         System.out.println("Bitte Ihren Benutzernamen eingeben");
-        String vorname = this.scanner.next();
+        String vorname = this.scanner.nextLine();
 
         return new User(vorname);
     }
@@ -173,7 +174,7 @@ public class FunctionService {
                     + "\nBitte melden Sie sich an, um fortzufahren."
                     + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung)");
 
-            String choice = this.scanner.next();
+            String choice = this.scanner.nextLine();
             if (choice.equalsIgnoreCase("l")) {
                 activeUser = loginUser();
             } else if (choice.equalsIgnoreCase("r")) {
@@ -204,7 +205,7 @@ public class FunctionService {
         }
 
         System.out.println("Bitte Benutzernamen für den Login eingeben:");
-        String username = this.scanner.next();
+        String username = this.scanner.nextLine();
 
         User foundUser = LookupService.findUserByUsername(users, username);
         if (foundUser == null) {
@@ -223,7 +224,7 @@ public class FunctionService {
         while (true) {
             System.out.println("Willkommen im Game Store!"
                     + "\nBitte wählen Sie: Game hinzufügen oder suchen (c für Erstellen, a für hinzufügen, l für auflisten, e für exit)");
-            String choice = this.scanner.next();
+            String choice = this.scanner.nextLine();
             if (choice.equalsIgnoreCase("a")) {
                 addGames();
             } else if (choice.equalsIgnoreCase("c")) {
@@ -299,10 +300,10 @@ public class FunctionService {
         Games games = new Games(UUID.randomUUID().toString());
 
         System.out.println("Bitte geben Sie den Titel des Spiels ein");
-        games.setTitel(this.scanner.next());
+        games.setTitel(this.scanner.nextLine());
 
         System.out.println("Bitte geben Sie die Beschreibung des Spiels ein");
-        games.setDescription(this.scanner.next());
+        games.setDescription(this.scanner.nextLine());
 
         System.out.println("Bitte geben Sie den Preis des Spiels ein (z. B. 59,99)");
         games.setPrice(this.scanner.nextDouble());
