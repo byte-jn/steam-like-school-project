@@ -21,7 +21,7 @@ public class User {
      * @param username Benutzername
      */
     public User(String username) {
-        this.username = username;
+        setUsername(username);
         this.ownedGamesIds = new ArrayList<>();
         this.ownedDLCsIds = new ArrayList<>();
     }
@@ -40,6 +40,7 @@ public class User {
      */
     public void setOwnedGamesIds(ArrayList<String> ownedGamesIds) {
         this.ownedGamesIds = ownedGamesIds;
+        System.out.println("All Games for user " + username + " were overwritten with " + ownedGamesIds.toString());
     }
 
     /**
@@ -49,6 +50,7 @@ public class User {
      */
     public void addOwnedGames(String gameId) {
         this.ownedGamesIds.add(gameId);
+        System.out.println("Game with id '" + gameId + "' were added to user " + username + "'s library");
     }
 
     /**
@@ -65,6 +67,7 @@ public class User {
      */
     public void setOwnedDLCsIds(ArrayList<String> ownedDLCsIds) {
         this.ownedDLCsIds = ownedDLCsIds;
+        System.out.println("All DLCs for user " + username + " were overwritten with " + ownedDLCsIds.toString());
     }
 
     /**
@@ -74,6 +77,7 @@ public class User {
      */
     public void addOwnedDLCs(String dlsId) {
         this.ownedDLCsIds.add(dlsId);
+        System.out.println("DLC with id '" + dlsId + "' were added to user " + username + "'s library");
     }
 
     /**
@@ -89,7 +93,9 @@ public class User {
      * @param username neuer Benutzername
      */
     public void setUsername(String username) {
+        String oldUsername = this.username;
         this.username = username;
+        System.out.println("Username was changed form '" + oldUsername + "' to '" + username + "'");
     }
 
     /**
@@ -106,6 +112,7 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+        System.out.println("Email form user " + username + " were set to '" + email + "'");
     }
 
     /**
@@ -122,5 +129,6 @@ public class User {
      */
     public void setPassword(String password) {
         this.password = password;
+        System.out.println("Password form user " + username + " were set to '" + password + "'");
     }
 }

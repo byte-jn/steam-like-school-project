@@ -54,6 +54,7 @@ public class Games {
      */
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+        System.out.println("Release Date form " + titel + " was set to '" + releaseDate.toString() + "'");
     }
 
     /**
@@ -70,6 +71,7 @@ public class Games {
      */
     public void setDescription(String description) {
         this.description = description;
+        System.out.println("Description form " + titel + " was set to '" + description + "'");
     }
 
     /**
@@ -86,6 +88,7 @@ public class Games {
      */
     public void setPrice(double price) {
         this.price = price;
+        System.out.println("Price form " + titel + " was set to '" + price + "'€");
     }
 
     /**
@@ -101,6 +104,8 @@ public class Games {
      * @param titel neuer Titel
      */
     public void setTitel(String titel) {
+        String oldTitle = this.titel;
         this.titel = titel;
+        System.out.println("Titel was updated form " + oldTitle + " to '" + titel + "'");
     }
 }
