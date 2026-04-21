@@ -1,3 +1,4 @@
+<<<<<<<< HEAD:app/src/main/java/org/example/Entites/DLC.java
 package Entites;
 
 import java.util.Date;
@@ -8,20 +9,57 @@ import java.util.Date;
  * @author Jannis Lauer (jannis280@outlook.de)
  */
 public class DLC {
+========
+package org.example.entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.util.Date;
+
+@Entity
+@Table(name = "dlcs")
+public class Dlc {
+
+    @Id
+    @Column(name = "id", nullable = false)
+>>>>>>>> master:app/src/main/java/org/example/entities/Dlc.java
     private final String id;
+
+    @Column(name = "dlc_name")
     private String dlcName;
+
+    @Column(name = "game_title")
     private String gameTitle;
+
+    @Column(name = "release_date")
     private Date releaseDate;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
     private final Date createdAt;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "price")
     private double price;
 
+<<<<<<<< HEAD:app/src/main/java/org/example/Entites/DLC.java
     /**
      * Erstellt ein DLC mit ID und Erstellungszeitpunkt.
      *
      * @param id eindeutige DLC-ID
      */
     public DLC(String id) {
+========
+    protected Dlc() {
+        this.id = null;
+        this.createdAt = null;
+    }
+
+    public Dlc(String id) {
+>>>>>>>> master:app/src/main/java/org/example/entities/Dlc.java
         this.id = id;
         this.createdAt = new Date();
     }

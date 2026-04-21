@@ -1,3 +1,4 @@
+<<<<<<<< HEAD:app/src/main/java/org/example/Entites/User.java
 package Entites;
 
 import java.util.ArrayList;
@@ -8,10 +9,19 @@ import java.util.ArrayList;
  * @author Jannis Lauer (jannis280@outlook.de)
  */
 public class User {
+========
+package org.example.dtos;
 
+import java.util.ArrayList;
+
+public class UserDto {
+>>>>>>>> master:app/src/main/java/org/example/dtos/UserDto.java
+
+    private Long id;
     private String username;
     private String email;
     private String password;
+<<<<<<<< HEAD:app/src/main/java/org/example/Entites/User.java
     private ArrayList<String> ownedGamesIds;
     private ArrayList<String> ownedDLCsIds;
 
@@ -22,10 +32,19 @@ public class User {
      */
     public User(String username) {
         this.username = username;
+========
+    private String firstname;
+    private String lastname;
+    private ArrayList<String> ownedGamesIds;
+    private ArrayList<String> ownedDlcIds;
+
+    public UserDto() {
+>>>>>>>> master:app/src/main/java/org/example/dtos/UserDto.java
         this.ownedGamesIds = new ArrayList<>();
-        this.ownedDLCsIds = new ArrayList<>();
+        this.ownedDlcIds = new ArrayList<>();
     }
 
+<<<<<<<< HEAD:app/src/main/java/org/example/Entites/User.java
     /**
      * @return Liste aller Spiel-IDs des Benutzers
      */
@@ -39,9 +58,21 @@ public class User {
      * @param ownedGamesIds neue Spiel-ID-Liste
      */
     public void setOwnedGamesIds(ArrayList<String> ownedGamesIds) {
+========
+    public UserDto(String username, String email, String password,
+                   String firstname, String lastname,
+                   ArrayList<String> ownedGamesIds, ArrayList<String> ownedDlcIds) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+>>>>>>>> master:app/src/main/java/org/example/dtos/UserDto.java
         this.ownedGamesIds = ownedGamesIds;
+        this.ownedDlcIds = ownedDlcIds;
     }
 
+<<<<<<<< HEAD:app/src/main/java/org/example/Entites/User.java
     /**
      * Fügt eine Spiel-ID zur Bibliothek hinzu.
      *
@@ -79,6 +110,16 @@ public class User {
     /**
      * @return Benutzername
      */
+========
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+>>>>>>>> master:app/src/main/java/org/example/dtos/UserDto.java
     public String getUsername() {
         return username;
     }
@@ -123,4 +164,43 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+<<<<<<<< HEAD:app/src/main/java/org/example/Entites/User.java
+========
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public ArrayList<String> getOwnedGamesIds() {
+        return ownedGamesIds;
+    }
+
+    public void setOwnedGamesIds(ArrayList<String> ownedGamesIds) {
+        this.ownedGamesIds = ownedGamesIds;
+    }
+
+    public void addOwnedGameId(String gameId) {
+        this.ownedGamesIds.add(gameId);
+    }
+
+    public ArrayList<String> getOwnedDlcIds() {
+        return ownedDlcIds;
+    }
+
+    public void setOwnedDlcIds(ArrayList<String> ownedDlcIds) {
+        this.ownedDlcIds = ownedDlcIds;
+    }
+>>>>>>>> master:app/src/main/java/org/example/dtos/UserDto.java
 }

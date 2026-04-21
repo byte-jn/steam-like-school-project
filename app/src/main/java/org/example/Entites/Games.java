@@ -1,3 +1,4 @@
+<<<<<<<< HEAD:app/src/main/java/org/example/Entites/Games.java
 package Entites;
 
 import java.util.Date;
@@ -7,20 +8,52 @@ import java.util.Date;
  *
  * @author Jannis Lauer (jannis280@outlook.de)
  */
+========
+package org.example.entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.util.Date;
+
+@Entity
+@Table(name = "games")
+>>>>>>>> master:app/src/main/java/org/example/entities/Games.java
 public class Games {
 
+    @Id
+    @Column(name = "id", nullable = false)
     private final String id;
+
+    @Column(name = "titel")
     private String titel;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
     private final Date createdAt;
+
+    @Column(name = "release_date")
     private Date releaseDate;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "price")
     private double price;
 
+<<<<<<<< HEAD:app/src/main/java/org/example/Entites/Games.java
     /**
      * Erstellt ein Spiel mit ID und Zeitstempel der Erstellung.
      *
      * @param id eindeutige Spiel-ID
      */
+========
+    protected Games() {
+        this.id = null;
+        this.createdAt = null;
+    }
+
+>>>>>>>> master:app/src/main/java/org/example/entities/Games.java
     public Games(String id) {
         this.id = id;
         this.createdAt = new Date();

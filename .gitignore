@@ -53,5 +53,26 @@ bin/
 hs_err_pid*
 replay_pid*
 
+# Qodo
+.qodo
+
+# JJ
+.jj/
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Windows artifacts
+nul
+Thumbs.db
+
+# Environment / local config
+.env
+.env.*
+local.properties
+
 # Storage Data
 data/csv/*

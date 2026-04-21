@@ -1,21 +1,21 @@
-import Service.FunctionService;
+package org.example;
 
-/**
- * Einstiegspunkt der Anwendung.
- *
- * @author Jannis Lauer (jannis280@outlook.de)
- */
+import com.google.inject.Injector;
+import org.example.dtos.UserDto;
+import org.example.services.FunctionService;
+import org.example.utils.AppInjector;
+import org.example.utils.HibernateUtil;
+
 public class Main {
-    /**
-     * Startet die Konsolenanwendung und übergibt den Exit-Code.
-     *
-     * @param args Kommandozeilenargumente
-     */
-    public static void main(String[] args) {
-        FunctionService session = new FunctionService();
 
-        System.exit(
-                session.loop()
-        );
+    public static void main(String[] args) {
+        Injector injector = AppInjector.get();
+
+        FunctionService service = injector.getInstance(FunctionService.class);
+
+        UserDto user = service.initializeUser();
+        service.mainMenu(user);
+
+        HibernateUtil.shutdown();
     }
 }
