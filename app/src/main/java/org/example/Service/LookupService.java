@@ -1,9 +1,10 @@
 package Service;
 
 import Entites.DLC;
-import Entites.Games;
+import Entites.Game;
 import Entites.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,13 +47,13 @@ public final class LookupService {
      * @param gameId gesuchte Spiel-ID
      * @return gefundenes Spiel oder {@code null}
      */
-    public static Games findGameById(List<Games> games, String gameId) {
+    public static Game findGameById(List<Game> games, String gameId) {
         if (gameId == null) {
             return null;
         }
 
         String normalized = gameId.trim();
-        for (Games game : games) {
+        for (Game game : games) {
             if (game.getId().equals(normalized)) {
                 return game;
             }
@@ -67,13 +68,13 @@ public final class LookupService {
      * @param title gesuchter Titel
      * @return gefundenes Spiel oder {@code null}
      */
-    public static Games findGameByTitle(List<Games> games, String title) {
+    public static Game findGameByTitle(List<Game> games, String title) {
         if (title == null) {
             return null;
         }
 
         String normalized = title.trim();
-        for (Games game : games) {
+        for (Game game : games) {
             if (game.getTitel() != null && game.getTitel().equalsIgnoreCase(normalized)) {
                 return game;
             }
@@ -96,6 +97,36 @@ public final class LookupService {
         String normalized = dlcId.trim();
         for (DLC dlc : dlcs) {
             if (dlc.getId().equals(normalized)) {
+                return dlc;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Sucht ein Spiel anhand seines Namens.
+     * @param games ArrayList<Games>
+     * @param gameName String
+     * @return Games
+     */
+    public static Game findGameByName(ArrayList<Game> games, String gameName) {
+        for (Game game : games) {
+            if (game.getTitel() != null && game.getTitel().equalsIgnoreCase(gameName.trim())) {
+                return game;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Sucht ein DLC anhand seines Namens.
+     * @param dlcs ArrayList<DLC>
+     * @param dlcName String
+     * @return DLC|null
+     */
+    public static DLC findDlcByName(ArrayList<DLC> dlcs, String dlcName) {
+        for (DLC dlc : dlcs) {
+            if (dlc.getDlcName() != null && dlc.getDlcName().equalsIgnoreCase(dlcName.trim())) {
                 return dlc;
             }
         }

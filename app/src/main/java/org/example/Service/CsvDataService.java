@@ -1,7 +1,7 @@
 package Service;
 
 import Entites.DLC;
-import Entites.Games;
+import Entites.Game;
 import Entites.User;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class CsvDataService {
      * @param dlcs Ziel-Liste für DLCs
      * @return {@code true}, wenn das Laden erfolgreich war
      */
-    public boolean loadAll(ArrayList<User> users, ArrayList<Games> games, ArrayList<DLC> dlcs) {
+    public boolean loadAll(ArrayList<User> users, ArrayList<Game> games, ArrayList<DLC> dlcs) {
         Path usersFile = DATA_DIR.resolve("users.csv");
         Path gamesFile = DATA_DIR.resolve("games.csv");
         Path dlcsFile = DATA_DIR.resolve("dlcs.csv");
@@ -74,7 +74,7 @@ public class CsvDataService {
      * @param dlcs Quell-Liste der DLCs
      * @return {@code true}, wenn das Speichern erfolgreich war
      */
-    public boolean saveAll(ArrayList<User> users, ArrayList<Games> games, ArrayList<DLC> dlcs) {
+    public boolean saveAll(ArrayList<User> users, ArrayList<Game> games, ArrayList<DLC> dlcs) {
         Path usersFile = DATA_DIR.resolve("users.csv");
         Path gamesFile = DATA_DIR.resolve("games.csv");
         Path dlcsFile = DATA_DIR.resolve("dlcs.csv");
@@ -142,11 +142,11 @@ public class CsvDataService {
      * @param games Spieleliste
      * @throws IOException bei Dateifehlern
      */
-    private void writeGamesToCsv(Path gamesFile, ArrayList<Games> games) throws IOException {
+    private void writeGamesToCsv(Path gamesFile, ArrayList<Game> games) throws IOException {
         List<String> lines = new ArrayList<>();
         lines.add(GAMES_HEADER);
 
-        for (Games game : games) {
+        for (Game game : games) {
             String releaseDate = game.getReleaseDate() == null ? "" : String.valueOf(game.getReleaseDate().getTime());
             lines.add(
                     sanitizeCsvValue(game.getId()) + CSV_SEPARATOR
@@ -229,7 +229,7 @@ public class CsvDataService {
      * @param games Ziel-Liste
      * @throws IOException bei Dateifehlern
      */
-    private void loadGamesFromCsv(Path gamesFile, ArrayList<Games> games) throws IOException {
+    private void loadGamesFromCsv(Path gamesFile, ArrayList<Game> games) throws IOException {
         List<String> lines = Files.readAllLines(gamesFile, StandardCharsets.UTF_8);
         for (int i = 1; i < lines.size(); i++) {
             String line = lines.get(i).trim();
@@ -249,7 +249,7 @@ public class CsvDataService {
                 continue;
             }
 
-            Games loadedGame = new Games(id);
+            Game loadedGame = new Game(id);
             loadedGame.setTitel(values[1].trim());
             loadedGame.setDescription(values[2].trim());
 

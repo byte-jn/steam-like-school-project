@@ -131,4 +131,20 @@ public class User {
         this.password = password;
         System.out.println("Password form user " + username + " were set to '" + password + "'");
     }
+
+    public void removeGame(String id) {
+        if (this.ownedGamesIds.remove(id)) {
+            System.out.println("Game with id '" + id + "' were removed from user " + username + "'s library");
+        } else {
+            System.out.println("Game with id '" + id + "' was not found in user " + username + "'s library");
+        }
+    }
+
+    public void removeDlc(String id) {
+        if (this.ownedDLCsIds.remove(id)) {
+            System.out.println("DLC with id '" + id + "' were removed from user " + username + "'s library");
+        } else {
+            System.out.println("DLC with id '" + id + "' was not found in user " + username + "'s library");
+        }
+    }
 }

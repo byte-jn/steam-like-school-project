@@ -12,10 +12,6 @@ public class Main {
      * @param args Kommandozeilenargumente
      */
     public static void main(String[] args) {
-        FunctionService session = new FunctionService();
-
-        System.exit(
-                session.loop()
-        );
+        new FunctionService().loop();
     }
 }

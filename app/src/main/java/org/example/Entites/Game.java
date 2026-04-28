@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author Jannis Lauer (jannis280@outlook.de)
  */
-public class Games {
+public class Game {
 
     private final String id;
     private String titel;
@@ -21,7 +21,7 @@ public class Games {
      *
      * @param id eindeutige Spiel-ID
      */
-    public Games(String id) {
+    public Game(String id) {
         this.id = id;
         this.createdAt = new Date();
     }
