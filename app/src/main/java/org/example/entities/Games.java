@@ -9,7 +9,6 @@ import java.util.Date;
 @Entity
 @Table(name = "games")
 public class Games {
-
     @Id
     @Column(name = "id", nullable = false)
     private final String id;
