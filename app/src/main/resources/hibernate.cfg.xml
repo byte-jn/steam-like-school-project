@@ -18,7 +18,7 @@
         <property name="format_sql">true</property>
 
         <mapping class="org.example.entities.User"/>
-        <mapping class="org.example.entities.Games"/>
+        <mapping class="org.example.entities.Game"/>
         <mapping class="org.example.entities.Dlc"/>
     </session-factory>
 </hibernate-configuration>

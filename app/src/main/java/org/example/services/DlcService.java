@@ -80,6 +80,16 @@ public class DlcService {
     }
 
     /**
+     * Returns all DLCs for the given game title (case-insensitive).
+     */
+    public List<DlcDto> findByGameTitle(String gameTitle) {
+        return dlcRepository.findByGameTitle(gameTitle)
+                .stream()
+                .map(dlcMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Updates an existing DLC from the given DTO.
      */
     public void update(DlcDto dto) {

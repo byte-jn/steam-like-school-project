@@ -10,7 +10,20 @@ public final class HibernateUtil {
     private HibernateUtil() { }
 
     private static SessionFactory buildSessionFactory() {
-        return new Configuration().configure().buildSessionFactory();
+        Configuration configuration = new Configuration().configure();
+
+        String host = System.getenv().getOrDefault("DB_HOST", "localhost");
+        String port = System.getenv().getOrDefault("DB_PORT", "5432");
+        String name = System.getenv().getOrDefault("DB_NAME", "app");
+        String user = System.getenv().getOrDefault("DB_USER", "postgres");
+        String password = System.getenv().getOrDefault("DB_PASSWORD", "postgres");
+
+        configuration.setProperty("hibernate.connection.url",
+                "jdbc:postgresql://" + host + ":" + port + "/" + name);
+        configuration.setProperty("hibernate.connection.username", user);
+        configuration.setProperty("hibernate.connection.password", password);
+
+        return configuration.buildSessionFactory();
     }
 
     public static SessionFactory getSessionFactory() {

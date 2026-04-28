@@ -3,9 +3,10 @@ package org.example.services;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.example.dtos.DlcDto;
-import org.example.dtos.GamesDto;
+import org.example.dtos.GameDto;
 import org.example.dtos.UserDto;
 
+import java.io.Console;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -23,16 +24,16 @@ public class FunctionService {
 
     public Scanner scanner;
     private final UserService userService;
-    private final GamesService gamesService;
+    private final GameService gameService;
     private final DlcService dlcService;
 
     @Inject
     public FunctionService(UserService userService,
-                           GamesService gamesService,
+                           GameService gameService,
                            DlcService dlcService) {
         this.scanner = new Scanner(System.in);
         this.userService = userService;
-        this.gamesService = gamesService;
+        this.gameService = gameService;
         this.dlcService = dlcService;
     }
 
@@ -83,8 +84,7 @@ public class FunctionService {
                 EMAIL_PATTERN,
                 "Ungueltige E-Mail-Adresse. Bitte erneut versuchen.");
 
-        System.out.println("Bitte geben Sie ein Passwort ein");
-        String password = this.scanner.next();
+        String password = readPassword("Bitte geben Sie ein Passwort ein");
 
         System.out.println("Bitte geben Sie Ihren Vornamen ein");
         String firstname = this.scanner.next();
@@ -117,8 +117,9 @@ public class FunctionService {
                     + "\n[4] Alle DLCs anzeigen"
                     + "\n[5] DLC zum Store hinzufuegen"
                     + "\n[6] DLC kaufen (in Bibliothek)"
-                    + "\n[7] Benutzerverwaltung"
-                    + "\n[8] Beenden");
+                    + "\n[7] Spieldetails anzeigen"
+                    + "\n[8] Benutzerverwaltung"
+                    + "\n[9] Beenden");
             String choice = this.scanner.next();
             switch (choice) {
                 case "1": listGames(); break;
@@ -127,25 +128,26 @@ public class FunctionService {
                 case "4": listDlcs(); break;
                 case "5": createDlc(); break;
                 case "6": user = addDlcToLibrary(user); break;
-                case "7": user = userAdministration(user); break;
-                case "8":
+                case "7": showGameDetails(); break;
+                case "8": user = userAdministration(user); break;
+                case "9":
                     System.out.println("Auf Wiedersehen, " + user.getFirstname() + "!");
                     running = false;
                     break;
                 default:
-                    System.out.println("Ungueltige Eingabe. Bitte waehlen Sie 1-8.");
+                    System.out.println("Ungueltige Eingabe. Bitte waehlen Sie 1-9.");
             }
         }
     }
 
     private void listGames() {
-        List<GamesDto> games = gamesService.findAll();
+        List<GameDto> games = gameService.findAll();
         if (games.isEmpty()) {
             System.out.println("Keine Spiele im Store vorhanden.");
             return;
         }
         System.out.println("\n--- Alle Spiele ---");
-        for (GamesDto game : games) {
+        for (GameDto game : games) {
             System.out.println("  [" + game.getId() + "] " + game.getTitel() + " - " + game.getPrice() + " EUR");
         }
     }
@@ -164,12 +166,12 @@ public class FunctionService {
     }
 
     /**
-     * Erstellt ein neues Spiel und speichert es ueber den GamesService.
+     * Erstellt ein neues Spiel und speichert es ueber den GameService.
      */
-    public GamesDto createGame() {
-        GamesDto dto = new GamesDto();
+    public GameDto createGame() {
+        GameDto dto = new GameDto();
 
-        dto.setTitel(readValidInput(
+        dto.setTitle(readValidInput(
                 "Bitte geben Sie den Titel des Spiels ein",
                 NAME_PATTERN,
                 "Ungültiger Titel. Erlaubt: Buchstaben, Zahlen, Leerzeichen, grundlegende Satzzeichen (max. 255)."));
@@ -180,7 +182,7 @@ public class FunctionService {
         dto.setPrice(readNonNegativePrice("Bitte geben Sie den Preis des Spiels ein (z. B. 59.99)"));
         dto.setReleaseDate(readDate());
 
-        GamesDto saved = gamesService.save(dto);
+        GameDto saved = gameService.save(dto);
         System.out.println("Spiel '" + saved.getTitel() + "' erfolgreich gespeichert!");
         return saved;
     }
@@ -196,10 +198,18 @@ public class FunctionService {
                 NAME_PATTERN,
                 "Ungültiger Name. Erlaubt: Buchstaben, Zahlen, Leerzeichen, grundlegende Satzzeichen (max. 255)."));
 
-        dto.setGameTitle(readValidInput(
-                "Bitte geben Sie den Titel des zugehoerigen Spiels ein",
-                NAME_PATTERN,
-                "Ungültiger Spieltitel. Erlaubt: Buchstaben, Zahlen, Leerzeichen, grundlegende Satzzeichen (max. 255)."));
+        String gameTitle;
+        while (true) {
+            gameTitle = readValidInput(
+                    "Bitte geben Sie den Titel des zugehoerigen Spiels ein",
+                    NAME_PATTERN,
+                    "Ungültiger Spieltitel. Erlaubt: Buchstaben, Zahlen, Leerzeichen, grundlegende Satzzeichen (max. 255).");
+            if (gameService.findByName(gameTitle).isPresent()) {
+                break;
+            }
+            System.out.println("Spiel '" + gameTitle + "' nicht gefunden. Bitte erneut versuchen.");
+        }
+        dto.setGameTitle(gameTitle);
 
         System.out.println("Bitte geben Sie die Beschreibung des DLCs ein");
         dto.setDescription(this.scanner.next());
@@ -213,28 +223,50 @@ public class FunctionService {
     }
 
     private UserDto addGameToLibrary(UserDto user) {
-        List<GamesDto> games = gamesService.findAll();
-        if (games.isEmpty()) {
-            System.out.println("Keine Spiele im Store vorhanden.");
-            return user;
-        }
-        listGames();
-        System.out.println("Bitte geben Sie die ID des Spiels ein:");
-        String gameId = this.scanner.next();
+        System.out.println("Bitte geben Sie den Namen des Spiels ein:");
+        String name = this.scanner.next();
 
-        boolean exists = games.stream().anyMatch(g -> g.getId().equals(gameId));
-        if (!exists) {
-            System.out.println("Spiel mit dieser ID nicht gefunden.");
+        Optional<GameDto> found = gameService.findByName(name);
+        if (!found.isPresent()) {
+            System.out.println("Spiel '" + name + "' nicht gefunden.");
             return user;
         }
-        if (user.getOwnedGamesIds().contains(gameId)) {
+        GameDto game = found.get();
+        if (user.getOwnedGamesIds().contains(game.getId())) {
             System.out.println("Dieses Spiel ist bereits in Ihrer Bibliothek.");
             return user;
         }
-        user.addOwnedGameId(gameId);
+        user.addOwnedGameId(game.getId());
         userService.update(user);
-        System.out.println("Spiel erfolgreich zur Bibliothek hinzugefuegt.");
+        System.out.println("Spiel '" + game.getTitel() + "' erfolgreich zur Bibliothek hinzugefuegt.");
         return user;
+    }
+
+    private void showGameDetails() {
+        System.out.println("Bitte geben Sie den Namen des Spiels ein:");
+        String name = this.scanner.next();
+
+        Optional<GameDto> found = gameService.findByName(name);
+        if (!found.isPresent()) {
+            System.out.println("Spiel '" + name + "' nicht gefunden.");
+            return;
+        }
+        GameDto game = found.get();
+        System.out.println("\n--- Spieldetails ---"
+                + "\nTitel           : " + game.getTitel()
+                + "\nBeschreibung    : " + game.getDescription()
+                + "\nPreis           : " + game.getPrice() + " EUR"
+                + "\nErscheinungsdatum: " + game.getReleaseDate());
+
+        List<DlcDto> dlcs = dlcService.findByGameTitle(game.getTitel());
+        if (dlcs.isEmpty()) {
+            System.out.println("Keine DLCs fuer dieses Spiel vorhanden.");
+        } else {
+            System.out.println("--- DLCs ---");
+            for (DlcDto dlc : dlcs) {
+                System.out.println("  " + dlc.getDlcName() + " - " + dlc.getPrice() + " EUR");
+            }
+        }
     }
 
     private UserDto addDlcToLibrary(UserDto user) {
@@ -257,7 +289,7 @@ public class FunctionService {
             return user;
         }
         DlcDto dlc = selected.get();
-        boolean ownsBaseGame = gamesService.findAll().stream()
+        boolean ownsBaseGame = gameService.findAll().stream()
                 .filter(g -> dlc.getGameTitle() != null && dlc.getGameTitle().equalsIgnoreCase(g.getTitel()))
                 .anyMatch(g -> user.getOwnedGamesIds().contains(g.getId()));
         if (!ownsBaseGame) {
@@ -275,15 +307,17 @@ public class FunctionService {
         while (running) {
             System.out.println("\n=== Benutzerverwaltung ==="
                     + "\n[i] Benutzerinformationen anzeigen"
-                    + "\n[u] E-Mail oder Passwort aktualisieren"
+                    + "\n[e] E-Mail aktualisieren"
+                    + "\n[p] Passwort aktualisieren"
                     + "\n[d] Konto loeschen"
-                    + "\n[e] Zurueck");
+                    + "\n[z] Zurueck");
             String choice = this.scanner.next();
             switch (choice.toLowerCase()) {
                 case "i": showUserInfo(user); break;
-                case "u": user = updateUserInfo(user); break;
+                case "e": user = updateEmail(user); break;
+                case "p": user = updatePassword(user); break;
                 case "d": deleteAccount(user); running = false; break;
-                case "e": running = false; break;
+                case "z": running = false; break;
                 default: System.out.println("Ungueltige Eingabe.");
             }
         }
@@ -300,18 +334,22 @@ public class FunctionService {
                 + "\nGekaufte DLCs  : " + user.getOwnedDlcIds().size());
     }
 
-    private UserDto updateUserInfo(UserDto user) {
+    private UserDto updateEmail(UserDto user) {
         String email = readValidInput(
                 "Neue E-Mail-Adresse eingeben:",
                 EMAIL_PATTERN,
                 "Ungueltige E-Mail-Adresse. Bitte erneut versuchen.");
-        System.out.println("Neues Passwort eingeben:");
-        String password = this.scanner.next();
-
         user.setEmail(email);
+        userService.update(user);
+        System.out.println("E-Mail-Adresse erfolgreich aktualisiert.");
+        return user;
+    }
+
+    private UserDto updatePassword(UserDto user) {
+        String password = readPassword("Neues Passwort eingeben:");
         user.setPassword(password);
         userService.update(user);
-        System.out.println("Benutzerinformationen erfolgreich aktualisiert.");
+        System.out.println("Passwort erfolgreich aktualisiert.");
         return user;
     }
 
@@ -324,6 +362,15 @@ public class FunctionService {
         } else {
             System.out.println("Loeschvorgang abgebrochen.");
         }
+    }
+
+    private String readPassword(String prompt) {
+        System.out.println(prompt);
+        Console console = System.console();
+        if (console != null) {
+            return new String(console.readPassword());
+        }
+        return this.scanner.next();
     }
 
     private String readValidInput(String prompt, Pattern pattern, String errorMsg) {

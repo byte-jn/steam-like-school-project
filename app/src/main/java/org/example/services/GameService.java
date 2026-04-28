@@ -2,10 +2,10 @@ package org.example.services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.example.dtos.GamesDto;
-import org.example.entities.Games;
-import org.example.mappers.GamesMapper;
-import org.example.repositories.GamesRepository;
+import org.example.dtos.GameDto;
+import org.example.entities.Game;
+import org.example.mappers.GameMapper;
+import org.example.repositories.GameRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,23 +14,23 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Singleton
-public class GamesService {
+public class GameService {
 
     private static final Pattern UUID_PATTERN =
             Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
     private static final Pattern TITLE_PATTERN =
             Pattern.compile("^[A-Za-z0-9 \\-!:'.,&]{1,255}$");
 
-    private final GamesRepository gamesRepository;
-    private final GamesMapper gamesMapper;
+    private final GameRepository gameRepository;
+    private final GameMapper gameMapper;
 
     @Inject
-    public GamesService(GamesRepository gamesRepository, GamesMapper gamesMapper) {
-        this.gamesRepository = gamesRepository;
-        this.gamesMapper = gamesMapper;
+    public GameService(GameRepository gameRepository, GameMapper gameMapper) {
+        this.gameRepository = gameRepository;
+        this.gameMapper = gameMapper;
     }
 
-    private void validate(GamesDto dto) {
+    private void validate(GameDto dto) {
         if (dto.getId() != null && !UUID_PATTERN.matcher(dto.getId()).matches()) {
             throw new IllegalArgumentException("Invalid id: must be a UUID");
         }
@@ -47,47 +47,55 @@ public class GamesService {
      * Persists a new game from the given DTO.
      * Generates a UUID if the DTO carries no id.
      */
-    public GamesDto save(GamesDto dto) {
+    public GameDto save(GameDto dto) {
         validate(dto);
         if (dto.getId() == null || dto.getId().isEmpty()) {
             dto.setId(UUID.randomUUID().toString());
         }
-        Games game = gamesMapper.toDomain(dto);
-        gamesRepository.save(game);
-        return gamesMapper.toDto(game);
+        Game game = gameMapper.toDomain(dto);
+        gameRepository.save(game);
+        return gameMapper.toDto(game);
     }
 
     /**
      * Returns a game DTO by id, or empty if not found.
      */
-    public Optional<GamesDto> findById(String id) {
-        return gamesRepository.findById(id)
-                .map(gamesMapper::toDto);
+    public Optional<GameDto> findById(String id) {
+        return gameRepository.findById(id)
+                .map(gameMapper::toDto);
+    }
+
+    /**
+     * Returns a game DTO by title (case-insensitive), or empty if not found.
+     */
+    public Optional<GameDto> findByName(String title) {
+        return gameRepository.findByTitle(title)
+                .map(gameMapper::toDto);
     }
 
     /**
      * Returns all games as DTOs.
      */
-    public List<GamesDto> findAll() {
-        return gamesRepository.findAll()
+    public List<GameDto> findAll() {
+        return gameRepository.findAll()
                 .stream()
-                .map(gamesMapper::toDto)
+                .map(gameMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     /**
      * Updates an existing game from the given DTO.
      */
-    public void update(GamesDto dto) {
+    public void update(GameDto dto) {
         validate(dto);
-        Games game = gamesMapper.toDomain(dto);
-        gamesRepository.update(game);
+        Game game = gameMapper.toDomain(dto);
+        gameRepository.update(game);
     }
 
     /**
      * Deletes a game by id.
      */
     public void delete(String id) {
-        gamesRepository.delete(id);
+        gameRepository.delete(id);
     }
 }

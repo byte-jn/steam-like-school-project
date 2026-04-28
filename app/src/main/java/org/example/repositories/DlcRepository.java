@@ -46,6 +46,15 @@ public class DlcRepository {
         }
     }
 
+    public List<Dlc> findByGameTitle(String gameTitle) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                    "FROM Dlc WHERE lower(gameTitle) = lower(:gameTitle)", Dlc.class)
+                    .setParameter("gameTitle", gameTitle)
+                    .list();
+        }
+    }
+
     public void update(Dlc dlc) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
