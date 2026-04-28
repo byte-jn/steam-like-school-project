@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, release/** ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build
+        run: ./gradlew build -x test
+
+      - name: Run tests with coverage
+        run: ./gradlew test jacocoTestReport
+
+      - name: Coverage summary
+        run: |
+          python3 - <<'EOF'
+          import os, xml.etree.ElementTree as ET
+          tree = ET.parse('app/build/reports/jacoco/test/jacocoTestReport.xml')
+          root = tree.getroot()
+          counters = {c.get('type'): c for c in root.findall('counter')}
+          def pct(c):
+              if c is None:
+                  return 'N/A'
+              covered = int(c.get('covered', 0))
+              missed  = int(c.get('missed', 0))
+              total   = covered + missed
+              return f"{covered}/{total} ({100 * covered // total if total else 0}%)"
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write('## Test Coverage\n')
+              f.write('| Metric | Coverage |\n|--------|----------|\n')
+              f.write(f"| Lines    | {pct(counters.get('LINE'))}   |\n")
+              f.write(f"| Branches | {pct(counters.get('BRANCH'))} |\n")
+              f.write(f"| Methods  | {pct(counters.get('METHOD'))} |\n")
+          EOF
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: app/build/reports/jacoco/test/html/
+          retention-days: 14
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: app/build/reports/tests/test/
+          retention-days: 14

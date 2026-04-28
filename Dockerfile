@@ -4,10 +4,10 @@ COPY .. .
 RUN gradle clean build -x test
 
 FROM eclipse-temurin:21-jre-alpine
-WORKDIR /src
+WORKDIR app/src
 
 RUN mkdir -p /data
-COPY --from=build build/libs/*.jar app.jar
+COPY --from=build /src/app/build/libs/*.jar app.jar
 
 RUN addgroup -S app && adduser -S app -G app
 USER app

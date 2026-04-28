@@ -2,7 +2,7 @@ package org.example.repositories;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.example.entities.Games;
+import org.example.entities.Game;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,16 +11,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Singleton
-public class GamesRepository {
+public class GameRepository {
 
     private final SessionFactory sessionFactory;
 
     @Inject
-    public GamesRepository(SessionFactory sessionFactory) {
+    public GameRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(Games game) {
+    public void save(Game game) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
@@ -34,19 +34,28 @@ public class GamesRepository {
         }
     }
 
-    public Optional<Games> findById(String id) {
+    public Optional<Game> findById(String id) {
         try (Session session = sessionFactory.openSession()) {
-            return Optional.ofNullable(session.get(Games.class, id));
+            return Optional.ofNullable(session.get(Game.class, id));
         }
     }
 
-    public List<Games> findAll() {
+    public Optional<Game> findByTitle(String title) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Games", Games.class).list();
+            return session.createQuery(
+                    "FROM Game WHERE lower(title) = lower(:title)", Game.class)
+                    .setParameter("title", title)
+                    .uniqueResultOptional();
         }
     }
 
-    public void update(Games game) {
+    public List<Game> findAll() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Game", Game.class).list();
+        }
+    }
+
+    public void update(Game game) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
@@ -64,7 +73,7 @@ public class GamesRepository {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            Games game = session.get(Games.class, id);
+            Game game = session.get(Game.class, id);
             if (game != null) {
                 session.remove(game);
             }

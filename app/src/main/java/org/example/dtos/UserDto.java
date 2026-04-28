@@ -97,4 +97,8 @@ public class UserDto {
     public void setOwnedDlcIds(ArrayList<String> ownedDlcIds) {
         this.ownedDlcIds = ownedDlcIds;
     }
+
+    public void addOwnedDlcId(String dlcId) {
+        this.ownedDlcIds.add(dlcId);
+    }
 }

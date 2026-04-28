@@ -36,6 +36,7 @@ public class UserMapper {
      */
     public User toDomain(UserDto dto) {
         User user = new User(dto.getFirstname(), dto.getLastname());
+        user.setId(dto.getId());
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());

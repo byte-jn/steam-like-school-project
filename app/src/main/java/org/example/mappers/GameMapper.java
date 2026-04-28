@@ -2,22 +2,22 @@ package org.example.mappers;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.example.dtos.GamesDto;
-import org.example.entities.Games;
+import org.example.dtos.GameDto;
+import org.example.entities.Game;
 
 @Singleton
-public class GamesMapper {
+public class GameMapper {
 
     @Inject
-    public GamesMapper() { }
+    public GameMapper() { }
 
     /**
-     * Maps a Games domain entity to a GamesDto.
+     * Maps a Game domain entity to a GameDto.
      */
-    public GamesDto toDto(Games game) {
-        GamesDto dto = new GamesDto();
+    public GameDto toDto(Game game) {
+        GameDto dto = new GameDto();
         dto.setId(game.getId());
-        dto.setTitel(game.getTitel());
+        dto.setTitle(game.getTitle());
         dto.setDescription(game.getDescription());
         dto.setPrice(game.getPrice());
         dto.setReleaseDate(game.getReleaseDate());
@@ -26,12 +26,12 @@ public class GamesMapper {
     }
 
     /**
-     * Maps a GamesDto to a Games domain entity.
+     * Maps a GameDto to a Game domain entity.
      * Uses the dto id when present, otherwise generates a new one at the call site.
      */
-    public Games toDomain(GamesDto dto) {
-        Games game = new Games(dto.getId());
-        game.setTitel(dto.getTitel());
+    public Game toDomain(GameDto dto) {
+        Game game = new Game(dto.getId());
+        game.setTitle(dto.getTitel());
         game.setDescription(dto.getDescription());
         game.setPrice(dto.getPrice());
         game.setReleaseDate(dto.getReleaseDate());
