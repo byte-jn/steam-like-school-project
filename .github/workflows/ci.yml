@@ -32,12 +32,27 @@ jobs:
       - name: Run tests with coverage
         run: ./gradlew test jacocoTestReport
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: app/build/reports/jacoco/test/jacocoTestReport.xml
-          fail_ci_if_error: false
+      - name: Coverage summary
+        run: |
+          python3 - <<'EOF'
+          import os, xml.etree.ElementTree as ET
+          tree = ET.parse('app/build/reports/jacoco/test/jacocoTestReport.xml')
+          root = tree.getroot()
+          counters = {c.get('type'): c for c in root.findall('counter')}
+          def pct(c):
+              if c is None:
+                  return 'N/A'
+              covered = int(c.get('covered', 0))
+              missed  = int(c.get('missed', 0))
+              total   = covered + missed
+              return f"{covered}/{total} ({100 * covered // total if total else 0}%)"
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write('## Test Coverage\n')
+              f.write('| Metric | Coverage |\n|--------|----------|\n')
+              f.write(f"| Lines    | {pct(counters.get('LINE'))}   |\n")
+              f.write(f"| Branches | {pct(counters.get('BRANCH'))} |\n")
+              f.write(f"| Methods  | {pct(counters.get('METHOD'))} |\n")
+          EOF
 
       - name: Upload coverage report
         if: always()
