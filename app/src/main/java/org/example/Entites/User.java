@@ -27,6 +27,19 @@ public class User {
     }
 
     /**
+     * Erstellt einen neuen Benutzer mit leerer Spiele- und DLC-Liste.
+     *
+     * @param username Benutzername
+     */
+    public User(String username, String email, String password) {
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        this.ownedGamesIds = new ArrayList<>();
+        this.ownedDLCsIds = new ArrayList<>();
+    }
+
+    /**
      * @return Liste aller Spiel-IDs des Benutzers
      */
     public ArrayList<String> getOwnedGamesIds() {

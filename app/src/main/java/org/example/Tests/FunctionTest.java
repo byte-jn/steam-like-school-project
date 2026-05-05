@@ -11,9 +11,9 @@ class FunctionTest {
     void test() {
         // 1. Eingaben simulieren (Titel, Beschreibung, Preis, Jahr, Monat, Tag)
         // Wichtig: Nutze das Format, das dein System/Scanner erwartet (z.B. Punkt oder Komma bei Double)
-        String simulatedInput = "r\ntest\n"+ // register test user
+        String simulatedInput = "r\ntest\ntest@example.com\nigdojrjgirb49ut094utbnjreIUI)(/G=)(/&/ZU\n"+ // register test user
                 "l\n"+ // logout user
-                "l\ntest\n"+ // login user test
+                "l\ntest\nigdojrjgirb49ut094utbnjreIUI)(/G=)(/&/ZU\n"+ // login user test
                 "s\nc\nTestGame\nzum Testen\n1\n2000\n1\n1\n"+ // create game testGame
                 "h\na\nTestGame\nl\ne\n"+ // add Test game to user
                 "d\nc\nTestErweiterung\nTestGame\nzum Testen\n1\n2000\n1\n1\n"+ // create dlc testErweiterung
