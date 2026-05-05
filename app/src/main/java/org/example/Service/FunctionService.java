@@ -35,7 +35,7 @@ public class FunctionService {
         dlcs = new ArrayList<>();
         choices = new ArrayList<>();
 
-        //add choices for user interaction
+        // Hinzufügen der Möglichkeiten
         choices.add("exit/verlassen (e), ");
         choices.add("logout/abmelden (l), ");
         choices.add("spiele (s), ");
@@ -65,6 +65,7 @@ public class FunctionService {
                 if (exitcode >= 0) {
                     return exitcode;
                 }
+                System.out.println("\n");
             }
             // Angabe der Auswahlmöglichkeiten für den Benutzer
             System.out.print("Bitte wählen Sie: ");
@@ -74,6 +75,7 @@ public class FunctionService {
             String choice = this.scanner.nextLine();
             switch (choice.toLowerCase()) {
                 case "e":
+                    System.out.println("\n");
                     if (!saveData()) {
                         System.out.println("Hinweis: Daten konnten vor dem Beenden nicht gespeichert werden.");
                         return 1; // Beendet mit Fehlercode, wenn Speichern fehlschlägt
@@ -81,6 +83,7 @@ public class FunctionService {
                     System.out.println("Vielen Dank für Ihren Besuch im Game Store. Auf Wiedersehen!");
                     return 0; // Beendet die Schleife und damit das Programm
                 case "l":
+                    System.out.println("\n");
                     if (!saveData()) {
                         System.out.println("Hinweis: Daten konnten beim Abmelden nicht gespeichert werden.");
                     }
@@ -88,13 +91,19 @@ public class FunctionService {
                     activeUser = null; // Setzt den Benutzer auf null, um die Anmeldung zurückzusetzen
                     break;
                 case "s":
+                    System.out.println("\n");
                     initializeGames();
+                    System.out.println("\n");
                     break;
                 case "d":
+                    System.out.println("\n");
                     initializeDLC();
+                    System.out.println("\n");
                     break;
                 case "u":
+                    System.out.println("\n");
                     userAdministration();
+                    System.out.println("\n");
                     break;
                 default:
                     System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut." + choice);
@@ -194,9 +203,15 @@ public class FunctionService {
      */
     private User createUser() {
         System.out.println("Bitte Ihren Benutzernamen eingeben");
-        String vorname = this.scanner.nextLine();
+        String username = this.scanner.nextLine();
 
-        return new User(vorname);
+        System.out.println("Bitte Ihren Email eingeben");
+        String email = this.scanner.nextLine();
+
+        System.out.println("Bitte Ihren Passwort eingeben");
+        String password = this.scanner.nextLine();
+
+        return new User(username, email, password);
     }
 
     /**
@@ -247,8 +262,19 @@ public class FunctionService {
 
         User foundUser = LookupService.findUserByUsername(users, username);
         if (foundUser == null) {
-            System.out.println("Benutzer nicht gefunden.");
+            System.out.println("Benutzer nicht gefunden. Try again.");
             return null;
+        }
+
+        System.out.println("Bitte Passwort für den Benutzer eingeben:");
+        while (activeUser == null) {
+            String password = this.scanner.nextLine();
+
+            if (foundUser.getPassword().equals(password)) {
+                break;
+            }
+
+            System.out.println("Falsches Passwort. Try again:");
         }
 
         System.out.println("Login erfolgreich. Willkommen, " + foundUser.getUsername() + "!");

@@ -1,1 +1,100 @@
 id;titel;description;price;releaseDate
+1;The Witcher 3: Wild Hunt;Ein episches Rollenspiel in einer offenen Welt.;29.99;1431986400000
+2;Grand Theft Auto V;Ein actiongeladenes Open-World-Spiel in Los Santos.;19.99;1379368800000
+3;Minecraft;Ein Sandbox-Spiel, in dem du alles bauen kannst.;23.95;1321570800000
+4;Red Dead Redemption 2;Ein Western-Epos mit riesiger, lebendiger Welt.;59.99;1540504800000
+5;Cyberpunk 2077;Ein futuristisches Rollenspiel in Night City.;39.99;1607554800000
+6;Elden Ring;Ein herausforderndes Action-RPG in einer offenen Welt.;59.99;1645743600000
+7;The Legend of Zelda: Breath of the Wild;Ein Abenteuer in einer riesigen offenen Welt.;59.99;1488495600000
+8;Dark Souls III;Ein düsteres Action-RPG mit fordernden Kämpfen.;39.99;1460412000000
+9;Counter-Strike: Global Offensive;Taktischer Multiplayer-Shooter.;0.0;1345500000000
+11;League of Legends;Beliebtes MOBA mit vielen Champions.;0.0;1256598000000
+12;Dota 2;Komplexes MOBA mit strategischer Tiefe.;0.0;1373320800000
+13;Among Us;Multiplayer-Spiel über Verrat und Teamwork.;3.99;1542322800000
+14;Apex Legends;Battle Royale mit einzigartigen Helden.;0.0;1549234800000
+15;Overwatch;Team-basierter Shooter mit Helden.;39.99;1464040800000
+16;Valorant;Taktischer Shooter mit Agenten.;0.0;1591048800000
+17;FIFA 22;Fußballsimulation mit realistischen Teams.;59.99;1633039200000
+18;Call of Duty: Warzone;Battle Royale im CoD-Universum.;0.0;1583794800000
+19;Rocket League;Fußball mit Autos.;19.99;1436220000000
+20;Genshin Impact;Open-World-Action-RPG mit Anime-Stil.;0.0;1601244000000
+21;Animal Crossing: New Horizons;Entspanntes Inselleben mit Freunden.;59.99;1584658800000
+22;Hades;Rogue-like Actionspiel in der griechischen Mythologie.;24.99;1600293600000
+23;Stardew Valley;Farming-Simulation mit RPG-Elementen.;13.99;1456441200000
+24;Terraria;2D-Sandbox mit Crafting und Abenteuern.;9.99;1305496800000
+25;DOOM Eternal;Rasanter Ego-Shooter gegen Dämonen.;39.99;1584658800000
+26;Sekiro: Shadows Die Twice;Action-Adventure im alten Japan.;59.99;1553209200000
+27;Assassin's Creed Valhalla;Wikinger-Abenteuer in England.;59.99;1604962800000
+28;Hollow Knight;Atmosphärisches Metroidvania mit Insekten.;14.99;1487890800000
+29;Portal 2;Rätselspiel mit Portalen und Humor.;9.99;1303164000000
+30;Half-Life: Alyx;VR-Shooter im Half-Life-Universum.;49.99;1584918000000
+31;The Elder Scrolls V: Skyrim;Offene Fantasy-Welt voller Abenteuer.;39.99;1320966000000
+32;BioShock Infinite;Action-Shooter mit packender Story.;29.99;1364252400000
+33;Mass Effect 2;Sci-Fi-RPG mit Entscheidungen.;19.99;1264460400000
+34;Persona 5;Japanisches Rollenspiel mit Stil.;59.99;1473890400000
+35;Super Mario Odyssey;3D-Plattformer mit Mario.;59.99;1509055200000
+36;Super Smash Bros. Ultimate;Kampfspiel mit Nintendo-Charakteren.;59.99;1544137200000
+37;Pokémon Schwert;Fange und trainiere Pokémon.;59.99;1573772400000
+38;Pokémon Schild;Fange und trainiere Pokémon.;59.99;1573772400000
+39;Splatoon 2;Bunter Multiplayer-Shooter.;59.99;1500588000000
+40;Mario Kart 8 Deluxe;Rasantes Kart-Rennen mit Items.;59.99;1493330400000
+41;Fire Emblem: Three Houses;Taktik-RPG mit tiefgründiger Story.;59.99;1564092000000
+42;Monster Hunter: World;Jage riesige Monster in offener Welt.;29.99;1516921200000
+43;Destiny 2;Online-Shooter mit Sci-Fi-Setting.;0.0;1504648800000
+44;The Sims 4;Lebenssimulation mit vielen Möglichkeiten.;39.99;1409608800000
+45;Civilization VI;Rundenbasiertes Strategiespiel.;59.99;1477000800000
+46;Sid Meier's Civilization V;Rundenbasierte Strategie mit Nationen.;29.99;1285020000000
+47;Fallout 4;Postapokalyptisches Rollenspiel.;29.99;1447110000000
+48;Fallout: New Vegas;Kultiges RPG im Ödland.;19.99;1287439200000
+49;Cuphead;Schweres Run-and-Gun mit Cartoon-Stil.;19.99;1506636000000
+50;Undertale;Indie-RPG mit einzigartigem Kampfsystem.;9.99;1442268000000
+51;Celeste;Plattformer mit emotionaler Story.;19.99;1516834800000
+52;Dead Cells;Rogue-like Action-Plattformer.;24.99;1533592800000
+53;Slay the Spire;Kartenspiel trifft Rogue-like.;24.99;1548198000000
+54;Subnautica;Überlebe in einer fremden Unterwasserwelt.;24.99;1516662000000
+55;No Man's Sky;Erkunde ein prozedural generiertes Universum.;49.99;1470952800000
+56;Horizon Zero Dawn;Action-RPG mit Maschinenwesen.;49.99;1488236400000
+57;God of War;Actionspiel mit nordischer Mythologie.;49.99;1524175200000
+58;Detroit: Become Human;Interaktives Drama mit Entscheidungen.;39.99;1527199200000
+59;Spider-Man;Actionspiel im Marvel-Universum.;59.99;1536271200000
+60;Ghost of Tsushima;Samurai-Abenteuer im feudalen Japan.;59.99;1594936800000
+61;Resident Evil 2;Survival-Horror-Remake.;39.99;1548370800000
+62;Resident Evil Village;Horror in einem mysteriösen Dorf.;59.99;1620338400000
+63;Final Fantasy VII Remake;Neuauflage des RPG-Klassikers.;59.99;1586469600000
+64;Final Fantasy XIV Online;MMORPG in der Final Fantasy-Welt.;12.99;1377554400000
+65;The Last of Us Part II;Emotionales Action-Adventure.;59.99;1592517600000
+66;Uncharted 4: A Thief's End;Abenteuer mit Nathan Drake.;39.99;1462831200000
+67;Bloodborne;Düsteres Action-RPG von FromSoftware.;39.99;1427151600000
+68;Journey;Atmosphärisches Indie-Abenteuer.;14.99;1331593200000
+69;Inside;Düsteres Puzzle-Plattformer.;19.99;1467151200000
+70;Little Nightmares;Gruseliges Puzzle-Adventure.;19.99;1493330400000
+71;Ori and the Blind Forest;Wunderschöner Plattformer.;19.99;1426028400000
+72;Ori and the Will of the Wisps;Fortsetzung des gefeierten Plattformers.;29.99;1583881200000
+73;HITMAN 3;Stealth-Action mit offenen Levels.;59.99;1611097200000
+74;Control;Übernatürlicher Action-Thriller.;29.99;1566856800000
+75;Alan Wake;Mystery-Thriller mit Action.;29.99;1273788000000
+76;Tetris Effect;Klassisches Puzzle-Spiel in neuem Look.;39.99;1541718000000
+77;Superhot;Innovativer Shooter, bei dem Zeit nur läuft, wenn du dich bewegst.;24.99;1456354800000
+78;Hotline Miami;Rasanter Top-Down-Shooter.;9.99;1350943200000
+79;Baba Is You;Kreatives Puzzle-Spiel mit Regeln.;12.49;1552431600000
+80;Factorio;Baue und automatisiere Fabriken.;25.0;1597356000000
+81;RimWorld;Kolonie-Simulation mit Storytelling.;32.99;1539727200000
+82;Cities: Skylines;Städtebau-Simulation.;27.99;1425942000000
+83;Planet Zoo;Zoo-Management-Simulation.;44.99;1572908400000
+84;The Forest;Survival-Horror im Wald.;16.79;1525039200000
+85;Phasmophobia;Kooperatives Geisterjäger-Spiel.;13.99;1600380000000
+86;Raft;Überlebe auf einem Floß im Ozean.;19.99;1527026400000
+87;Valheim;Wikinger-Survival in prozeduraler Welt.;16.79;1612220400000
+88;Satisfactory;Fabrikbau in 3D.;29.99;1591567200000
+89;Deep Rock Galactic;Koop-Shooter mit Zwergen.;29.99;1589320800000
+90;Grounded;Überlebe als Miniaturmensch im Garten.;29.99;1664229600000
+91;It Takes Two;Kooperatives Abenteuer für zwei Spieler.;39.99;1616713200000
+92;A Way Out;Kooperatives Gefängnisausbruch-Abenteuer.;29.99;1521759600000
+93;Portal;Innovatives Puzzle-Spiel mit Portalen.;9.99;1191967200000
+94;Left 4 Dead 2;Koop-Zombie-Shooter.;9.99;1258412400000
+95;Payday 2;Koop-Heist-Shooter.;9.99;1376344800000
+96;Arma 3;Militär-Simulation mit riesigen Karten.;29.99;1378936800000
+97;Euro Truck Simulator 2;Fahre LKWs durch Europa.;19.99;1350597600000
+98;Microsoft Flight Simulator;Realistische Flugsimulation.;69.99;1597701600000
+99;Farming Simulator 22;Landwirtschafts-Simulation.;39.99;1637535600000
+100;The Binding of Isaac: Rebirth;Rogue-like mit zufälligen Dungeons.;14.99;1415055600000

@@ -47,7 +47,7 @@ public class DLC {
      */
     public void setDlcName(String dlcName) {
         this.dlcName = dlcName;
-        System.out.println("Name form DLC " + dlcName + " were changed to '" + dlcName + "'");
+        System.out.println("Name von Dlc wurde von '" + dlcName + "' auf '" + dlcName + "' gesetzt");
     }
 
     /**
@@ -64,7 +64,7 @@ public class DLC {
      */
     public void setGameTitle(String gameTitle) {
         this.gameTitle = gameTitle;
-        System.out.println("Game Title form DLC " + dlcName + " were changed to '" + gameTitle + "'");
+        System.out.println("Spiel Titel von Dlc '" + dlcName + "' wurde auf '" + gameTitle + "' gesetzt");
     }
 
     /**
@@ -81,7 +81,7 @@ public class DLC {
      */
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
-        System.out.println("Release Date form DLC " + dlcName + " were changed to '" + releaseDate.toString() + "'");
+        System.out.println("Erscheinungsdatum von Dlc '" + dlcName + "' wurde auf '" + releaseDate.toString() + "' gesetzt");
     }
 
     /**
@@ -105,7 +105,7 @@ public class DLC {
      */
     public void setDescription(String description) {
         this.description = description;
-        System.out.println("Description form DLC " + dlcName + " were changed to '" + description + "'");
+        System.out.println("Beschreibung von Dlc '" + dlcName + "' wurde auf '" + description + "' gesetzt");
     }
 
     /**
@@ -122,6 +122,6 @@ public class DLC {
      */
     public void setPrice(double price) {
         this.price = price;
-        System.out.println("Price form DLC " + dlcName + " were changed to '" + price + "'");
+        System.out.println("Preis von Dlc '" + dlcName + "' wurde auf " + price + "€ gesetzt");
     }
 }

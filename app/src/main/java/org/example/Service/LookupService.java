@@ -105,6 +105,7 @@ public final class LookupService {
 
     /**
      * Sucht ein Spiel anhand seines Namens.
+     *
      * @param games ArrayList<Games>
      * @param gameName String
      * @return Games

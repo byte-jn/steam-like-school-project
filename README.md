@@ -1,61 +1,93 @@
 # Steam-Like School Project
 
-Console-based Java school project to manage users, games, and DLCs.
+Ein konsolenbasiertes Java-Projekt, das eine vereinfachte Steam-ähnliche Plattform simuliert. Es richtet sich an Schüler:innen und Studierende, die Java und objektorientierte Programmierung lernen möchten.
 
-## Overview
+## Features
 
-This project provides a small Steam-like management system for educational purposes.
-You can:
+- Benutzerregistrierung und Login
+- Anlegen und Auflisten von Spielen
+- Anlegen und Auflisten von DLCs
+- Hinzufügen von Spielen und DLCs zur Benutzerbibliothek
+- Persistenz aller Daten in CSV-Dateien
 
-- register/login users,
-- create and list games,
-- create and list DLCs,
-- add owned games and DLCs to a user library,
-- persist all data in CSV files.
+## Übersicht
 
-## Current Architecture
+Dieses Projekt bietet ein kleines Verwaltungssystem für Benutzer, Spiele und DLCs. Es eignet sich als Lernprojekt für objektorientierte Programmierung, Dateiverarbeitung und einfache Konsoleninteraktion.
 
-The project was refactored into focused classes:
 
-- `Main` - entry point (`main` method)
-- `FunctionService` - menu flow and user interaction
-- `CsvDataService` - load/save data from/to CSV
-- `LookupService` - shared lookup helpers (user/game/dlc)
-- `User`, `Games`, `DLC` - domain entities
+## Architektur
 
-## Data Storage (CSV)
+Das Projekt ist in folgende Klassen unterteilt:
 
-Data is stored in:
+- **Main**: Einstiegspunkt, enthält die `main`-Methode und startet das Programm.
+- **FunctionService**: Steuert den Menüfluss und die Benutzerinteraktion.
+- **CsvDataService**: Lädt und speichert Daten aus/in CSV-Dateien.
+- **LookupService**: Stellt Hilfsfunktionen für die Suche nach Benutzern, Spielen und DLCs bereit.
+- **User, Game, DLC**: Die zentralen Entitäten des Systems.
+
+
+## Datenmodell
+
+**User**: Benutzername, Passwort, Liste der gekauften Spiele und DLCs
+
+**Game**: Name, Genre, Preis, Entwickler
+
+**DLC**: Name, Zugehöriges Spiel, Preis
+
+## Datenspeicherung (CSV)
+
+Die Daten werden in folgenden Dateien gespeichert:
 
 - `data/csv/users.csv`
 - `data/csv/games.csv`
 - `data/csv/dlcs.csv`
 
-If the folder/files do not exist, they are created automatically on startup.
-CSV headers are also created automatically.
+Falls Ordner oder Dateien fehlen, werden sie beim Start automatisch angelegt. Die CSV-Header werden ebenfalls automatisch erzeugt.
 
-## Requirements
+### Beispiel für CSV-Inhalte
 
-- JDK 8+
-- IntelliJ IDEA (recommended) or any Java IDE
+**users.csv**
+```csv
+username,password,ownedGames,ownedDlcs
+max,mypass,Half-Life;Portal,HL2-DLC
+```
 
-## Run
+**games.csv**
+```csv
+name,genre,price,developer
+Half-Life,Shooter,9.99,Valve
+Portal,Puzzle,7.99,Valve
+```
 
-### IntelliJ IDEA
+**dlcs.csv**
+```csv
+name,game,price
+HL2-DLC,Half-Life,2.99
+```
 
-1. Open the project.
-2. Open `app/src/main/java/org/example/Main.java`.
-3. Run `Main`.
 
-### Windows PowerShell
+## Voraussetzungen
 
+- JDK 8 oder höher
+- IntelliJ IDEA (empfohlen) oder eine andere Java-IDE
+
+
+## Ausführen
+
+### In IntelliJ IDEA
+1. Projekt öffnen
+2. `app/src/main/java/org/example/Main.java` öffnen
+3. `Main` ausführen
+
+### Über die Windows PowerShell
 ```powershell
 Set-Location "C:\Users\JannisLauer\IdeaProjects\steam-like-school-project\app\src\main\java\org\example"
 javac *.java
 java Main
 ```
 
-## Project Structure
+
+## Projektstruktur
 
 ```text
 steam-like-school-project/
@@ -71,7 +103,7 @@ steam-like-school-project/
 │                 ├─ CsvDataService.java
 │                 ├─ LookupService.java
 │                 ├─ User.java
-│                 ├─ Games.java
+│                 ├─ Game.java
 │                 └─ DLC.java
 └─ data/
    └─ csv/
@@ -80,17 +112,49 @@ steam-like-school-project/
       └─ dlcs.csv
 ```
 
-## Roadmap Ideas
 
-- GUI version
-- More CLI commands
-- Database backend instead of CSV
-- Playtime tracking
+## Beispiel-Session
 
-## Author
+1. Benutzer registrieren oder einloggen
+2. Spiele und DLCs anlegen
+3. Spiele/DLCs zur eigenen Bibliothek hinzufügen
+4. Daten werden automatisch gespeichert
+
+## Testen
+
+Das Projekt verwendet JUnit 5 für Unit-Tests. Beispiel für einen Test:
+
+```java
+import org.junit.jupiter.api.Assertions;
+
+@Test
+void testGamePrice() {
+    Game game = new Game("Half-Life", "Shooter", 9.99, "Valve");
+    Assertions.assertEquals(9.99, game.getPrice());
+}
+```
+
+## Roadmap
+
+- GUI-Version
+- Weitere CLI-Kommandos
+- Datenbank-Backend statt CSV
+- Spielzeit-Tracking
+
+
+## Beitragende
+
+Pull Requests und Vorschläge sind willkommen! Bitte Issues für Fehler oder Feature-Wünsche anlegen.
+
+## Autor
 
 Jannis Lauer - jannis280@outlook.de
 
+
+## Lizenz
+
+MIT License (siehe LICENSE-Datei, falls vorhanden)
+
 ## Status
 
-In development.
+In Entwicklung.
