@@ -1,12 +1,13 @@
 package org.example.services;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.dtos.UserDto;
 import org.example.entities.User;
 import org.example.mappers.UserMapper;
 import org.example.repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,61 +24,50 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    /**
-     * Persists a new user from the given DTO and returns the saved DTO.
-     */
     public UserDto save(UserDto dto) {
         User user = userMapper.toDomain(dto);
-        userRepository.save(user);
-        return userMapper.toDto(user);
+        return userMapper.toDto(userRepository.save(user));
     }
 
-    /**
-     * Returns a user DTO by id, or empty if not found.
-     */
     public Optional<UserDto> findById(Long id) {
-        return userRepository.findById(id)
-                .map(userMapper::toDto);
+        return userRepository.findById(id).map(userMapper::toDto);
     }
 
-    /**
-     * Returns a user DTO by username, or empty if not found.
-     */
     public Optional<UserDto> findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .map(userMapper::toDto);
+        return userRepository.findByUsername(username).map(userMapper::toDto);
     }
 
-    /**
-     * Returns a user DTO by email, or empty if not found.
-     */
     public Optional<UserDto> findByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .map(userMapper::toDto);
+        return userRepository.findByEmail(email).map(userMapper::toDto);
     }
 
-    /**
-     * Returns all users as DTOs.
-     */
     public List<UserDto> findAll() {
-        return userRepository.findAll()
-                .stream()
+        return userRepository.findAll().stream()
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Updates an existing user from the given DTO.
-     */
-    public void update(UserDto dto) {
-        User user = userMapper.toDomain(dto);
-        userRepository.update(user);
+    public Optional<UserDto> update(Long id, UserDto dto) {
+        Optional<User> found = userRepository.findById(id);
+        if (found.isEmpty()) {
+            return Optional.empty();
+        }
+        User existing = found.get();
+        existing.setUsername(dto.getUsername());
+        existing.setEmail(dto.getEmail());
+        existing.setPassword(dto.getPassword());
+        existing.setFirstname(dto.getFirstname());
+        existing.setLastname(dto.getLastname());
+        if (dto.getOwnedGamesIds() != null) {
+            existing.setOwnedGamesIds(new ArrayList<>(dto.getOwnedGamesIds()));
+        }
+        if (dto.getOwnedDlcIds() != null) {
+            existing.setOwnedDLCsIds(new ArrayList<>(dto.getOwnedDlcIds()));
+        }
+        return Optional.of(userMapper.toDto(userRepository.update(existing)));
     }
 
-    /**
-     * Deletes a user by id.
-     */
     public void delete(Long id) {
-        userRepository.delete(id);
+        userRepository.deleteById(id);
     }
 }

@@ -1,19 +1,14 @@
 package org.example.mappers;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import jakarta.inject.Singleton;
 import org.example.dtos.GamesDto;
 import org.example.entities.Games;
 
 @Singleton
 public class GamesMapper {
 
-    @Inject
     public GamesMapper() { }
 
-    /**
-     * Maps a Games domain entity to a GamesDto.
-     */
     public GamesDto toDto(Games game) {
         GamesDto dto = new GamesDto();
         dto.setId(game.getId());
@@ -25,10 +20,6 @@ public class GamesMapper {
         return dto;
     }
 
-    /**
-     * Maps a GamesDto to a Games domain entity.
-     * Uses the dto id when present, otherwise generates a new one at the call site.
-     */
     public Games toDomain(GamesDto dto) {
         Games game = new Games(dto.getId());
         game.setTitel(dto.getTitel());

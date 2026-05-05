@@ -1,0 +1,25 @@
+organization_name: steam-like-school-project
+
+openapi:
+  path: openapi.json
+
+targets:
+  typescript:
+    package_name: steam-like-school-project-sdk
+    production_repo: ""
+    options:
+      mcp_server:
+        package_name: steam-like-school-project-mcp
+
+  python:
+    package_name: steam-like-school-project
+    production_repo: ""
+
+  java:
+    group_id: org.example
+    artifact_id: steam-like-school-project-java
+    production_repo: ""
+
+  go:
+    module_path: github.com/steam-like-school-project/sdk-go
+    production_repo: ""

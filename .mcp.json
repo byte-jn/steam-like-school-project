@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "steam-like-school-project": {
+      "command": "npx",
+      "args": ["-y", "steam-like-school-project-mcp"],
+      "env": {
+        "STEAM_LIKE_SCHOOL_PROJECT_BASE_URL": "http://localhost:8080"
+      }
+    }
+  }
+}

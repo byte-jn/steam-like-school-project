@@ -11,14 +11,14 @@ import java.util.Date;
 public class Games {
 
     @Id
-    @Column(name = "id", nullable = false)
-    private final String id;
+    @Column(name = "id", nullable = false, updatable = false)
+    private String id;
 
     @Column(name = "titel")
     private String titel;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private final Date createdAt;
+    private Date createdAt;
 
     @Column(name = "release_date")
     private Date releaseDate;
@@ -29,10 +29,7 @@ public class Games {
     @Column(name = "price")
     private double price;
 
-    protected Games() {
-        this.id = null;
-        this.createdAt = null;
-    }
+    protected Games() { }
 
     public Games(String id) {
         this.id = id;

@@ -1,0 +1,18 @@
+{
+  "enabledMcpjsonServers": ["steam-like-school-project"],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "if (-not (netstat -an | Select-String ':8080.*LISTENING')) { Start-Process -FilePath 'C:\\Users\\rayya\\tls\\steam-like-school-project\\gradlew.bat' -ArgumentList ':app:run' -WorkingDirectory 'C:\\Users\\rayya\\tls\\steam-like-school-project' -WindowStyle Hidden }",
+            "async": true,
+            "statusMessage": "Starting Micronaut backend on port 8080..."
+          }
+        ]
+      }
+    ]
+  }
+}

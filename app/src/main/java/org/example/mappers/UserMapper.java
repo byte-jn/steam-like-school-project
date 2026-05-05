@@ -1,7 +1,6 @@
 package org.example.mappers;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import jakarta.inject.Singleton;
 import org.example.dtos.UserDto;
 import org.example.entities.User;
 
@@ -10,12 +9,8 @@ import java.util.ArrayList;
 @Singleton
 public class UserMapper {
 
-    @Inject
     public UserMapper() { }
 
-    /**
-     * Maps a User domain entity to a UserDto.
-     */
     public UserDto toDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
@@ -29,11 +24,6 @@ public class UserMapper {
         return dto;
     }
 
-    /**
-     * Maps a UserDto to a User domain entity.
-     * When the dto carries an id it means we are updating an existing user,
-     * so the constructor-set firstname/lastname are overwritten afterwards.
-     */
     public User toDomain(UserDto dto) {
         User user = new User(dto.getFirstname(), dto.getLastname());
         user.setUsername(dto.getUsername());

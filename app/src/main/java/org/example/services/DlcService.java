@@ -1,7 +1,7 @@
 package org.example.services;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.dtos.DlcDto;
 import org.example.entities.Dlc;
 import org.example.mappers.DlcMapper;
@@ -24,49 +24,39 @@ public class DlcService {
         this.dlcMapper = dlcMapper;
     }
 
-    /**
-     * Persists a new DLC from the given DTO.
-     * Generates a UUID if the DTO carries no id.
-     */
     public DlcDto save(DlcDto dto) {
         if (dto.getId() == null || dto.getId().isEmpty()) {
             dto.setId(UUID.randomUUID().toString());
         }
         Dlc dlc = dlcMapper.toDomain(dto);
-        dlcRepository.save(dlc);
-        return dlcMapper.toDto(dlc);
+        return dlcMapper.toDto(dlcRepository.save(dlc));
     }
 
-    /**
-     * Returns a DLC DTO by id, or empty if not found.
-     */
     public Optional<DlcDto> findById(String id) {
-        return dlcRepository.findById(id)
-                .map(dlcMapper::toDto);
+        return dlcRepository.findById(id).map(dlcMapper::toDto);
     }
 
-    /**
-     * Returns all DLCs as DTOs.
-     */
     public List<DlcDto> findAll() {
-        return dlcRepository.findAll()
-                .stream()
+        return dlcRepository.findAll().stream()
                 .map(dlcMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Updates an existing DLC from the given DTO.
-     */
-    public void update(DlcDto dto) {
-        Dlc dlc = dlcMapper.toDomain(dto);
-        dlcRepository.update(dlc);
+    public Optional<DlcDto> update(String id, DlcDto dto) {
+        Optional<Dlc> found = dlcRepository.findById(id);
+        if (found.isEmpty()) {
+            return Optional.empty();
+        }
+        Dlc existing = found.get();
+        existing.setDlcName(dto.getDlcName());
+        existing.setGameTitle(dto.getGameTitle());
+        existing.setDescription(dto.getDescription());
+        existing.setPrice(dto.getPrice());
+        existing.setReleaseDate(dto.getReleaseDate());
+        return Optional.of(dlcMapper.toDto(dlcRepository.update(existing)));
     }
 
-    /**
-     * Deletes a DLC by id.
-     */
     public void delete(String id) {
-        dlcRepository.delete(id);
+        dlcRepository.deleteById(id);
     }
 }

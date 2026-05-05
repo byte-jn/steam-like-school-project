@@ -1,0 +1,37 @@
+{
+  "project": "steam-like-school-project",
+  "openapi_spec": "..\\openapi.json",
+  "stainless_config": "stainless.yml",
+  "targets": {
+    "cli": {
+      "output_path": "..\\sdks\\steam-like-school-project-cli"
+    },
+    "csharp": {
+      "output_path": "..\\sdks\\steam-like-school-project-csharp"
+    },
+    "go": {
+      "output_path": "..\\sdks\\steam-like-school-project-go"
+    },
+    "java": {
+      "output_path": "..\\sdks\\steam-like-school-project-java"
+    },
+    "kotlin": {
+      "output_path": "..\\sdks\\steam-like-school-project-kotlin"
+    },
+    "openapi": {
+      "output_path": "..\\sdks\\steam-like-school-project-openapi"
+    },
+    "php": {
+      "output_path": "..\\sdks\\steam-like-school-project-php"
+    },
+    "python": {
+      "output_path": "..\\sdks\\steam-like-school-project-python"
+    },
+    "ruby": {
+      "output_path": "..\\sdks\\steam-like-school-project-ruby"
+    },
+    "typescript": {
+      "output_path": "..\\sdks\\steam-like-school-project-typescript"
+    }
+  }
+}

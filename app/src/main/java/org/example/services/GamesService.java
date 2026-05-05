@@ -1,7 +1,7 @@
 package org.example.services;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.dtos.GamesDto;
 import org.example.entities.Games;
 import org.example.mappers.GamesMapper;
@@ -24,49 +24,38 @@ public class GamesService {
         this.gamesMapper = gamesMapper;
     }
 
-    /**
-     * Persists a new game from the given DTO.
-     * Generates a UUID if the DTO carries no id.
-     */
     public GamesDto save(GamesDto dto) {
         if (dto.getId() == null || dto.getId().isEmpty()) {
             dto.setId(UUID.randomUUID().toString());
         }
         Games game = gamesMapper.toDomain(dto);
-        gamesRepository.save(game);
-        return gamesMapper.toDto(game);
+        return gamesMapper.toDto(gamesRepository.save(game));
     }
 
-    /**
-     * Returns a game DTO by id, or empty if not found.
-     */
     public Optional<GamesDto> findById(String id) {
-        return gamesRepository.findById(id)
-                .map(gamesMapper::toDto);
+        return gamesRepository.findById(id).map(gamesMapper::toDto);
     }
 
-    /**
-     * Returns all games as DTOs.
-     */
     public List<GamesDto> findAll() {
-        return gamesRepository.findAll()
-                .stream()
+        return gamesRepository.findAll().stream()
                 .map(gamesMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Updates an existing game from the given DTO.
-     */
-    public void update(GamesDto dto) {
-        Games game = gamesMapper.toDomain(dto);
-        gamesRepository.update(game);
+    public Optional<GamesDto> update(String id, GamesDto dto) {
+        Optional<Games> found = gamesRepository.findById(id);
+        if (found.isEmpty()) {
+            return Optional.empty();
+        }
+        Games existing = found.get();
+        existing.setTitel(dto.getTitel());
+        existing.setDescription(dto.getDescription());
+        existing.setPrice(dto.getPrice());
+        existing.setReleaseDate(dto.getReleaseDate());
+        return Optional.of(gamesMapper.toDto(gamesRepository.update(existing)));
     }
 
-    /**
-     * Deletes a game by id.
-     */
     public void delete(String id) {
-        gamesRepository.delete(id);
+        gamesRepository.deleteById(id);
     }
 }

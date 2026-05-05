@@ -1,0 +1,407 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Steam-ähnliches Schulprojekt API",
+    "version": "0.1",
+    "description": "REST-API zur Verwaltung von Benutzern, Spielen und DLCs in einem Steam-ähnlichen Shop."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Lokaler Entwicklungsserver"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "operationId": "alleBenutzerAbrufen",
+        "summary": "Alle Benutzer abrufen",
+        "tags": ["Benutzer"],
+        "responses": {
+          "200": {
+            "description": "Erfolgreich",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/BenutzerDto" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "benutzerErstellen",
+        "summary": "Neuen Benutzer erstellen",
+        "tags": ["Benutzer"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BenutzerDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Erstellt",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BenutzerDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Datenbank-ID des Benutzers",
+          "schema": { "type": "integer", "format": "int64" }
+        }
+      ],
+      "get": {
+        "operationId": "benutzerNachIdAbrufen",
+        "summary": "Benutzer anhand der ID abrufen",
+        "tags": ["Benutzer"],
+        "responses": {
+          "200": {
+            "description": "Erfolgreich",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BenutzerDto" }
+              }
+            }
+          },
+          "404": { "description": "Nicht gefunden" }
+        }
+      },
+      "put": {
+        "operationId": "benutzerAktualisieren",
+        "summary": "Benutzer aktualisieren",
+        "tags": ["Benutzer"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BenutzerDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Erfolgreich aktualisiert",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BenutzerDto" }
+              }
+            }
+          },
+          "404": { "description": "Nicht gefunden" }
+        }
+      },
+      "delete": {
+        "operationId": "benutzerLoeschen",
+        "summary": "Benutzer löschen",
+        "tags": ["Benutzer"],
+        "responses": {
+          "204": { "description": "Kein Inhalt" },
+          "404": { "description": "Nicht gefunden" }
+        }
+      }
+    },
+    "/games": {
+      "get": {
+        "operationId": "alleSpieleAbrufen",
+        "summary": "Alle Spiele abrufen",
+        "tags": ["Spiele"],
+        "responses": {
+          "200": {
+            "description": "Erfolgreich",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/SpielDto" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "spielErstellen",
+        "summary": "Neues Spiel erstellen",
+        "tags": ["Spiele"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SpielDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Erstellt",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SpielDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/games/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "UUID des Spiels",
+          "schema": { "type": "string", "format": "uuid" }
+        }
+      ],
+      "get": {
+        "operationId": "spielNachIdAbrufen",
+        "summary": "Spiel anhand der ID abrufen",
+        "tags": ["Spiele"],
+        "responses": {
+          "200": {
+            "description": "Erfolgreich",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SpielDto" }
+              }
+            }
+          },
+          "404": { "description": "Nicht gefunden" }
+        }
+      },
+      "put": {
+        "operationId": "spielAktualisieren",
+        "summary": "Spiel aktualisieren",
+        "tags": ["Spiele"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SpielDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Erfolgreich aktualisiert",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SpielDto" }
+              }
+            }
+          },
+          "404": { "description": "Nicht gefunden" }
+        }
+      },
+      "delete": {
+        "operationId": "spielLoeschen",
+        "summary": "Spiel löschen",
+        "tags": ["Spiele"],
+        "responses": {
+          "204": { "description": "Kein Inhalt" },
+          "404": { "description": "Nicht gefunden" }
+        }
+      }
+    },
+    "/dlcs": {
+      "get": {
+        "operationId": "alleDlcsAbrufen",
+        "summary": "Alle DLCs abrufen",
+        "tags": ["DLCs"],
+        "responses": {
+          "200": {
+            "description": "Erfolgreich",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/DlcDto" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "dlcErstellen",
+        "summary": "Neuen DLC erstellen",
+        "tags": ["DLCs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DlcDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Erstellt",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DlcDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dlcs/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "UUID des DLCs",
+          "schema": { "type": "string", "format": "uuid" }
+        }
+      ],
+      "get": {
+        "operationId": "dlcNachIdAbrufen",
+        "summary": "DLC anhand der ID abrufen",
+        "tags": ["DLCs"],
+        "responses": {
+          "200": {
+            "description": "Erfolgreich",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DlcDto" }
+              }
+            }
+          },
+          "404": { "description": "Nicht gefunden" }
+        }
+      },
+      "put": {
+        "operationId": "dlcAktualisieren",
+        "summary": "DLC aktualisieren",
+        "tags": ["DLCs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DlcDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Erfolgreich aktualisiert",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DlcDto" }
+              }
+            }
+          },
+          "404": { "description": "Nicht gefunden" }
+        }
+      },
+      "delete": {
+        "operationId": "dlcLoeschen",
+        "summary": "DLC löschen",
+        "tags": ["DLCs"],
+        "responses": {
+          "204": { "description": "Kein Inhalt" },
+          "404": { "description": "Nicht gefunden" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BenutzerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Vom Server generierte Datenbank-ID. Bei Erstellungsanfragen nicht angeben."
+          },
+          "username": { "type": "string", "description": "Benutzername" },
+          "email": { "type": "string", "format": "email", "description": "E-Mail-Adresse" },
+          "password": { "type": "string", "writeOnly": true, "description": "Passwort (nur in Anfragen, nie in Antworten)" },
+          "firstname": { "type": "string", "description": "Vorname" },
+          "lastname": { "type": "string", "description": "Nachname" },
+          "ownedGamesIds": {
+            "type": "array",
+            "description": "Liste der UUIDs der gekauften Spiele",
+            "items": { "type": "string", "format": "uuid" }
+          },
+          "ownedDlcIds": {
+            "type": "array",
+            "description": "Liste der UUIDs der gekauften DLCs",
+            "items": { "type": "string", "format": "uuid" }
+          }
+        }
+      },
+      "SpielDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID des Spiels. Wird vom Server automatisch generiert, wenn nicht angegeben."
+          },
+          "titel": {
+            "type": "string",
+            "description": "Titel des Spiels. Feldname entspricht der Datenbankspalte 'titel'."
+          },
+          "description": { "type": "string", "description": "Beschreibung des Spiels" },
+          "price": { "type": "number", "format": "double", "description": "Preis in Euro" },
+          "releaseDate": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Erscheinungsdatum als Unix-Zeitstempel in Millisekunden"
+          },
+          "createdAt": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Erstellungszeitpunkt als Unix-Zeitstempel in Millisekunden. Wird vom Server gesetzt."
+          }
+        }
+      },
+      "DlcDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID des DLCs. Wird vom Server automatisch generiert, wenn nicht angegeben."
+          },
+          "dlcName": { "type": "string", "description": "Name des DLCs" },
+          "gameTitle": { "type": "string", "description": "Titel des zugehörigen Spiels" },
+          "description": { "type": "string", "description": "Beschreibung des DLCs" },
+          "price": { "type": "number", "format": "double", "description": "Preis in Euro" },
+          "releaseDate": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Erscheinungsdatum als Unix-Zeitstempel in Millisekunden"
+          },
+          "createdAt": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Erstellungszeitpunkt als Unix-Zeitstempel in Millisekunden. Wird vom Server gesetzt."
+          }
+        }
+      }
+    }
+  }
+}
