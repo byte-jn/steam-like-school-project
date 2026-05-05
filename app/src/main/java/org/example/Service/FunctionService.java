@@ -1,4 +1,4 @@
-package Service;
+package org.example.Service;
 
 import Entites.DLC;
 import Entites.Game;
@@ -17,7 +17,7 @@ import java.util.UUID;
  */
 public class FunctionService {
     private final Scanner scanner;
-    private final CsvDataService csvDataService;
+    private final Service.CsvDataService csvDataService;
     private User activeUser;
     private final ArrayList<User> users;
     private final ArrayList<Game> games;
