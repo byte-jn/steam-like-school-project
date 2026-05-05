@@ -35,7 +35,7 @@ public class FunctionService {
         dlcs = new ArrayList<>();
         choices = new ArrayList<>();
 
-        //add choices for user interaction
+        // Hinzufügen der Möglichkeiten
         choices.add("exit/verlassen (e), ");
         choices.add("logout/abmelden (l), ");
         choices.add("spiele (s), ");
