@@ -202,14 +202,63 @@ public class FunctionService {
      * @return neu erstellter Benutzer
      */
     private User createUser() {
-        System.out.println("Bitte Ihren Benutzernamen eingeben");
-        String username = this.scanner.nextLine();
+        String username = "";
+        while (true) {
+            System.out.println("Bitte Ihren Benutzernamen eingeben");
+            username = this.scanner.nextLine();
 
+            if (username.trim().isEmpty()) {
+                continue;
+            }
+
+            if (username.trim().length() < 3) {
+                System.out.println("Der Benutzername muss mindestens 3 Zeichen lang sein. Bitte versuchen Sie es erneut.");
+                continue;
+            }
+            boolean isUnique = true;
+            for (User user: users) {
+                if (username.equals(user.getUsername())) {
+                    System.out.println("Dieser Benutzername ist bereits vergeben. Bitte wählen Sie einen anderen.");
+                    isUnique = false;
+                    break;
+                }
+            }
+
+            if (isUnique) {
+                break;
+            }
+        }
+
+        String email = "";
         System.out.println("Bitte Ihren Email eingeben");
-        String email = this.scanner.nextLine();
+        while (true) {
+            email = this.scanner.nextLine();
 
+            if (email.trim().isEmpty()) {
+                System.out.println("Bitte Eingabe Email eingeben.");
+                continue;
+            }
+
+            break;
+        }
+
+        String password = "";
         System.out.println("Bitte Ihren Passwort eingeben");
-        String password = this.scanner.nextLine();
+        while (true) {
+            password = this.scanner.nextLine();
+
+            if (password.trim().isEmpty()) {
+                System.out.println("Bitte Eingabe Passwort eingeben.");
+                continue;
+            }
+
+            if (password.length() < 8) {
+                System.out.println("Das Passwort muss mindestens 8 Zeichen lang sein. Bitte versuchen Sie es erneut.");
+                continue;
+            }
+
+            break;
+        }
 
         return new User(username, email, password);
     }
