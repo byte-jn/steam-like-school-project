@@ -25,6 +25,9 @@ public class UserService {
     }
 
     public UserDto save(UserDto dto) {
+        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username '" + dto.getUsername() + "' is already taken");
+        }
         User user = userMapper.toDomain(dto);
         return userMapper.toDto(userRepository.save(user));
     }
