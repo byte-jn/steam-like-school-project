@@ -54,7 +54,7 @@ public class Game {
      */
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
-        System.out.println("Release Date form " + titel + " was set to '" + releaseDate.toString() + "'");
+        System.out.println("Erscheinungsdatum von Title '" + titel + "' wurde auf '" + releaseDate.toString() + "' gesetzt");
     }
 
     /**
@@ -71,7 +71,7 @@ public class Game {
      */
     public void setDescription(String description) {
         this.description = description;
-        System.out.println("Description form " + titel + " was set to '" + description + "'");
+        System.out.println("Beschreibung von Title '" + titel + "' wurde auf '" + description + "' gesetz");
     }
 
     /**
@@ -88,7 +88,7 @@ public class Game {
      */
     public void setPrice(double price) {
         this.price = price;
-        System.out.println("Price form " + titel + " was set to '" + price + "'€");
+        System.out.println("Preis von Title '" + titel + "' wurde auf " + price + "€ gesetzt");
     }
 
     /**

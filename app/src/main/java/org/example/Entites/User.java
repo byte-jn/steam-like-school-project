@@ -27,6 +27,19 @@ public class User {
     }
 
     /**
+     * Erstellt einen neuen Benutzer mit leerer Spiele- und DLC-Liste.
+     *
+     * @param username Benutzername
+     */
+    public User(String username, String email, String password) {
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        this.ownedGamesIds = new ArrayList<>();
+        this.ownedDLCsIds = new ArrayList<>();
+    }
+
+    /**
      * @return Liste aller Spiel-IDs des Benutzers
      */
     public ArrayList<String> getOwnedGamesIds() {
@@ -40,7 +53,7 @@ public class User {
      */
     public void setOwnedGamesIds(ArrayList<String> ownedGamesIds) {
         this.ownedGamesIds = ownedGamesIds;
-        System.out.println("All Games for user " + username + " were overwritten with " + ownedGamesIds.toString());
+        System.out.println("Alle DLCs von Benutzer " + username + " wurden auf " + ownedGamesIds.toString() + "' gesetzt");
     }
 
     /**
@@ -50,7 +63,7 @@ public class User {
      */
     public void addOwnedGames(String gameId) {
         this.ownedGamesIds.add(gameId);
-        System.out.println("Game with id '" + gameId + "' were added to user " + username + "'s library");
+        System.out.println("Spiel mit id '" + gameId + "' wurden zu Benutzer " + username + "'s Bibliothek hinzugefügt");
     }
 
     /**
@@ -67,7 +80,7 @@ public class User {
      */
     public void setOwnedDLCsIds(ArrayList<String> ownedDLCsIds) {
         this.ownedDLCsIds = ownedDLCsIds;
-        System.out.println("All DLCs for user " + username + " were overwritten with " + ownedDLCsIds.toString());
+        System.out.println("Alle DLCs von Benutzer " + username + " wurden auf '" + ownedDLCsIds.toString() + "' gesetzt");
     }
 
     /**
@@ -77,7 +90,7 @@ public class User {
      */
     public void addOwnedDLCs(String dlsId) {
         this.ownedDLCsIds.add(dlsId);
-        System.out.println("DLC with id '" + dlsId + "' were added to user " + username + "'s library");
+        System.out.println("DLC mit id '" + dlsId + "' wurde zu Benutzer " + username + "'s Bibliothek hinzugefügt");
     }
 
     /**
@@ -95,7 +108,7 @@ public class User {
     public void setUsername(String username) {
         String oldUsername = this.username;
         this.username = username;
-        System.out.println("Username was changed form '" + oldUsername + "' to '" + username + "'");
+        System.out.println("Benutzername wurde von '" + oldUsername + "' zu '" + username + "' geändert");
     }
 
     /**
@@ -112,7 +125,7 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
-        System.out.println("Email form user " + username + " were set to '" + email + "'");
+        System.out.println("Email von Benutzer " + username + " wurde auf '" + email + "' gesetzt");
     }
 
     /**
@@ -129,22 +142,22 @@ public class User {
      */
     public void setPassword(String password) {
         this.password = password;
-        System.out.println("Password form user " + username + " were set to '" + password + "'");
+        System.out.println("Passwort für Benutzer " + username + " wurde auf '" + password + "' gesetzt");
     }
 
     public void removeGame(String id) {
         if (this.ownedGamesIds.remove(id)) {
-            System.out.println("Game with id '" + id + "' were removed from user " + username + "'s library");
+            System.out.println("Spiel mit id '" + id + "' wurde zu Benutzer " + username + "'s Bibliothek entfernt");
         } else {
-            System.out.println("Game with id '" + id + "' was not found in user " + username + "'s library");
+            System.out.println("Spiel mit id '" + id + "' wurde nicht in Benutzers " + username + "'s Bibliothek gefunden");
         }
     }
 
     public void removeDlc(String id) {
         if (this.ownedDLCsIds.remove(id)) {
-            System.out.println("DLC with id '" + id + "' were removed from user " + username + "'s library");
+            System.out.println("DLC mit id '" + id + "' wurde zu Benutzer " + username + "'s Bibliothek entfernt");
         } else {
-            System.out.println("DLC with id '" + id + "' was not found in user " + username + "'s library");
+            System.out.println("DLC mit id '" + id + "'  wurde nicht zu Benutzer " + username + "'s Bibliothek gefunden");
         }
     }
 }
