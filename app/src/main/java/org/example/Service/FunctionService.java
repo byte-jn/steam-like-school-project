@@ -70,7 +70,6 @@ public class FunctionService {
             // Angabe der Auswahlmöglichkeiten für den Benutzer
             System.out.print("Bitte wählen Sie: ");
             choices.forEach(System.out::print);
-            System.out.print("\nEingabe: ");
 
             String choice = this.scanner.nextLine();
             switch (choice.toLowerCase()) {
@@ -270,7 +269,7 @@ public class FunctionService {
         while (activeUser == null) {
             System.out.println("\n\nWillkommen im Game Store!"
                     + "\nBitte melden Sie sich an, um fortzufahren."
-                    + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung, e für verlassen)\nr");
+                    + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung, e für verlassen)\n");
 
             String choice = this.scanner.nextLine();
             if (choice.equalsIgnoreCase("l")) {
@@ -441,10 +440,15 @@ public class FunctionService {
      * @return neu erstelltes Spiel
      */
     public Game createGames() {
-        Game games = new Game(UUID.randomUUID().toString());
-
         System.out.println("Bitte geben Sie den Titel des Spiels ein");
-        games.setTitel(this.scanner.nextLine());
+        String titel = this.scanner.nextLine();
+        // Überprüfen, ob Spieltitel bereits existiert
+        if (LookupService.findGameByTitle(games, titel) != null) {
+            System.out.println("Ein Spiel mit diesem Titel existiert bereits!");
+            return null;
+        }
+        Game games = new Game(UUID.randomUUID().toString());
+        games.setTitel(titel);
 
         System.out.println("Bitte geben Sie die Beschreibung des Spiels ein");
         games.setDescription(this.scanner.nextLine());
@@ -608,10 +612,15 @@ public class FunctionService {
      * @return neu erstelltes DLC
      */
     public DLC createDLC() {
-        DLC dlc = new DLC(UUID.randomUUID().toString());
-
         System.out.println("Bitte geben Sie den Namen des DLCs ein");
-        dlc.setDlcName(this.scanner.nextLine());
+        String dlcName = this.scanner.nextLine();
+        // Überprüfen, ob DLC-Name bereits existiert
+        if (LookupService.findDlcByName(dlcs, dlcName) != null) {
+            System.out.println("Ein DLC mit diesem Namen existiert bereits!");
+            return null;
+        }
+        DLC dlc = new DLC(UUID.randomUUID().toString());
+        dlc.setDlcName(dlcName);
 
         System.out.println("Bitte geben Sie den Titel des zugehörigen Spiels ein");
         dlc.setGameTitle(this.scanner.nextLine());
