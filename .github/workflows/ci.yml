@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+    STAINLESS_ORG: blox-meem
+    STAINLESS_PROJECT: steam-like-school-project
+    OAS_PATH: ./openapi.json
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -69,3 +74,11 @@ jobs:
           name: test-results
           path: app/build/reports/tests/test/
           retention-days: 14
+
+      - name: Run builds
+        uses: stainless-api/upload-openapi-spec-action/build@v1
+        with:
+          org: ${{ env.STAINLESS_ORG }}
+          project: ${{ env.STAINLESS_PROJECT }}
+          oas_path: ${{ env.OAS_PATH }}
+          stainless_api_key: ${{ secrets.STAINLESS_API_KEY }}
