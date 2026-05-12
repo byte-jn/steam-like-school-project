@@ -70,7 +70,6 @@ public class FunctionService {
             // Angabe der Auswahlmöglichkeiten für den Benutzer
             System.out.print("Bitte wählen Sie: ");
             choices.forEach(System.out::print);
-            System.out.print("\nEingabe: ");
 
             String choice = this.scanner.nextLine();
             switch (choice.toLowerCase()) {
@@ -202,14 +201,63 @@ public class FunctionService {
      * @return neu erstellter Benutzer
      */
     private User createUser() {
-        System.out.println("Bitte Ihren Benutzernamen eingeben");
-        String username = this.scanner.nextLine();
+        String username = "";
+        while (true) {
+            System.out.println("Bitte Ihren Benutzernamen eingeben");
+            username = this.scanner.nextLine();
 
+            if (username.trim().isEmpty()) {
+                continue;
+            }
+
+            if (username.trim().length() < 3) {
+                System.out.println("Der Benutzername muss mindestens 3 Zeichen lang sein. Bitte versuchen Sie es erneut.");
+                continue;
+            }
+            boolean isUnique = true;
+            for (User user: users) {
+                if (username.equals(user.getUsername())) {
+                    System.out.println("Dieser Benutzername ist bereits vergeben. Bitte wählen Sie einen anderen.");
+                    isUnique = false;
+                    break;
+                }
+            }
+
+            if (isUnique) {
+                break;
+            }
+        }
+
+        String email = "";
         System.out.println("Bitte Ihren Email eingeben");
-        String email = this.scanner.nextLine();
+        while (true) {
+            email = this.scanner.nextLine();
 
+            if (email.trim().isEmpty()) {
+                System.out.println("Bitte Eingabe Email eingeben.");
+                continue;
+            }
+
+            break;
+        }
+
+        String password = "";
         System.out.println("Bitte Ihren Passwort eingeben");
-        String password = this.scanner.nextLine();
+        while (true) {
+            password = this.scanner.nextLine();
+
+            if (password.trim().isEmpty()) {
+                System.out.println("Bitte Eingabe Passwort eingeben.");
+                continue;
+            }
+
+            if (password.length() < 8) {
+                System.out.println("Das Passwort muss mindestens 8 Zeichen lang sein. Bitte versuchen Sie es erneut.");
+                continue;
+            }
+
+            break;
+        }
 
         return new User(username, email, password);
     }
@@ -219,9 +267,9 @@ public class FunctionService {
      */
     private int initializeUser() {
         while (activeUser == null) {
-            System.out.println("Willkommen im Game Store!"
+            System.out.println("\n\nWillkommen im Game Store!"
                     + "\nBitte melden Sie sich an, um fortzufahren."
-                    + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung, e für verlassen)");
+                    + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung, e für verlassen)\n");
 
             String choice = this.scanner.nextLine();
             if (choice.equalsIgnoreCase("l")) {
@@ -392,31 +440,56 @@ public class FunctionService {
      * @return neu erstelltes Spiel
      */
     public Game createGames() {
-        Game games = new Game(UUID.randomUUID().toString());
-
         System.out.println("Bitte geben Sie den Titel des Spiels ein");
-        games.setTitel(this.scanner.nextLine());
+        String titel = this.scanner.nextLine();
+        // Überprüfen, ob Spieltitel bereits existiert
+        if (LookupService.findGameByTitle(games, titel) != null) {
+            System.out.println("Ein Spiel mit diesem Titel existiert bereits!");
+            return null;
+        }
+        Game games = new Game(UUID.randomUUID().toString());
+        games.setTitel(titel);
 
         System.out.println("Bitte geben Sie die Beschreibung des Spiels ein");
         games.setDescription(this.scanner.nextLine());
 
-        System.out.println("Bitte geben Sie den Preis des Spiels ein (z. B. 59,99)");
-        games.setPrice(this.scanner.nextDouble());
+        while (true) {
+            try {
+                System.out.println("Bitte geben Sie den Preis des Spiels ein (z. B. 59,99)");
+                games.setPrice(this.scanner.nextDouble());
+            } catch (Exception ex) {
+                System.out.println("Ungültige Eingabe für Preis. Bitte versuchen Sie es erneut.\n");
+                continue;
+            }
+            break;
+        }
 
-        System.out.println("Bitte geben Sie das Erscheinungsjahr des Spiels ein (z. B. 2024)");
-        int year = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungsmonat des Spiels ein (1-12)");
-        int month = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungstag des Spiels ein (1-31)");
-        int day = this.scanner.nextInt();
-
+        int year = 0;
+        int month = 0;
+        int day = 0;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
-        calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
-        calendar.set(Calendar.MILLISECOND, 0);
-        Date date = calendar.getTime();
+        while (true) {
+            try {
+                System.out.println("Bitte geben Sie das Erscheinungsjahr des Spiels ein (z. B. 2024)");
+                year = this.scanner.nextInt();
+                System.out.println("Bitte geben Sie den Erscheinungsmonat des Spiels ein (1-12)");
+                month = this.scanner.nextInt();
+                System.out.println("Bitte geben Sie den Erscheinungstag des Spiels ein (1-31)");
+                day = this.scanner.nextInt();
 
-        games.setReleaseDate(date);
+                calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
+                calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
+                calendar.set(Calendar.MILLISECOND, 0);
+                Date date = calendar.getTime();
+
+                games.setReleaseDate(date);
+            } catch (Exception e) {
+                System.out.println("Ungültige Eingabe für Datum. Bitte versuchen Sie es erneut.\n");
+                calendar.clear();
+                continue;
+            }
+             break;
+        }
 
         return games;
     }
@@ -539,10 +612,15 @@ public class FunctionService {
      * @return neu erstelltes DLC
      */
     public DLC createDLC() {
-        DLC dlc = new DLC(UUID.randomUUID().toString());
-
         System.out.println("Bitte geben Sie den Namen des DLCs ein");
-        dlc.setDlcName(this.scanner.nextLine());
+        String dlcName = this.scanner.nextLine();
+        // Überprüfen, ob DLC-Name bereits existiert
+        if (LookupService.findDlcByName(dlcs, dlcName) != null) {
+            System.out.println("Ein DLC mit diesem Namen existiert bereits!");
+            return null;
+        }
+        DLC dlc = new DLC(UUID.randomUUID().toString());
+        dlc.setDlcName(dlcName);
 
         System.out.println("Bitte geben Sie den Titel des zugehörigen Spiels ein");
         dlc.setGameTitle(this.scanner.nextLine());
@@ -550,23 +628,44 @@ public class FunctionService {
         System.out.println("Bitte geben Sie die Beschreibung des DLCs ein");
         dlc.setDescription(this.scanner.nextLine());
 
-        System.out.println("Bitte geben Sie den Preis des DLCs ein (z. B. 19.99)");
-        dlc.setPrice(this.scanner.nextDouble());
+        while (true) {
+            try {
+                System.out.println("Bitte geben Sie den Preis des DLCs ein (z. B. 19.99)");
+                dlc.setPrice(this.scanner.nextDouble());
+            }
+            catch (Exception e) {
+                System.out.println("Ungültige Eingabe für Preis. Bitte versuchen Sie es erneut.\n");
+                continue;
+            }
+            break;
+        }
 
-        System.out.println("Bitte geben Sie das Erscheinungsjahr des DLCs ein (z. B. 2026)");
-        int year = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungsmonat des DLCs ein (1-12)");
-        int month = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungstag des DLCs ein (1-31)");
-        int day = this.scanner.nextInt();
-
+        int year;
+        int month;
+        int day;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
-        calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
-        calendar.set(Calendar.MILLISECOND, 0);
-        Date date = calendar.getTime();
+        while (true) {
+            try {
+                System.out.println("Bitte geben Sie das Erscheinungsjahr des DLCs ein (z. B. 2026)");
+                year = this.scanner.nextInt();
+                System.out.println("Bitte geben Sie den Erscheinungsmonat des DLCs ein (1-12)");
+                month = this.scanner.nextInt();
+                System.out.println("Bitte geben Sie den Erscheinungstag des DLCs ein (1-31)");
+                day = this.scanner.nextInt();
 
-        dlc.setReleaseDate(date);
+                calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
+                calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
+                calendar.set(Calendar.MILLISECOND, 0);
+                Date date = calendar.getTime();
+
+                dlc.setReleaseDate(date);
+            } catch (Exception e) {
+                System.out.println("Ungültige Eingabe für Datum. Bitte versuchen Sie es erneut.\n");
+                calendar.clear();
+                continue;
+            }
+            break;
+        }
 
         return dlc;
     }
