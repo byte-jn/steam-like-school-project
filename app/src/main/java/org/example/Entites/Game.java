@@ -71,7 +71,7 @@ public class Game {
      */
     public void setDescription(String description) {
         this.description = description;
-        System.out.println("Beschreibung von Title '" + titel + "' wurde auf '" + description + "' gesetz");
+        System.out.println("Beschreibung von Titel '" + titel + "' wurde auf '" + description + "' gesetz");
     }
 
     /**
