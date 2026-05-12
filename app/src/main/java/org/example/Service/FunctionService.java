@@ -268,9 +268,9 @@ public class FunctionService {
      */
     private int initializeUser() {
         while (activeUser == null) {
-            System.out.println("Willkommen im Game Store!"
+            System.out.println("\n\nWillkommen im Game Store!"
                     + "\nBitte melden Sie sich an, um fortzufahren."
-                    + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung, e für verlassen)");
+                    + "\nSie können sich anmelden oder registrieren (l für Login, r für Registrierung, e für verlassen)\nr");
 
             String choice = this.scanner.nextLine();
             if (choice.equalsIgnoreCase("l")) {
@@ -449,23 +449,43 @@ public class FunctionService {
         System.out.println("Bitte geben Sie die Beschreibung des Spiels ein");
         games.setDescription(this.scanner.nextLine());
 
-        System.out.println("Bitte geben Sie den Preis des Spiels ein (z. B. 59,99)");
-        games.setPrice(this.scanner.nextDouble());
+        while (true) {
+            try {
+                System.out.println("Bitte geben Sie den Preis des Spiels ein (z. B. 59,99)");
+                games.setPrice(this.scanner.nextDouble());
+            } catch (Exception ex) {
+                System.out.println("Ungültige Eingabe für Preis. Bitte versuchen Sie es erneut.\n");
+                continue;
+            }
+            break;
+        }
 
-        System.out.println("Bitte geben Sie das Erscheinungsjahr des Spiels ein (z. B. 2024)");
-        int year = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungsmonat des Spiels ein (1-12)");
-        int month = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungstag des Spiels ein (1-31)");
-        int day = this.scanner.nextInt();
-
+        int year = 0;
+        int month = 0;
+        int day = 0;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
-        calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
-        calendar.set(Calendar.MILLISECOND, 0);
-        Date date = calendar.getTime();
+        while (true) {
+            try {
+                System.out.println("Bitte geben Sie das Erscheinungsjahr des Spiels ein (z. B. 2024)");
+                year = this.scanner.nextInt();
+                System.out.println("Bitte geben Sie den Erscheinungsmonat des Spiels ein (1-12)");
+                month = this.scanner.nextInt();
+                System.out.println("Bitte geben Sie den Erscheinungstag des Spiels ein (1-31)");
+                day = this.scanner.nextInt();
 
-        games.setReleaseDate(date);
+                calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
+                calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
+                calendar.set(Calendar.MILLISECOND, 0);
+                Date date = calendar.getTime();
+
+                games.setReleaseDate(date);
+            } catch (Exception e) {
+                System.out.println("Ungültige Eingabe für Datum. Bitte versuchen Sie es erneut.\n");
+                calendar.clear();
+                continue;
+            }
+             break;
+        }
 
         return games;
     }
@@ -599,23 +619,44 @@ public class FunctionService {
         System.out.println("Bitte geben Sie die Beschreibung des DLCs ein");
         dlc.setDescription(this.scanner.nextLine());
 
-        System.out.println("Bitte geben Sie den Preis des DLCs ein (z. B. 19.99)");
-        dlc.setPrice(this.scanner.nextDouble());
+        while (true) {
+            try {
+                System.out.println("Bitte geben Sie den Preis des DLCs ein (z. B. 19.99)");
+                dlc.setPrice(this.scanner.nextDouble());
+            }
+            catch (Exception e) {
+                System.out.println("Ungültige Eingabe für Preis. Bitte versuchen Sie es erneut.\n");
+                continue;
+            }
+            break;
+        }
 
-        System.out.println("Bitte geben Sie das Erscheinungsjahr des DLCs ein (z. B. 2026)");
-        int year = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungsmonat des DLCs ein (1-12)");
-        int month = this.scanner.nextInt();
-        System.out.println("Bitte geben Sie den Erscheinungstag des DLCs ein (1-31)");
-        int day = this.scanner.nextInt();
-
+        int year;
+        int month;
+        int day;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
-        calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
-        calendar.set(Calendar.MILLISECOND, 0);
-        Date date = calendar.getTime();
+        while (true) {
+            try {
+                System.out.println("Bitte geben Sie das Erscheinungsjahr des DLCs ein (z. B. 2026)");
+                year = this.scanner.nextInt();
+                System.out.println("Bitte geben Sie den Erscheinungsmonat des DLCs ein (1-12)");
+                month = this.scanner.nextInt();
+                System.out.println("Bitte geben Sie den Erscheinungstag des DLCs ein (1-31)");
+                day = this.scanner.nextInt();
 
-        dlc.setReleaseDate(date);
+                calendar.set(year, month - 1, day, 0, 0, 0); // month - 1 ist korrekt, aber Warnung wegen Calendar-Konstanten
+                calendar.set(Calendar.MONTH, month - 1); // explizit Calendar.MONTH setzen
+                calendar.set(Calendar.MILLISECOND, 0);
+                Date date = calendar.getTime();
+
+                dlc.setReleaseDate(date);
+            } catch (Exception e) {
+                System.out.println("Ungültige Eingabe für Datum. Bitte versuchen Sie es erneut.\n");
+                calendar.clear();
+                continue;
+            }
+            break;
+        }
 
         return dlc;
     }
