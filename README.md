@@ -158,3 +158,41 @@ MIT License (siehe LICENSE-Datei, falls vorhanden)
 ## Status
 
 In Entwicklung.
+
+## Abhängigkeitsverwaltung mit Maven
+
+Ab sofort wird Maven zur Verwaltung der benötigten Libraries verwendet. Alle Abhängigkeiten werden in der Datei `pom.xml` im Projektverzeichnis definiert. Diese Datei ist Teil des Repositories.
+
+### So fügst du eine neue Library hinzu
+
+1. Öffne die Datei `pom.xml`.
+2. Füge im `<dependencies>`-Block einen neuen Eintrag hinzu, z. B. für OpenCSV:
+   ```xml
+   <dependency>
+       <groupId>com.opencsv</groupId>
+       <artifactId>opencsv</artifactId>
+       <version>5.7.1</version>
+   </dependency>
+   ```
+3. Speichere die Datei.
+4. Führe in der Konsole im Projektverzeichnis aus:
+   ```powershell
+   mvn clean install
+   ```
+   Dadurch werden alle Abhängigkeiten automatisch heruntergeladen.
+
+### Projekt bauen und starten
+
+1. Baue das Projekt:
+   ```powershell
+   mvn clean package
+   ```
+2. Starte das Programm (Beispiel):
+   ```powershell
+   java -cp target/steam-like-school-project-1.0-SNAPSHOT.jar org.example.Main
+   ```
+
+### Vorteile
+- Keine manuellen .jar-Dateien mehr nötig
+- Jeder im Team hat immer die gleichen Libraries
+- Einfaches Hinzufügen/Entfernen von Abhängigkeiten
