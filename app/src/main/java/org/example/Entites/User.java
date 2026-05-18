@@ -148,16 +148,16 @@ public class User {
     public void removeGame(String id) {
         if (this.ownedGamesIds.remove(id)) {
             System.out.println("Spiel mit id '" + id + "' wurde zu Benutzer " + username + "'s Bibliothek entfernt");
-        } else {
-            System.out.println("Spiel mit id '" + id + "' wurde nicht in Benutzers " + username + "'s Bibliothek gefunden");
+//        } else {
+//            System.out.println("Spiel mit id '" + id + "' wurde nicht in Benutzers " + username + "'s Bibliothek gefunden");
         }
     }
 
     public void removeDlc(String id) {
         if (this.ownedDLCsIds.remove(id)) {
             System.out.println("DLC mit id '" + id + "' wurde zu Benutzer " + username + "'s Bibliothek entfernt");
-        } else {
-            System.out.println("DLC mit id '" + id + "'  wurde nicht zu Benutzer " + username + "'s Bibliothek gefunden");
+//        } else {
+//            System.out.println("DLC mit id '" + id + "'  wurde nicht zu Benutzer " + username + "'s Bibliothek gefunden");
         }
     }
 }
