@@ -1,6 +1,7 @@
 plugins {
     id 'io.micronaut.application' version '4.4.4'
     id 'checkstyle'
+    id 'jacoco'
 }
 
 version = '0.1'
@@ -51,4 +52,16 @@ checkstyle {
     configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
     ignoreFailures = false
     showViolations = true
+}
+
+jacoco {
+    toolVersion = '0.8.10'
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
 }
