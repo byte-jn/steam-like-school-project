@@ -1,0 +1,27 @@
+micronaut:
+  application:
+    name: steam-like-school-project
+  server:
+    port: 8080
+
+datasources:
+  default:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:app}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    connection-timeout: 30000
+    initialization-fail-timeout: -1
+    maximum-pool-size: 10
+    minimum-idle: 2
+
+jpa:
+  default:
+    entity-scan:
+      packages: 'org.example.entities'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true
+        format_sql: true

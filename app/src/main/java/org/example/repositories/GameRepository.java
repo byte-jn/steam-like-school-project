@@ -1,7 +1,7 @@
 package org.example.repositories;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.entities.Game;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

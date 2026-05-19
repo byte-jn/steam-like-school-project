@@ -9,15 +9,16 @@ import java.util.Date;
 @Entity
 @Table(name = "games")
 public class Game {
-    @Id
-    @Column(name = "id", nullable = false)
-    private final String id;
 
-    @Column(name = "title")
-    private String title;
+    @Id
+    @Column(name = "id", nullable = false, updatable = false)
+    private String id;
+
+    @Column(name = "titel")
+    private String titel;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private final Date createdAt;
+    private Date createdAt;
 
     @Column(name = "release_date")
     private Date releaseDate;
@@ -28,10 +29,7 @@ public class Game {
     @Column(name = "price")
     private double price;
 
-    protected Game() {
-        this.id = null;
-        this.createdAt = null;
-    }
+    protected Game() { }
 
     public Game(String id) {
         this.id = id;
@@ -70,11 +68,11 @@ public class Game {
         this.price = price;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitel() {
+        return titel;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitel(String titel) {
+        this.titel = titel;
     }
 }

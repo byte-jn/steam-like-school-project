@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "steam-like-school-project-db": {
+      "command": "node",
+      "args": ["C:\\Users\\rayya\\tls\\steam-like-school-project\\mcp\\mcp-server.js"],
+      "env": {
+        "DB_HOST": "localhost",
+        "DB_PORT": "5432",
+        "DB_NAME": "app",
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "postgres"
+      }
+    }
+  }
+}

@@ -1,0 +1,164 @@
+# yaml-language-server: $schema=https://app.stainless.com/config.schema.json
+
+# The main edition for the config, see the [docs] for more information.
+#
+# [docs]: https://www.stainless.com/docs/reference/editions
+edition: 2026-02-23
+
+organization:
+  # Name of your organization or company, used to determine the name of the client
+  # and headings.
+  name: steam-like-school-project
+  # Link to your API documentation.
+  docs: ''
+  # Contact email for bug reports, questions, and support requests.
+  contact: ''
+
+# `targets` define the output targets and their customization options, such as
+# whether to emit the Node SDK and what its package name should be.
+targets:
+  typescript:
+    # The edition for this target, see the [docs] for more information.
+    #
+    # [docs]: https://www.stainless.com/docs/reference/editions
+    edition: typescript.2025-10-10
+    package_name: steam-like-school-project
+    production_repo: null
+    publish:
+      npm: false
+  python:
+    edition: python.2025-11-20
+    package_name: steam_like_school_project
+    production_repo: null
+    publish:
+      pypi: false
+  ruby:
+    edition: ruby.2025-10-08
+    gem_name: steam-like-school-project
+    production_repo: null
+    publish:
+      rubygems: false
+  go:
+    edition: go.2026-04-15
+    package_name: steam-like-school-project
+    production_repo: null
+  kotlin:
+    edition: kotlin.2025-10-08
+    reverse_domain: com.steam_like_school_project.api
+    production_repo: null
+    publish:
+      maven: false
+  java:
+    edition: java.2025-10-08
+    reverse_domain: com.steam_like_school_project.api
+    production_repo: null
+    publish:
+      maven: false
+  php:
+    edition: php.2025-10-08
+    package_name: steam-like-school-project
+    production_repo: null
+    composer_package_name: org-placeholder/steam-like-school-project
+  csharp:
+    edition: csharp.2025-10-08
+    package_name: steam-like-school-project
+    production_repo: null
+    publish:
+      nuget: false
+  cli:
+    edition: cli.2025-10-08
+    binary_name: steam-like-school-project
+    production_repo: null
+
+# `environments` are a map of the name of the environment (e.g. "sandbox",
+# "production") to the corresponding url to use.
+environments:
+  production: http://localhost:8080
+
+# `resources` define the structure and organization for your API, such as how
+# methods and models are grouped together and accessed. See the [configuration
+# guide] for more information.
+#
+# [configuration guide]: https://www.stainless.com/docs/guides/configure#resources
+resources:
+  users:
+    # Configure the methods defined in this resource. Each key in the object is the
+    # name of the method and the value is either an endpoint (for example, `get /foo`)
+    # or an object with more detail.
+    #
+    # [reference]: https://www.stainless.com/docs/reference/config#method
+    # Configure the models--named types--defined in the resource. Each key in the
+    # object is the name of the model and the value is either the name of a schema in
+    # `#/components/schemas` or an object with more detail.
+    #
+    # [reference]: https://www.stainless.com/docs/reference/config#model
+    models:
+      benutzer: '#/components/schemas/BenutzerDto'
+    methods:
+      list: get /users
+      create: post /users
+      retrieve: get /users/{id}
+      update: put /users/{id}
+      delete: delete /users/{id}
+
+  games:
+    models:
+      spiel: '#/components/schemas/SpielDto'
+    methods:
+      list: get /games
+      create: post /games
+      retrieve: get /games/{id}
+      update: put /games/{id}
+      delete: delete /games/{id}
+
+  dlcs:
+    models:
+      dlc: '#/components/schemas/DlcDto'
+    methods:
+      list: get /dlcs
+      create: post /dlcs
+      retrieve: get /dlcs/{id}
+      update: put /dlcs/{id}
+      delete: delete /dlcs/{id}
+
+settings:
+  # All generated integration tests that hit the steady mock http server are marked
+  # as skipped. Removing this setting or setting it to false enables tests, but
+  # doing so may result in test failures due to bugs in the test server.
+  #
+  # [steady mock http server]: https://github.com/dgellow/steady
+  disable_mock_tests: true
+  license: Apache-2.0
+
+# `client_settings` define settings for the API client, such as extra constructor
+# arguments (used for authentication), retry behavior, idempotency, etc.
+client_settings:
+  opts:
+    api_key:
+      type: string
+      read_env: STEAM_LIKE_SCHOOL_PROJECT_API_KEY
+      nullable: true
+      auth:
+        security_scheme: bearerAuth
+
+security_schemes:
+  bearerAuth:
+    type: http
+    scheme: bearer
+
+security:
+  - bearerAuth: []
+
+# `readme` is used to configure the code snippets that will be rendered in the
+# README.md of various SDKs. In particular, you can change the `headline`
+# snippet's endpoint and the arguments to call it with.
+readme:
+  example_requests:
+    default:
+      type: request
+      endpoint: get /users
+      params: {}
+    headline:
+      type: request
+      endpoint: get /users
+      params: {}

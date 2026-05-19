@@ -1,7 +1,7 @@
 package org.example.services;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.dtos.DlcDto;
 import org.example.dtos.GameDto;
 import org.example.dtos.UserDto;
@@ -171,7 +171,7 @@ public class FunctionService {
     public GameDto createGame() {
         GameDto dto = new GameDto();
 
-        dto.setTitle(readValidInput(
+        dto.setTitel(readValidInput(
                 "Bitte geben Sie den Titel des Spiels ein",
                 NAME_PATTERN,
                 "Ungültiger Titel. Erlaubt: Buchstaben, Zahlen, Leerzeichen, grundlegende Satzzeichen (max. 255)."));
@@ -237,7 +237,10 @@ public class FunctionService {
             return user;
         }
         user.addOwnedGameId(game.getId());
-        userService.update(user);
+        Optional<UserDto> updated = userService.update(user.getId(), user);
+        if (updated.isPresent()) {
+            user = updated.get();
+        }
         System.out.println("Spiel '" + game.getTitel() + "' erfolgreich zur Bibliothek hinzugefuegt.");
         return user;
     }
@@ -297,7 +300,7 @@ public class FunctionService {
             return user;
         }
         user.addOwnedDlcId(dlcId);
-        userService.update(user);
+        userService.update(user.getId(), user);
         System.out.println("DLC erfolgreich zur Bibliothek hinzugefuegt.");
         return user;
     }
@@ -340,16 +343,22 @@ public class FunctionService {
                 EMAIL_PATTERN,
                 "Ungueltige E-Mail-Adresse. Bitte erneut versuchen.");
         user.setEmail(email);
-        userService.update(user);
-        System.out.println("E-Mail-Adresse erfolgreich aktualisiert.");
+        Optional<UserDto> updated = userService.update(user.getId(), user);
+        if (updated.isPresent()) {
+            user = updated.get();
+            System.out.println("E-Mail-Adresse erfolgreich aktualisiert.");
+        }
         return user;
     }
 
     private UserDto updatePassword(UserDto user) {
         String password = readPassword("Neues Passwort eingeben:");
         user.setPassword(password);
-        userService.update(user);
-        System.out.println("Passwort erfolgreich aktualisiert.");
+        Optional<UserDto> updated = userService.update(user.getId(), user);
+        if (updated.isPresent()) {
+            user = updated.get();
+            System.out.println("Passwort erfolgreich aktualisiert.");
+        }
         return user;
     }
 

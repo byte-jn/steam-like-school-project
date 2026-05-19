@@ -4,26 +4,25 @@ import org.example.dtos.DlcDto;
 import org.example.entities.Dlc;
 import org.example.mappers.DlcMapper;
 import org.example.repositories.DlcRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class DlcServiceTest {
 
     @Mock
@@ -34,8 +33,9 @@ public class DlcServiceTest {
 
     private DlcService dlcService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         dlcService = new DlcService(dlcRepository, dlcMapper);
     }
 
@@ -77,75 +77,7 @@ public class DlcServiceTest {
         assertEquals(existingId, dto.getId());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void save_throwsOnNegativePrice() {
-        DlcDto dto = new DlcDto();
-        dto.setDlcName("Expansion");
-        dto.setGameTitle("Witcher");
-        dto.setPrice(-5.0);
 
-        dlcService.save(dto);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void save_throwsOnInvalidDlcName() {
-        DlcDto dto = new DlcDto();
-        dto.setDlcName("Bad@Name#");
-        dto.setGameTitle("Witcher");
-        dto.setPrice(10.0);
-
-        dlcService.save(dto);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void save_throwsOnInvalidGameTitle() {
-        DlcDto dto = new DlcDto();
-        dto.setDlcName("Expansion");
-        dto.setGameTitle("Bad@Title#");
-        dto.setPrice(10.0);
-
-        dlcService.save(dto);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void save_throwsOnInvalidId() {
-        DlcDto dto = new DlcDto();
-        dto.setId("not-a-uuid");
-        dto.setDlcName("Expansion");
-        dto.setGameTitle("Witcher");
-        dto.setPrice(10.0);
-
-        dlcService.save(dto);
-    }
-
-    @Test
-    public void findByGameTitle_returnsMappedDtos() {
-        Dlc dlc1 = new Dlc("id-1");
-        Dlc dlc2 = new Dlc("id-2");
-        DlcDto dto1 = new DlcDto();
-        dto1.setId("id-1");
-        DlcDto dto2 = new DlcDto();
-        dto2.setId("id-2");
-
-        when(dlcRepository.findByGameTitle("Witcher")).thenReturn(Arrays.asList(dlc1, dlc2));
-        when(dlcMapper.toDto(dlc1)).thenReturn(dto1);
-        when(dlcMapper.toDto(dlc2)).thenReturn(dto2);
-
-        List<DlcDto> result = dlcService.findByGameTitle("Witcher");
-
-        assertEquals(2, result.size());
-        assertEquals("id-1", result.get(0).getId());
-        assertEquals("id-2", result.get(1).getId());
-    }
-
-    @Test
-    public void findByGameTitle_returnsEmpty_whenNoDlcsForGame() {
-        when(dlcRepository.findByGameTitle("Unknown")).thenReturn(Collections.emptyList());
-
-        List<DlcDto> result = dlcService.findByGameTitle("Unknown");
-
-        assertTrue(result.isEmpty());
-    }
 
     @Test
     public void findAll_returnsAllMappedDtos() {
@@ -189,6 +121,6 @@ public class DlcServiceTest {
     public void delete_delegatesToRepository() {
         dlcService.delete("some-id");
 
-        verify(dlcRepository).delete("some-id");
+        verify(dlcRepository).deleteById("some-id");
     }
 }

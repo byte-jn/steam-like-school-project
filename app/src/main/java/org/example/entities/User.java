@@ -20,7 +20,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "email")
@@ -47,9 +47,9 @@ public class User {
 
     protected User() { }
 
-    public User(String firstName, String lastName) {
-        firstname = firstName;
-        lastname = lastName;
+    public User(String firstname, String lastname) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.ownedGamesIds = new ArrayList<>();
         this.ownedDLCsIds = new ArrayList<>();
     }

@@ -4,26 +4,25 @@ import org.example.dtos.GameDto;
 import org.example.entities.Game;
 import org.example.mappers.GameMapper;
 import org.example.repositories.GameRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class GameServiceTest {
 
     @Mock
@@ -34,15 +33,16 @@ public class GameServiceTest {
 
     private GameService gameService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         gameService = new GameService(gameRepository, gameMapper);
     }
 
     @Test
     public void save_assignsUuidWhenIdIsNull() {
         GameDto dto = new GameDto();
-        dto.setTitle("Witcher");
+        dto.setTitel("Witcher");
         dto.setPrice(49.99);
 
         Game game = new Game("generated");
@@ -63,7 +63,7 @@ public class GameServiceTest {
         String existingId = "550e8400-e29b-41d4-a716-446655440000";
         GameDto dto = new GameDto();
         dto.setId(existingId);
-        dto.setTitle("Witcher");
+        dto.setTitel("Witcher");
         dto.setPrice(49.99);
 
         Game game = new Game(existingId);
@@ -75,32 +75,32 @@ public class GameServiceTest {
         assertEquals(existingId, dto.getId());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void save_throwsOnNegativePrice() {
         GameDto dto = new GameDto();
-        dto.setTitle("Witcher");
+        dto.setTitel("Witcher");
         dto.setPrice(-1.0);
 
-        gameService.save(dto);
+        assertThrows(IllegalArgumentException.class, () -> gameService.save(dto));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void save_throwsOnInvalidTitle() {
         GameDto dto = new GameDto();
-        dto.setTitle("Bad@Title#");
+        dto.setTitel("Bad@Title#");
         dto.setPrice(10.0);
 
-        gameService.save(dto);
+        assertThrows(IllegalArgumentException.class, () -> gameService.save(dto));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void save_throwsOnInvalidId() {
         GameDto dto = new GameDto();
         dto.setId("not-a-uuid");
-        dto.setTitle("Witcher");
+        dto.setTitel("Witcher");
         dto.setPrice(10.0);
 
-        gameService.save(dto);
+        assertThrows(IllegalArgumentException.class, () -> gameService.save(dto));
     }
 
     @Test
@@ -108,12 +108,13 @@ public class GameServiceTest {
         Game game = new Game("id-1");
         GameDto dto = new GameDto();
         dto.setId("id-1");
-        dto.setTitle("Witcher");
+        dto.setTitel("Witcher");
 
         when(gameRepository.findByTitle("Witcher")).thenReturn(Optional.of(game));
         when(gameMapper.toDto(game)).thenReturn(dto);
 
         Optional<GameDto> result = gameService.findByName("Witcher");
+        // Note: GameRepository.findByTitle needs to use titel column
 
         assertTrue(result.isPresent());
         assertEquals("id-1", result.get().getId());

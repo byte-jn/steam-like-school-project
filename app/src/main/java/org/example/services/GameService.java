@@ -1,7 +1,7 @@
 package org.example.services;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.dtos.GameDto;
 import org.example.entities.Game;
 import org.example.mappers.GameMapper;
@@ -86,10 +86,16 @@ public class GameService {
     /**
      * Updates an existing game from the given DTO.
      */
-    public void update(GameDto dto) {
+    public Optional<GameDto> update(String id, GameDto dto) {
+        Optional<Game> existing = gameRepository.findById(id);
+        if (existing.isEmpty()) {
+            return Optional.empty();
+        }
+        dto.setId(id);
         validate(dto);
         Game game = gameMapper.toDomain(dto);
         gameRepository.update(game);
+        return Optional.of(gameMapper.toDto(game));
     }
 
     /**

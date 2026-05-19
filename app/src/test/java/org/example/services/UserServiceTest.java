@@ -4,24 +4,21 @@ import org.example.dtos.UserDto;
 import org.example.entities.User;
 import org.example.mappers.UserMapper;
 import org.example.repositories.UserRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
     @Mock
@@ -32,8 +29,9 @@ public class UserServiceTest {
 
     private UserService userService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         userService = new UserService(userRepository, userMapper);
     }
 
@@ -46,6 +44,7 @@ public class UserServiceTest {
         UserDto returned = new UserDto();
         returned.setUsername("jannis");
 
+        when(userRepository.save(user)).thenReturn(user);
         when(userMapper.toDomain(dto)).thenReturn(user);
         when(userMapper.toDto(user)).thenReturn(returned);
 
@@ -126,13 +125,18 @@ public class UserServiceTest {
     @Test
     public void update_delegatesToRepository() {
         UserDto dto = new UserDto();
+        dto.setId(42L);
         dto.setUsername("jannis");
 
         User user = new User("jannis", "jannis");
-        when(userMapper.toDomain(dto)).thenReturn(user);
+        user.setId(42L);
+        when(userRepository.findById(42L)).thenReturn(Optional.of(user));
+        when(userRepository.update(user)).thenReturn(user);
+        when(userMapper.toDto(user)).thenReturn(dto);
 
-        userService.update(dto);
+        Optional<UserDto> result = userService.update(42L, dto);
 
+        assertTrue(result.isPresent());
         verify(userRepository).update(user);
     }
 
@@ -140,6 +144,6 @@ public class UserServiceTest {
     public void delete_delegatesToRepository() {
         userService.delete(42L);
 
-        verify(userRepository).delete(42L);
+        verify(userRepository).deleteById(42L);
     }
 }

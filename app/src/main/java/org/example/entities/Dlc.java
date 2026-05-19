@@ -10,8 +10,8 @@ import java.util.Date;
 @Table(name = "dlcs")
 public class Dlc {
     @Id
-    @Column(name = "id", nullable = false)
-    private final String id;
+    @Column(name = "id", nullable = false, updatable = false)
+    private String id;
 
     @Column(name = "dlc_name")
     private String dlcName;
@@ -23,7 +23,7 @@ public class Dlc {
     private Date releaseDate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private final Date createdAt;
+    private Date createdAt;
 
     @Column(name = "description")
     private String description;
@@ -31,10 +31,7 @@ public class Dlc {
     @Column(name = "price")
     private double price;
 
-    protected Dlc() {
-        this.id = null;
-        this.createdAt = null;
-    }
+    protected Dlc() { }
 
     public Dlc(String id) {
         this.id = id;

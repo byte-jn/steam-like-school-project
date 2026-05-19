@@ -35,7 +35,7 @@ public class GameDto {
         return titel;
     }
 
-    public void setTitle(String titel) {
+    public void setTitel(String titel) {
         this.titel = titel;
     }
 

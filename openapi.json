@@ -1,0 +1,614 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Steam-ähnliches Schulprojekt API",
+    "version": "1.0.0",
+    "description": "REST-API zur Verwaltung von Benutzern, Spielen und DLCs in einem Steam-ähnlichen Shop. Bietet vollständige CRUD-Operationen für digitale Spielprodukte und Benutzerkonten.",
+    "contact": {
+      "name": "WelsyLab",
+      "email": "welsylab@outlook.com"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Lokaler Entwicklungsserver"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "operationId": "alleBenutzerAbrufen",
+        "summary": "Alle Benutzer abrufen",
+        "description": "Liste aller Benutzer im System abrufen",
+        "tags": ["Benutzer"],
+        "responses": {
+          "200": {
+            "description": "Benutzer erfolgreich abgerufen",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/BenutzerDto" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "operationId": "benutzerErstellen",
+        "summary": "Neuen Benutzer erstellen",
+        "description": "Neues Benutzerkonto erstellen. Benutzername muss eindeutig sein.",
+        "tags": ["Benutzer"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BenutzerDto" },
+              "examples": {
+                "newUser": {
+                  "value": {
+                    "username": "johndoe",
+                    "email": "john@example.com",
+                    "password": "securepassword123",
+                    "firstname": "John",
+                    "lastname": "Doe"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BenutzerDto" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "409": {
+            "description": "Username already exists",
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
+    "/users/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Datenbank-ID des Benutzers",
+          "schema": { "type": "integer", "format": "int64" }
+        }
+      ],
+      "get": {
+        "operationId": "benutzerNachIdAbrufen",
+        "summary": "Benutzer anhand der ID abrufen",
+        "description": "Bestimmten Benutzer anhand der Datenbank-ID abrufen",
+        "tags": ["Benutzer"],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BenutzerDto" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      },
+      "put": {
+        "operationId": "benutzerAktualisieren",
+        "summary": "Benutzer aktualisieren",
+        "description": "Informationen eines vorhandenen Benutzers aktualisieren",
+        "tags": ["Benutzer"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BenutzerDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BenutzerDto" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      },
+      "delete": {
+        "operationId": "benutzerLoeschen",
+        "summary": "Benutzer löschen",
+        "description": "Benutzer anhand der ID löschen",
+        "tags": ["Benutzer"],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
+    "/games": {
+      "get": {
+        "operationId": "alleSpieleAbrufen",
+        "summary": "Alle Spiele abrufen",
+        "description": "Liste aller verfügbaren Spiele im Shop abrufen",
+        "tags": ["Spiele"],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved games",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/SpielDto" }
+                }
+              }
+            }
+          },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      },
+      "post": {
+        "operationId": "spielErstellen",
+        "summary": "Neues Spiel erstellen",
+        "description": "Neues Spiel im Shop erstellen. Die ID wird vom Server automatisch generiert, falls nicht angegeben.",
+        "tags": ["Spiele"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SpielDto" },
+              "examples": {
+                "newGame": {
+                  "value": {
+                    "titel": "The Witcher 3",
+                    "description": "Open-world RPG game",
+                    "price": 29.99,
+                    "releaseDate": 1451606400000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Game created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SpielDto" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
+    "/games/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "UUID of the game",
+          "schema": { "type": "string", "format": "uuid" }
+        }
+      ],
+      "get": {
+        "operationId": "spielNachIdAbrufen",
+        "summary": "Spiel anhand der ID abrufen",
+        "description": "Bestimmtes Spiel anhand seiner UUID abrufen",
+        "tags": ["Spiele"],
+        "responses": {
+          "200": {
+            "description": "Game found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SpielDto" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      },
+      "put": {
+        "operationId": "spielAktualisieren",
+        "summary": "Spiel aktualisieren",
+        "description": "Informationen eines vorhandenen Spiels aktualisieren",
+        "tags": ["Spiele"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SpielDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Game updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SpielDto" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      },
+      "delete": {
+        "operationId": "spielLoeschen",
+        "summary": "Spiel löschen",
+        "description": "Spiel anhand seiner UUID löschen",
+        "tags": ["Spiele"],
+        "responses": {
+          "204": {
+            "description": "Game deleted successfully"
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
+    "/dlcs": {
+      "get": {
+        "operationId": "alleDlcsAbrufen",
+        "summary": "Alle DLCs abrufen",
+        "description": "Liste aller verfügbaren DLCs im Shop abrufen",
+        "tags": ["DLCs"],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved DLCs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/DlcDto" }
+                }
+              }
+            }
+          },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      },
+      "post": {
+        "operationId": "dlcErstellen",
+        "summary": "Neuen DLC erstellen",
+        "description": "Neuen DLC im Shop erstellen. Die ID wird vom Server automatisch generiert, falls nicht angegeben.",
+        "tags": ["DLCs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DlcDto" },
+              "examples": {
+                "newDLC": {
+                  "value": {
+                    "dlcName": "Blood and Wine",
+                    "gameTitle": "The Witcher 3",
+                    "description": "Major expansion pack",
+                    "price": 14.99,
+                    "releaseDate": 1464739200000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "DLC created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DlcDto" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
+    "/dlcs/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "UUID of the DLC",
+          "schema": { "type": "string", "format": "uuid" }
+        }
+      ],
+      "get": {
+        "operationId": "dlcNachIdAbrufen",
+        "summary": "DLC anhand der ID abrufen",
+        "description": "Bestimmten DLC anhand seiner UUID abrufen",
+        "tags": ["DLCs"],
+        "responses": {
+          "200": {
+            "description": "DLC found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DlcDto" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      },
+      "put": {
+        "operationId": "dlcAktualisieren",
+        "summary": "DLC aktualisieren",
+        "description": "Informationen eines vorhandenen DLCs aktualisieren",
+        "tags": ["DLCs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DlcDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DLC updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DlcDto" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      },
+      "delete": {
+        "operationId": "dlcLoeschen",
+        "summary": "DLC löschen",
+        "description": "DLC anhand seiner UUID löschen",
+        "tags": ["DLCs"],
+        "responses": {
+          "204": {
+            "description": "DLC deleted successfully"
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "description": "Ungültige Anfrage - fehlerhafte Eingabe",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Ressource nicht gefunden",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Ressourcenkonflikt - möglicherweise Verletzung eindeutiger Einschränkungen",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Interner Serverfehler",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message describing what went wrong"
+          },
+          "status": {
+            "type": "integer",
+            "description": "HTTP status code"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the error occurred"
+          },
+          "_links": {
+            "type": "object",
+            "description": "HATEOAS links"
+          },
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "errors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "BenutzerDto": {
+        "type": "object",
+        "description": "Benutzerkontoinformationen",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Vom Server generierte Datenbank-ID. Nicht angeben beim Erstellen eines Benutzers."
+          },
+          "username": {
+            "type": "string",
+            "description": "Eindeutiger Benutzername (muss eindeutig sein)",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "E-Mail-Adresse des Benutzers"
+          },
+          "password": {
+            "type": "string",
+            "writeOnly": true,
+            "description": "Passwort des Benutzers (nur in Anfragen, nie in Antworten)"
+          },
+          "firstname": {
+            "type": "string",
+            "description": "Vorname des Benutzers"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "Nachname des Benutzers"
+          },
+          "ownedGamesIds": {
+            "type": "array",
+            "description": "Liste der UUIDs gekaufter Spiele",
+            "items": { "type": "string", "format": "uuid" }
+          },
+          "ownedDlcIds": {
+            "type": "array",
+            "description": "Liste der UUIDs gekaufter DLCs",
+            "items": { "type": "string", "format": "uuid" }
+          }
+        }
+      },
+      "SpielDto": {
+        "type": "object",
+        "description": "Spielproduktinformationen",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Spiel-UUID. Vom Server automatisch generiert, falls nicht angegeben."
+          },
+          "titel": {
+            "type": "string",
+            "description": "Spieltitel (Feldname entspricht Datenbankspalte 'titel')"
+          },
+          "description": {
+            "type": "string",
+            "description": "Spielbeschreibung"
+          },
+          "price": {
+            "type": "number",
+            "format": "double",
+            "description": "Preis in EUR",
+            "minimum": 0
+          },
+          "releaseDate": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Erscheinungsdatum als Unix-Zeitstempel in Millisekunden",
+            "example": 1451606400000
+          },
+          "createdAt": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Erstellungszeitpunkt als Unix-Zeitstempel in Millisekunden. Wird vom Server gesetzt."
+          }
+        },
+        "required": ["titel", "price"]
+      },
+      "DlcDto": {
+        "type": "object",
+        "description": "DLC (Downloadable Content) Produktinformationen",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "DLC-UUID. Vom Server automatisch generiert, falls nicht angegeben."
+          },
+          "dlcName": {
+            "type": "string",
+            "description": "Name des DLCs"
+          },
+          "gameTitle": {
+            "type": "string",
+            "description": "Titel des zugehörigen Spiels"
+          },
+          "description": {
+            "type": "string",
+            "description": "DLC-Beschreibung"
+          },
+          "price": {
+            "type": "number",
+            "format": "double",
+            "description": "Preis in EUR",
+            "minimum": 0
+          },
+          "releaseDate": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Erscheinungsdatum als Unix-Zeitstempel in Millisekunden",
+            "example": 1464739200000
+          },
+          "createdAt": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Erstellungszeitpunkt als Unix-Zeitstempel in Millisekunden. Wird vom Server gesetzt."
+          }
+        },
+        "required": ["dlcName", "gameTitle", "price"]
+      }
+    }
+  }
+}
