@@ -130,7 +130,14 @@ public class UserFunctions {
                 continue;
             }
 
-            break;
+            int atIndex = email.indexOf('@');
+            int dotIndex = email.lastIndexOf('.');
+
+            if (atIndex > 0 && dotIndex > atIndex + 1 && dotIndex < email.length() - 1) {
+                break;
+            }
+
+            System.out.println("Ungültige E-Mail-Adresse. Bitte versuchen Sie es erneut.");
         }
 
         String password = "";
