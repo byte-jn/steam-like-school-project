@@ -1,5 +1,5 @@
 {
-  "enabledMcpjsonServers": ["steam-like-school-project"],
+  "enabledMcpjsonServers": ["steam-like-school-project", "stainless"],
   "hooks": {
     "SessionStart": [
       {
