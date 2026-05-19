@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Steam-Like School Project API",
+    "title": "Steam-ähnliches Schulprojekt API",
     "version": "1.0.0",
-    "description": "REST API for managing users, games, and DLCs in a Steam-like shop system. Provides full CRUD operations for managing digital game products and user accounts.",
+    "description": "REST-API zur Verwaltung von Benutzern, Spielen und DLCs in einem Steam-ähnlichen Shop. Bietet vollständige CRUD-Operationen für digitale Spielprodukte und Benutzerkonten.",
     "contact": {
       "name": "WelsyLab",
       "email": "welsylab@outlook.com"
@@ -15,29 +15,19 @@
   "servers": [
     {
       "url": "http://localhost:8080",
-      "description": "Local development server"
-    },
-    {
-      "url": "http://localhost:8080",
-      "description": "Production server",
-      "variables": {
-        "environment": {
-          "default": "prod",
-          "enum": ["dev", "prod"]
-        }
-      }
+      "description": "Lokaler Entwicklungsserver"
     }
   ],
   "paths": {
     "/users": {
       "get": {
         "operationId": "alleBenutzerAbrufen",
-        "summary": "Retrieve all users",
-        "description": "Get a list of all users in the system",
+        "summary": "Alle Benutzer abrufen",
+        "description": "Liste aller Benutzer im System abrufen",
         "tags": ["Benutzer"],
         "responses": {
           "200": {
-            "description": "Successfully retrieved users",
+            "description": "Benutzer erfolgreich abgerufen",
             "content": {
               "application/json": {
                 "schema": {
@@ -55,8 +45,8 @@
       },
       "post": {
         "operationId": "benutzerErstellen",
-        "summary": "Create a new user",
-        "description": "Create a new user account. Username must be unique.",
+        "summary": "Neuen Benutzer erstellen",
+        "description": "Neues Benutzerkonto erstellen. Benutzername muss eindeutig sein.",
         "tags": ["Benutzer"],
         "requestBody": {
           "required": true,
@@ -107,8 +97,8 @@
       ],
       "get": {
         "operationId": "benutzerNachIdAbrufen",
-        "summary": "Retrieve user by ID",
-        "description": "Get a specific user by their database ID",
+        "summary": "Benutzer anhand der ID abrufen",
+        "description": "Bestimmten Benutzer anhand der Datenbank-ID abrufen",
         "tags": ["Benutzer"],
         "responses": {
           "200": {
@@ -125,8 +115,8 @@
       },
       "put": {
         "operationId": "benutzerAktualisieren",
-        "summary": "Update user",
-        "description": "Update an existing user's information",
+        "summary": "Benutzer aktualisieren",
+        "description": "Informationen eines vorhandenen Benutzers aktualisieren",
         "tags": ["Benutzer"],
         "requestBody": {
           "required": true,
@@ -153,8 +143,8 @@
       },
       "delete": {
         "operationId": "benutzerLoeschen",
-        "summary": "Delete user",
-        "description": "Delete a user by their ID",
+        "summary": "Benutzer löschen",
+        "description": "Benutzer anhand der ID löschen",
         "tags": ["Benutzer"],
         "responses": {
           "204": {
@@ -168,8 +158,8 @@
     "/games": {
       "get": {
         "operationId": "alleSpieleAbrufen",
-        "summary": "Retrieve all games",
-        "description": "Get a list of all available games in the store",
+        "summary": "Alle Spiele abrufen",
+        "description": "Liste aller verfügbaren Spiele im Shop abrufen",
         "tags": ["Spiele"],
         "responses": {
           "200": {
@@ -188,8 +178,8 @@
       },
       "post": {
         "operationId": "spielErstellen",
-        "summary": "Create a new game",
-        "description": "Create a new game in the store. ID will be auto-generated if not provided.",
+        "summary": "Neues Spiel erstellen",
+        "description": "Neues Spiel im Shop erstellen. Die ID wird vom Server automatisch generiert, falls nicht angegeben.",
         "tags": ["Spiele"],
         "requestBody": {
           "required": true,
@@ -235,8 +225,8 @@
       ],
       "get": {
         "operationId": "spielNachIdAbrufen",
-        "summary": "Retrieve game by ID",
-        "description": "Get a specific game by its UUID",
+        "summary": "Spiel anhand der ID abrufen",
+        "description": "Bestimmtes Spiel anhand seiner UUID abrufen",
         "tags": ["Spiele"],
         "responses": {
           "200": {
@@ -253,8 +243,8 @@
       },
       "put": {
         "operationId": "spielAktualisieren",
-        "summary": "Update game",
-        "description": "Update an existing game's information",
+        "summary": "Spiel aktualisieren",
+        "description": "Informationen eines vorhandenen Spiels aktualisieren",
         "tags": ["Spiele"],
         "requestBody": {
           "required": true,
@@ -280,8 +270,8 @@
       },
       "delete": {
         "operationId": "spielLoeschen",
-        "summary": "Delete game",
-        "description": "Delete a game by its UUID",
+        "summary": "Spiel löschen",
+        "description": "Spiel anhand seiner UUID löschen",
         "tags": ["Spiele"],
         "responses": {
           "204": {
@@ -295,8 +285,8 @@
     "/dlcs": {
       "get": {
         "operationId": "alleDlcsAbrufen",
-        "summary": "Retrieve all DLCs",
-        "description": "Get a list of all available DLCs in the store",
+        "summary": "Alle DLCs abrufen",
+        "description": "Liste aller verfügbaren DLCs im Shop abrufen",
         "tags": ["DLCs"],
         "responses": {
           "200": {
@@ -315,8 +305,8 @@
       },
       "post": {
         "operationId": "dlcErstellen",
-        "summary": "Create a new DLC",
-        "description": "Create a new DLC in the store. ID will be auto-generated if not provided.",
+        "summary": "Neuen DLC erstellen",
+        "description": "Neuen DLC im Shop erstellen. Die ID wird vom Server automatisch generiert, falls nicht angegeben.",
         "tags": ["DLCs"],
         "requestBody": {
           "required": true,
@@ -363,8 +353,8 @@
       ],
       "get": {
         "operationId": "dlcNachIdAbrufen",
-        "summary": "Retrieve DLC by ID",
-        "description": "Get a specific DLC by its UUID",
+        "summary": "DLC anhand der ID abrufen",
+        "description": "Bestimmten DLC anhand seiner UUID abrufen",
         "tags": ["DLCs"],
         "responses": {
           "200": {
@@ -381,8 +371,8 @@
       },
       "put": {
         "operationId": "dlcAktualisieren",
-        "summary": "Update DLC",
-        "description": "Update an existing DLC's information",
+        "summary": "DLC aktualisieren",
+        "description": "Informationen eines vorhandenen DLCs aktualisieren",
         "tags": ["DLCs"],
         "requestBody": {
           "required": true,
@@ -408,8 +398,8 @@
       },
       "delete": {
         "operationId": "dlcLoeschen",
-        "summary": "Delete DLC",
-        "description": "Delete a DLC by its UUID",
+        "summary": "DLC löschen",
+        "description": "DLC anhand seiner UUID löschen",
         "tags": ["DLCs"],
         "responses": {
           "204": {
@@ -424,7 +414,7 @@
   "components": {
     "responses": {
       "BadRequest": {
-        "description": "Bad request - invalid input",
+        "description": "Ungültige Anfrage - fehlerhafte Eingabe",
         "content": {
           "application/json": {
             "schema": { "$ref": "#/components/schemas/ErrorResponse" }
@@ -432,7 +422,7 @@
         }
       },
       "NotFound": {
-        "description": "Resource not found",
+        "description": "Ressource nicht gefunden",
         "content": {
           "application/json": {
             "schema": { "$ref": "#/components/schemas/ErrorResponse" }
@@ -440,7 +430,7 @@
         }
       },
       "Conflict": {
-        "description": "Resource conflict - may violate unique constraints",
+        "description": "Ressourcenkonflikt - möglicherweise Verletzung eindeutiger Einschränkungen",
         "content": {
           "application/json": {
             "schema": { "$ref": "#/components/schemas/ErrorResponse" }
@@ -448,7 +438,7 @@
         }
       },
       "InternalServerError": {
-        "description": "Internal server error",
+        "description": "Interner Serverfehler",
         "content": {
           "application/json": {
             "schema": { "$ref": "#/components/schemas/ErrorResponse" }
@@ -496,125 +486,125 @@
       },
       "BenutzerDto": {
         "type": "object",
-        "description": "User account information",
+        "description": "Benutzerkontoinformationen",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int64",
             "readOnly": true,
-            "description": "Server-generated database ID. Do not provide when creating a user."
+            "description": "Vom Server generierte Datenbank-ID. Nicht angeben beim Erstellen eines Benutzers."
           },
           "username": {
             "type": "string",
-            "description": "Unique username (must be unique across all users)",
+            "description": "Eindeutiger Benutzername (muss eindeutig sein)",
             "minLength": 1
           },
           "email": {
             "type": "string",
             "format": "email",
-            "description": "User's email address"
+            "description": "E-Mail-Adresse des Benutzers"
           },
           "password": {
             "type": "string",
             "writeOnly": true,
-            "description": "User's password (only in requests, never in responses)"
+            "description": "Passwort des Benutzers (nur in Anfragen, nie in Antworten)"
           },
           "firstname": {
             "type": "string",
-            "description": "User's first name"
+            "description": "Vorname des Benutzers"
           },
           "lastname": {
             "type": "string",
-            "description": "User's last name"
+            "description": "Nachname des Benutzers"
           },
           "ownedGamesIds": {
             "type": "array",
-            "description": "List of UUIDs of purchased games",
+            "description": "Liste der UUIDs gekaufter Spiele",
             "items": { "type": "string", "format": "uuid" }
           },
           "ownedDlcIds": {
             "type": "array",
-            "description": "List of UUIDs of purchased DLCs",
+            "description": "Liste der UUIDs gekaufter DLCs",
             "items": { "type": "string", "format": "uuid" }
           }
         }
       },
       "SpielDto": {
         "type": "object",
-        "description": "Game product information",
+        "description": "Spielproduktinformationen",
         "properties": {
           "id": {
             "type": "string",
             "format": "uuid",
-            "description": "Game UUID. Auto-generated by server if not provided."
+            "description": "Spiel-UUID. Vom Server automatisch generiert, falls nicht angegeben."
           },
           "titel": {
             "type": "string",
-            "description": "Game title (field name matches database column 'titel')"
+            "description": "Spieltitel (Feldname entspricht Datenbankspalte 'titel')"
           },
           "description": {
             "type": "string",
-            "description": "Game description"
+            "description": "Spielbeschreibung"
           },
           "price": {
             "type": "number",
             "format": "double",
-            "description": "Price in EUR",
+            "description": "Preis in EUR",
             "minimum": 0
           },
           "releaseDate": {
             "type": "integer",
             "format": "int64",
-            "description": "Release date as Unix timestamp in milliseconds",
+            "description": "Erscheinungsdatum als Unix-Zeitstempel in Millisekunden",
             "example": 1451606400000
           },
           "createdAt": {
             "type": "integer",
             "format": "int64",
             "readOnly": true,
-            "description": "Creation timestamp as Unix timestamp in milliseconds. Set by server."
+            "description": "Erstellungszeitpunkt als Unix-Zeitstempel in Millisekunden. Wird vom Server gesetzt."
           }
         },
         "required": ["titel", "price"]
       },
       "DlcDto": {
         "type": "object",
-        "description": "DLC (Downloadable Content) product information",
+        "description": "DLC (Downloadable Content) Produktinformationen",
         "properties": {
           "id": {
             "type": "string",
             "format": "uuid",
-            "description": "DLC UUID. Auto-generated by server if not provided."
+            "description": "DLC-UUID. Vom Server automatisch generiert, falls nicht angegeben."
           },
           "dlcName": {
             "type": "string",
-            "description": "Name of the DLC"
+            "description": "Name des DLCs"
           },
           "gameTitle": {
             "type": "string",
-            "description": "Title of the associated base game"
+            "description": "Titel des zugehörigen Spiels"
           },
           "description": {
             "type": "string",
-            "description": "DLC description"
+            "description": "DLC-Beschreibung"
           },
           "price": {
             "type": "number",
             "format": "double",
-            "description": "Price in EUR",
+            "description": "Preis in EUR",
             "minimum": 0
           },
           "releaseDate": {
             "type": "integer",
             "format": "int64",
-            "description": "Release date as Unix timestamp in milliseconds",
+            "description": "Erscheinungsdatum als Unix-Zeitstempel in Millisekunden",
             "example": 1464739200000
           },
           "createdAt": {
             "type": "integer",
             "format": "int64",
             "readOnly": true,
-            "description": "Creation timestamp as Unix timestamp in milliseconds. Set by server."
+            "description": "Erstellungszeitpunkt als Unix-Zeitstempel in Millisekunden. Wird vom Server gesetzt."
           }
         },
         "required": ["dlcName", "gameTitle", "price"]
