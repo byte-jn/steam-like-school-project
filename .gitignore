@@ -55,3 +55,5 @@ replay_pid*
 
 # Storage Data
 data/csv/*
+/docs/~*
+*.tmp
