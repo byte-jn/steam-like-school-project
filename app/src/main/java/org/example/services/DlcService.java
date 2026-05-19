@@ -42,6 +42,13 @@ public class DlcService {
                 .collect(Collectors.toList());
     }
 
+    public List<DlcDto> findByGameTitle(String gameTitle) {
+        return dlcRepository.findAll().stream()
+                .filter(dlc -> dlc.getGameTitle() != null && dlc.getGameTitle().equalsIgnoreCase(gameTitle))
+                .map(dlcMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Optional<DlcDto> update(String id, DlcDto dto) {
         Optional<Dlc> found = dlcRepository.findById(id);
         if (found.isEmpty()) {

@@ -2,7 +2,7 @@ package org.example.dtos;
 
 import java.util.Date;
 
-public class GamesDto {
+public class GameDto {
 
     private String id;
     private String titel;
@@ -11,10 +11,10 @@ public class GamesDto {
     private Date releaseDate;
     private Date createdAt;
 
-    public GamesDto() { }
+    public GameDto() { }
 
-    public GamesDto(String id, String titel, String description,
-                    double price, Date releaseDate, Date createdAt) {
+    public GameDto(String id, String titel, String description,
+                   double price, Date releaseDate, Date createdAt) {
         this.id = id;
         this.titel = titel;
         this.description = description;

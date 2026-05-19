@@ -22,6 +22,9 @@ dependencies {
     runtimeOnly(libs.postgresql)
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.yaml:snakeyaml")
+
+    testImplementation("org.mockito:mockito-core:${libs.versions.mockito.get()}")
+    testImplementation("org.mockito:mockito-junit-jupiter:${libs.versions.mockito.get()}")
 }
 
 application {

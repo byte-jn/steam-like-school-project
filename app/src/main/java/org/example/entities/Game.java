@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "games")
-public class Games {
+public class Game {
 
     @Id
     @Column(name = "id", nullable = false, updatable = false)
@@ -29,9 +29,9 @@ public class Games {
     @Column(name = "price")
     private double price;
 
-    protected Games() { }
+    protected Game() { }
 
-    public Games(String id) {
+    public Game(String id) {
         this.id = id;
         this.createdAt = new Date();
     }

@@ -1,5 +1,7 @@
 [versions]
 postgresql = "42.7.4"
+mockito = "5.14.2"
 
 [libraries]
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }

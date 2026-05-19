@@ -1,16 +1,16 @@
 package org.example.mappers;
 
 import jakarta.inject.Singleton;
-import org.example.dtos.GamesDto;
-import org.example.entities.Games;
+import org.example.dtos.GameDto;
+import org.example.entities.Game;
 
 @Singleton
-public class GamesMapper {
+public class GameMapper {
 
-    public GamesMapper() { }
+    public GameMapper() { }
 
-    public GamesDto toDto(Games game) {
-        GamesDto dto = new GamesDto();
+    public GameDto toDto(Game game) {
+        GameDto dto = new GameDto();
         dto.setId(game.getId());
         dto.setTitel(game.getTitel());
         dto.setDescription(game.getDescription());
@@ -20,8 +20,8 @@ public class GamesMapper {
         return dto;
     }
 
-    public Games toDomain(GamesDto dto) {
-        Games game = new Games(dto.getId());
+    public Game toDomain(GameDto dto) {
+        Game game = new Game(dto.getId());
         game.setTitel(dto.getTitel());
         game.setDescription(dto.getDescription());
         game.setPrice(dto.getPrice());

@@ -8,8 +8,8 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Put;
 import jakarta.inject.Inject;
-import org.example.dtos.GamesDto;
-import org.example.services.GamesService;
+import org.example.dtos.GameDto;
+import org.example.services.GameService;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,44 +17,44 @@ import java.util.Optional;
 @Controller("/games")
 public class GamesController {
 
-    private final GamesService gamesService;
+    private final GameService gameService;
 
     @Inject
-    public GamesController(GamesService gamesService) {
-        this.gamesService = gamesService;
+    public GamesController(GameService gameService) {
+        this.gameService = gameService;
     }
 
     @Get
-    public List<GamesDto> findAll() {
-        return gamesService.findAll();
+    public List<GameDto> findAll() {
+        return gameService.findAll();
     }
 
     @Get("/{id}")
-    public HttpResponse<GamesDto> findById(String id) {
-        Optional<GamesDto> found = gamesService.findById(id);
+    public HttpResponse<GameDto> findById(String id) {
+        Optional<GameDto> found = gameService.findById(id);
         if (found.isEmpty()) {
-            return HttpResponse.<GamesDto>notFound();
+            return HttpResponse.<GameDto>notFound();
         }
         return HttpResponse.ok(found.get());
     }
 
     @Post
-    public HttpResponse<GamesDto> create(@Body GamesDto dto) {
-        return HttpResponse.created(gamesService.save(dto));
+    public HttpResponse<GameDto> create(@Body GameDto dto) {
+        return HttpResponse.created(gameService.save(dto));
     }
 
     @Put("/{id}")
-    public HttpResponse<GamesDto> update(String id, @Body GamesDto dto) {
-        Optional<GamesDto> updated = gamesService.update(id, dto);
+    public HttpResponse<GameDto> update(String id, @Body GameDto dto) {
+        Optional<GameDto> updated = gameService.update(id, dto);
         if (updated.isEmpty()) {
-            return HttpResponse.<GamesDto>notFound();
+            return HttpResponse.<GameDto>notFound();
         }
         return HttpResponse.ok(updated.get());
     }
 
     @Delete("/{id}")
     public HttpResponse<Void> delete(String id) {
-        gamesService.delete(id);
+        gameService.delete(id);
         return HttpResponse.noContent();
     }
 }

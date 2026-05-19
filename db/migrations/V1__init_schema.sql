@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS games (
     id          VARCHAR(255)     NOT NULL,
-    titel       VARCHAR(255),
+    title       VARCHAR(255),
     description TEXT,
     price       DOUBLE PRECISION NOT NULL DEFAULT 0,
     release_date TIMESTAMP,
