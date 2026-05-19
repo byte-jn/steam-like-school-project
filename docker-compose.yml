@@ -1,24 +1,6 @@
 version: "3.8"
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: db/Dockerfile
-    container_name: gradle-hibernate-app
-    ports:
-      - "8080:8080"
-    environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_NAME=app
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: always
-
   db:
     image: postgres:16
     container_name: postgres-db
@@ -37,6 +19,40 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
+    restart: always
+
+  backend:
+    build:
+      context: .
+      dockerfile: db/Dockerfile
+    container_name: gradle-hibernate-app
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+
+  mcp-server:
+    build:
+      context: ./mcp
+      dockerfile: Dockerfile
+    container_name: mcp-server-app
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      db:
+        condition: service_healthy
     restart: always
 
 volumes:

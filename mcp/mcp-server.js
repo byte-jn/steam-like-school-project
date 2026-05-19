@@ -185,22 +185,6 @@ async function main() {
     await client.connect();
     console.error("Connected to database");
 
-    // Test write permissions
-    try {
-      await client.query("BEGIN");
-      await client.query("INSERT INTO users (id, username) VALUES (999999, 'test_write_permission')");
-      const testResult = await client.query("SELECT COUNT(*) FROM users WHERE username = 'test_write_permission'");
-      await client.query("ROLLBACK");
-
-      if (testResult.rows[0].count > 0) {
-        console.error("Write permissions: ✓ OK - Database is writable");
-      } else {
-        console.error("Write permissions: ✗ ISSUE - Insert executed but data not found");
-      }
-    } catch (testError) {
-      console.error("Write permissions: ✗ FAILED -", testError.message);
-    }
-
     const transport = new StdioServerTransport();
     await server.connect(transport);
     console.error("MCP Server running");

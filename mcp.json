@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "stainless": {
+      "url": "https://steam-like-school-project.stlmcp.com",
+      "disabled": false,
+      "env": {
+        "API_ENDPOINT": "http://localhost:8080",
+        "DATA_URL": "http://localhost:8080"
+      }
+    }
+  }
+}

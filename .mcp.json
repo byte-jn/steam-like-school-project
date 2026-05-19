@@ -1,10 +1,14 @@
 {
   "mcpServers": {
-    "steam-like-school-project": {
-      "command": "npx",
-      "args": ["-y", "steam-like-school-project-mcp"],
+    "steam-like-school-project-db": {
+      "command": "node",
+      "args": ["C:\\Users\\rayya\\tls\\steam-like-school-project\\mcp\\mcp-server.js"],
       "env": {
-        "STEAM_LIKE_SCHOOL_PROJECT_BASE_URL": "http://localhost:8080"
+        "DB_HOST": "localhost",
+        "DB_PORT": "5432",
+        "DB_NAME": "app",
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "postgres"
       }
     }
   }
