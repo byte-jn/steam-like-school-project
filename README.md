@@ -1,50 +1,50 @@
 # Steam-Like School Project
 
-Ein konsolenbasiertes Java-Projekt, das eine vereinfachte Steam-ähnliche Plattform simuliert. Es richtet sich an Schüler:innen und Studierende, die Java und objektorientierte Programmierung lernen möchten.
+A console-based Java project that simulates a simplified Steam-like platform. It is aimed at pupils and students who want to learn Java and object-oriented programming.
 
 ## Features
 
-- Benutzerregistrierung und Login
-- Anlegen und Auflisten von Spielen
-- Anlegen und Auflisten von DLCs
-- Hinzufügen von Spielen und DLCs zur Benutzerbibliothek
-- Persistenz aller Daten in CSV-Dateien
+- User registration and login
+- Creating and listing games
+- Creating and listing DLCs
+- Adding games and DLCs to the user's library
+- Persistence of all data in CSV files
 
-## Übersicht
+## Overview
 
-Dieses Projekt bietet ein kleines Verwaltungssystem für Benutzer, Spiele und DLCs. Es eignet sich als Lernprojekt für objektorientierte Programmierung, Dateiverarbeitung und einfache Konsoleninteraktion.
-
-
-## Architektur
-
-Das Projekt ist in folgende Klassen unterteilt:
-
-- **Main**: Einstiegspunkt, enthält die `main`-Methode und startet das Programm.
-- **FunctionService**: Steuert den Menüfluss und die Benutzerinteraktion.
-- **CsvDataService**: Lädt und speichert Daten aus/in CSV-Dateien.
-- **LookupService**: Stellt Hilfsfunktionen für die Suche nach Benutzern, Spielen und DLCs bereit.
-- **User, Game, DLC**: Die zentralen Entitäten des Systems.
+This project provides a small management system for users, games and DLCs. It works well as a learning project for object-oriented programming, file handling and simple console interaction.
 
 
-## Datenmodell
+## Architecture
 
-**User**: Benutzername, Passwort, Liste der gekauften Spiele und DLCs
+The project is split into the following classes:
 
-**Game**: Name, Genre, Preis, Entwickler
+- **Main**: Entry point, contains the `main` method and starts the program.
+- **FunctionService**: Controls the menu flow and the user interaction.
+- **CsvDataService**: Loads and saves data from/to CSV files.
+- **LookupService**: Provides helper functions to look up users, games and DLCs.
+- **User, Game, DLC**: The core entities of the system.
 
-**DLC**: Name, Zugehöriges Spiel, Preis
 
-## Datenspeicherung (CSV)
+## Data model
 
-Die Daten werden in folgenden Dateien gespeichert:
+**User**: Username, password, list of purchased games and DLCs
+
+**Game**: Name, genre, price, developer
+
+**DLC**: Name, related game, price
+
+## Data storage (CSV)
+
+The data is stored in the following files:
 
 - `data/csv/users.csv`
 - `data/csv/games.csv`
 - `data/csv/dlcs.csv`
 
-Falls Ordner oder Dateien fehlen, werden sie beim Start automatisch angelegt. Die CSV-Header werden ebenfalls automatisch erzeugt.
+If folders or files are missing, they are created automatically on start-up. The CSV headers are generated automatically as well.
 
-### Beispiel für CSV-Inhalte
+### Example CSV content
 
 **users.csv**
 ```csv
@@ -66,28 +66,28 @@ HL2-DLC,Half-Life,2.99
 ```
 
 
-## Voraussetzungen
+## Requirements
 
-- JDK 8 oder höher
-- IntelliJ IDEA (empfohlen) oder eine andere Java-IDE
+- JDK 8 or higher
+- IntelliJ IDEA (recommended) or another Java IDE
 
 
-## Ausführen
+## Running
 
 ### In IntelliJ IDEA
-1. Projekt öffnen
-2. `app/src/main/java/org/example/Main.java` öffnen
-3. `Main` ausführen
+1. Open the project
+2. Open `app/src/main/java/org/example/Main.java`
+3. Run `Main`
 
-### Über die Windows PowerShell
+### From Windows PowerShell
 ```powershell
-Set-Location "C:\Users\JannisLauer\IdeaProjects\steam-like-school-project\app\src\main\java\org\example"
+Set-Location "<path-to>\steam-like-school-project\app\src\main\java\org\example"
 javac *.java
 java Main
 ```
 
 
-## Projektstruktur
+## Project structure
 
 ```text
 steam-like-school-project/
@@ -113,16 +113,16 @@ steam-like-school-project/
 ```
 
 
-## Beispiel-Session
+## Example session
 
-1. Benutzer registrieren oder einloggen
-2. Spiele und DLCs anlegen
-3. Spiele/DLCs zur eigenen Bibliothek hinzufügen
-4. Daten werden automatisch gespeichert
+1. Register or log in
+2. Create games and DLCs
+3. Add games/DLCs to your own library
+4. Data is saved automatically
 
-## Testen
+## Testing
 
-Das Projekt verwendet JUnit 5 für Unit-Tests. Beispiel für einen Test:
+The project uses JUnit 5 for unit tests. Example test:
 
 ```java
 import org.junit.jupiter.api.Assertions;
@@ -136,37 +136,37 @@ void testGamePrice() {
 
 ## Roadmap
 
-- GUI-Version
-- Weitere CLI-Kommandos
-- Datenbank-Backend statt CSV
-- Spielzeit-Tracking
+- GUI version
+- More CLI commands
+- Database backend instead of CSV
+- Playtime tracking
 
 
-## Beitragende
+## Contributing
 
-Pull Requests und Vorschläge sind willkommen! Bitte Issues für Fehler oder Feature-Wünsche anlegen.
+Pull requests and suggestions are welcome! Please open issues for bugs or feature requests.
 
-## Autor
+## Author
 
 Jannis Lauer - jannis280@outlook.de
 
 
-## Lizenz
+## License
 
-MIT License (siehe LICENSE-Datei, falls vorhanden)
+MIT License (see the LICENSE file, if present)
 
 ## Status
 
-In Entwicklung.
+In development.
 
-## Abhängigkeitsverwaltung mit Maven
+## Dependency management with Maven
 
-Ab sofort wird Maven zur Verwaltung der benötigten Libraries verwendet. Alle Abhängigkeiten werden in der Datei `pom.xml` im Projektverzeichnis definiert. Diese Datei ist Teil des Repositories.
+Maven is now used to manage the required libraries. All dependencies are defined in the `pom.xml` file in the project directory. This file is part of the repository.
 
-### So fügst du eine neue Library hinzu
+### Adding a new library
 
-1. Öffne die Datei `pom.xml`.
-2. Füge im `<dependencies>`-Block einen neuen Eintrag hinzu, z. B. für OpenCSV:
+1. Open the `pom.xml` file.
+2. Add a new entry inside the `<dependencies>` block, e.g. for OpenCSV:
    ```xml
    <dependency>
        <groupId>com.opencsv</groupId>
@@ -174,25 +174,25 @@ Ab sofort wird Maven zur Verwaltung der benötigten Libraries verwendet. Alle Ab
        <version>5.7.1</version>
    </dependency>
    ```
-3. Speichere die Datei.
-4. Führe in der Konsole im Projektverzeichnis aus:
+3. Save the file.
+4. Run in the console in the project directory:
    ```powershell
    mvn clean install
    ```
-   Dadurch werden alle Abhängigkeiten automatisch heruntergeladen.
+   This downloads all dependencies automatically.
 
-### Projekt bauen und starten
+### Building and running the project
 
-1. Baue das Projekt:
+1. Build the project:
    ```powershell
    mvn clean package
    ```
-2. Starte das Programm (Beispiel):
+2. Run the program (example):
    ```powershell
    java -cp target/steam-like-school-project-1.0-SNAPSHOT.jar org.example.Main
    ```
 
-### Vorteile
-- Keine manuellen .jar-Dateien mehr nötig
-- Jeder im Team hat immer die gleichen Libraries
-- Einfaches Hinzufügen/Entfernen von Abhängigkeiten
+### Benefits
+- No more manual .jar files
+- Everyone on the team always has the same libraries
+- Easy adding/removing of dependencies
